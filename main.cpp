@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <errno.h>
 #include <string>
+#include <vector>
 
 
 int main(void)
@@ -58,11 +59,11 @@ int main(void)
     // [POLLING]: Checks if a FD is ready to perform. It allows the process to wait for an event to occur. 
     
     struct pollfd my_pollfd[124];// Sets the array of files descriptors to monitor for I/O events. 
-    
+
     memset(my_pollfd, 0 , sizeof(my_pollfd)); //Initialize this array to 0
     my_pollfd[0].fd = antho_fd; // Assign the FD of the socket
     my_pollfd[0].events = POLLIN; // Checks if data may be read without blocking 
-    int countdown = (3 * 60 * 1000); // Countdown 
+    //int countdown = (3 * 60 * 1000); // Countdown 
     
     int nfds = 1;//current numbre of socket descriptor open;
     
