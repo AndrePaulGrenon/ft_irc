@@ -1,25 +1,14 @@
-#include <poll.h>
-#include <string.h>
-#include <unistd.h>
-#include <iostream>
-#include <sys/socket.h>
-#include <fcntl.h>
-#include <netinet/in.h>
-#include <errno.h>
-#include <string>
-
+#include "my_func.hpp"
+#define _XOPEN_SOURCE_EXTENDED 1
 
 int main(void)
 {
     int i_bind, i_listen;
-    bool end_server = false;
+    bool end_server = false, compression = false;
 
   // [message]
-    char message[256] = "Arrêtez de me demander !";
-
-    std::string mystr = "Allo mon ami";
-    std::cout << mystr << std::endl;
-
+    char message[256] = "Anthony est sexy, Arrêtez de me demander !";
+    (void) message;
     // [SOCKET CREATION] 
 
     //SOCK ADDRESS: basic structure for all syscalls and functions that deal with internet addresses.
@@ -45,9 +34,6 @@ int main(void)
   
     //BIND : binds the socket to the address and port number specified in the sockaddr_in struct
     i_bind = bind(antho_fd, reinterpret_cast<struct sockaddr *>(&address), sizeof(address));
-    
-    std::cout << "Result of bind : " << i_bind << std::endl;
-
 
     //  [LISTENING]
 
@@ -70,7 +56,7 @@ int main(void)
     do
     {
         std::cout << "Waiting for poll motherfucker ... ! : " << my_pollfd[0].revents << std::endl;
-        int result = poll(my_pollfd, 1, countdown);
+        int result = poll(my_pollfd, nfds, countdown);
 
         //If an error with poll : exit
         if (result < 0 || end_server)
@@ -86,8 +72,6 @@ int main(void)
         }
 
         int currentsize = nfds;
-        (void) currentsize;
-        std::cout << "POLLIN: " << POLLIN << std::endl;
 
         //We check all our tracked socket descriptors
         for (int i = 0; i < currentsize; i++)
@@ -112,7 +96,6 @@ int main(void)
                 do
                 {
                     new_sd = accept(antho_fd, NULL, NULL); //returna socket description of new connection socket
-                     std::cout << " ACCEPT result : " << new_sd << std::endl;
                     if (new_sd < 0)
                     {
                         if (errno != EWOULDBLOCK)
@@ -125,7 +108,7 @@ int main(void)
                     my_pollfd[nfds].fd = new_sd;
                     my_pollfd[nfds].events = POLLIN;
                     nfds++;
-
+                    std::cout << " New connection has been added to descriptor: " << new_sd << std::endl;
                 } while (new_sd != -1);
             }
             else //if any active socket has a change, then receive data
@@ -134,10 +117,13 @@ int main(void)
 
                 int close_connection = false;
                 char buff[420];
+                memset(buff, 0, sizeof(buff));
+
                 do
                 {
                     //
                     result = recv(my_pollfd[i].fd, buff, sizeof(buff), 0); //receive message from socket
+                    
                     if (result < 0)
                     {
                         if (errno != EWOULDBLOCK)
@@ -152,8 +138,10 @@ int main(void)
                         close_connection = true;
                         break;
                     }
-                    
+                    std::cout << "Receive from the other --- : " << buff << std::endl;
                     result = send(my_pollfd[i].fd, buff, sizeof(buff), 0); //send the message through the socket
+                    std::cout << "What is the send result --- :" << result << std::endl;
+                    
                     if (result < 0) //send failed
                     {
                         perror("Send to sucker has failed bitch !");
@@ -166,24 +154,24 @@ int main(void)
                 {
                     close(my_pollfd[i].fd);
                     my_pollfd[i].fd = -1;
+                    compression = true;
                 }
+            } //End of tracking loop
+        } //End of polling loop
+        if (compression)
+        {
+            compress_function(my_pollfd, nfds);
+            compression = false;
 
-            }
         }
     
-        (void) message;
+    } while (end_server == false);
 
-        // [SEND] 
-        // if (result >= 0)
-        // {   
-        //     result = send(new_sd, message, 256, 0); //send the message through the socket
-        //     // break;
-        // }
-
-        /* code */
-    } while (true);
     
+
     close(antho_fd);
+
+
 
     return (0);
 }
