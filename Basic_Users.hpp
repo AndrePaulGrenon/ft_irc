@@ -3,17 +3,16 @@
 
 #pragma once
 #include <string>
-#include "Users.hpp"
 
-class Basic_Users: public Users
+class Basic_Users
 {
-public:
-    users(std::string Nn, std::string Un);
-    ~users();
+    public:
+        Basic_Users(std::string Nn, std::string Un);
+        ~Basic_Users();
 
-private:
-    std::string Nickname;
-    std::string Username;
+    private:
+        std::string Nickname;
+        std::string Username;
 };
 
 #endif

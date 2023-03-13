@@ -2,10 +2,17 @@
 #define SERVERS_HPP
 
 #pragma once
-#include <string>
+#include <poll.h>
+#include <string.h>
+#include <unistd.h>
 #include <iostream>
-#include <map>
+#include <sys/socket.h>
+#include <fcntl.h>
+#include <netinet/in.h>
+#include <errno.h>
+#include <string>
 #include <vector>
+#include <map>
 #include "Basic_Users.hpp"
 #include "Channels.hpp"
 
@@ -16,7 +23,7 @@ class Operator_Users;
 class Servers
 {
 public:
-    Servers(std::string pw, size_t p);
+    Servers(size_t pt, std::string pw);
     ~Servers();
 
     // Operator functions reference: https://www.rfc-editor.org/rfc/rfc1459
@@ -34,7 +41,7 @@ public:
     void    Shun(std::string nick, size_t time_to_ban, std::string reason);
     void    Wallops(std::string message);
     void    Zline(std::string ip, size_t time_to_ban, std::string reason) */
-    void    Pass(std::string pw);
+/*     void    Pass(std::string pw);
     void    Nick(std::string nick);
     void    User(std::string username, std::string hostname, std::string serversname, std::string realname);
     void    Server(std::string servername, int hopcount, std::string info); // Pas sûr de celui-là
@@ -50,13 +57,19 @@ public:
     void    List(std::string chan, std::string serv);
     void    Invite(std::string nickname, std::string chan);
     void    Kick(std::string chan, std::string user, std::string message);
-
+    void    Stats(char c, std::string serv);
+    void    Links(); // Paramètres à revoir
+    void    Time(std::string server) //Par sûr des params
+    void    Connect(); */
+    
+    // Méthodes
+    void    start();
 private:
-    std::string         Password;
     size_t              Port;
-    std::map<std::string, Basic_Users>    BasicUsers;
+    std::string         Password;
+/*     std::map<std::string, Basic_Users>    BasicUsers;
     std::map<std::string, Operator_Users> OpUsers;
-    std::map<std::string, Channels>       Chans;
+    std::map<std::string, Channels>       Chans; */
 };
 
 #endif
