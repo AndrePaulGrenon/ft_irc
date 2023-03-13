@@ -1,4 +1,4 @@
-#include "my_func.hpp"
+#include "Servers.hpp"
 
 void    compress_function(struct pollfd *fds, int nfds)
 {
