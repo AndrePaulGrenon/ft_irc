@@ -57,7 +57,11 @@ int main (void)
         sleep(1);
         memset(service_response, 0, sizeof(service_response));
         size = recv(ntwk_sock, &service_response, sizeof(service_response), 0);
-        std::cout << "New answer received : " << service_response << " with code : " << size << std::endl;
+        while (size > 0)
+        {
+            std::cout << "New answer received : " << service_response << " with code : " << size << std::endl;
+            size = recv(ntwk_sock, &service_response, sizeof(service_response), 0);
+        }
         if (strcmp(service_response, "EOF") == 0)
         {
             std::cout << "Why" << std::endl;

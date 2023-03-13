@@ -1,7 +1,7 @@
 #include "my_func.hpp"
 #define _XOPEN_SOURCE_EXTENDED 1
 
-int main(void)
+int main(int argc, char **argv)
 {
     int i_bind, i_listen;
     bool end_server = false, compression = false;
@@ -140,7 +140,7 @@ int main(void)
                     }
                     std::cout << "Receive from the other --- : " << buff << std::endl;
                     result = send(my_pollfd[i].fd, buff, sizeof(buff), 0); //send the message through the socket
-                    std::cout << "What is the send result --- :" << result << std::endl;
+                    std::cout << "What is the send result --- : " << result << std::endl;
                     
                     if (result < 0) //send failed
                     {
@@ -170,8 +170,6 @@ int main(void)
     
 
     close(antho_fd);
-
-
 
     return (0);
 }
