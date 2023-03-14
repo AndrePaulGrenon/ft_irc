@@ -184,3 +184,18 @@ void	Servers::start()
 
     return ;
 }
+
+int     Pass(std::string pw)
+{
+    
+}
+
+int     Nick(std::string nick)
+{
+
+}
+
+int     User(std::string username, std::string hostname, std::string serversname, std::string realname)
+{
+
+}
