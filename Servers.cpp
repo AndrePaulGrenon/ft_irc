@@ -38,7 +38,6 @@ void	Servers::start()
     address.sin_port = htons(Port) ; // Contains the port number
     address.sin_addr.s_addr = INADDR_ANY; // Use when we don't want to bind a socket to any specific IP. For example if we don't know the IP. 
 
-
     // SOCKET CREATE: 1.Returns fd 2. PF_INET or PF_INET6 protocol internet for IPV4 or IPV6 
         // 3.Sock_stream : default for TCP usage 4. Protocol value for IP = 0 
     // int antho_fd = socket(PF_INET, SOCK_STREAM, 0);
@@ -159,13 +158,8 @@ void	Servers::start()
                     //ACTION COMMAND
                     
                     Users user;
-                    //Execute commande
-                    
-                    // fct pointer = commandMap[parser.getArgs()[0]];
-                    // this->(pointer)(user, parser);
-
-                    //ASSUMES FIRST ELEMENT IS ALWAYS A COMMANDS
-                    std::map<std::string, fct>::iterator it = commandMap.find(parser.getArgs()[0]); //Looks for iterator pointing to Command function
+                    //EXECUTE CMD:
+                    std::map<std::string, fct>::iterator it = commandMap.find(parser.getCommand()); //Looks for iterator pointing to Command function
                     if (it != commandMap.end()) //If command exists
                         (this->*(it->second))(user, parser); //execute function throught pointer on funciton
 

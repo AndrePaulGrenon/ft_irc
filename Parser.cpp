@@ -4,9 +4,18 @@ Parser::Parser(char *buff)
 {
     std::string line(buff);
     unsigned long pos = 0;
+    bool first = true;
 
     while (pos != line.npos)
     {
+        while (line[0] == ' ')
+            line.erase(line.begin());
+        if (line[0] == ':' && first == false)
+        {
+            _message = line;
+            _message.erase(_message.begin());
+            break ;
+        }
         pos = line.find(' ');
         if (pos == line.npos)
         {
@@ -15,11 +24,13 @@ Parser::Parser(char *buff)
         }
         _my_args.push_back(line.substr(0, pos));
         line = line.substr(pos + 1, line.size());
+        first = false;
     }
 
     if (_my_args[0][0] == ':')
     {
         _prefix = _my_args[0];
+        _prefix.erase(_prefix.begin());
         _my_args.erase(_my_args.begin());
     }
     _command = _my_args[0];
@@ -30,6 +41,7 @@ Parser::Parser(char *buff)
     if (_prefix.length() > 0)
         std::cout << "Prefix: " << _prefix << std::endl; 
     std::cout <<  "CMD: " << _command << std::endl;
+    std::cout <<  "Message: " << _message << std::endl;
     std::vector<std::string>::iterator it = _my_args.begin();
     std::vector<std::string>::iterator ite = _my_args.end();
     std::cout << "ARGS " ;
