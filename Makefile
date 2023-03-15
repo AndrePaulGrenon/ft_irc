@@ -7,7 +7,7 @@ NAME = IRC #(Nom de L'exécutable)
 CC			=	c++
 FLAGS		=	-Wall -Wextra -Werror -std=c++98
 
-SRCS		=	main.cpp Servers.cpp utility.cpp
+SRCS		=	main.cpp Servers.cpp utility.cpp Users.cpp Parser.cpp commands/Pass.cpp commands/User.cpp commands/Nick.cpp
 
 
 HEADER_CON	=	

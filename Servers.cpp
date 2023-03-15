@@ -12,6 +12,13 @@ Servers::~Servers()
 	std::cout << "Get the F out! This ain't 4chan" << std::endl;
 }
 
+
+void Servers::ServerInit()
+{
+    commandMap["PASS"] = &Servers::Pass;
+}
+
+
 void	Servers::start()
 {
   int i_bind, i_listen;
@@ -50,8 +57,6 @@ void	Servers::start()
 
     i_listen = listen(antho_fd, SOMAXCONN);
 
-   
-
     // [POLLING]: Checks if a FD is ready to perform. It allows the process to wait for an event to occur. 
     
     struct pollfd my_pollfd[124];// Sets the array of files descriptors to monitor for I/O events. 
@@ -63,7 +68,6 @@ void	Servers::start()
     
     int nfds = 1;//current numbre of socket descriptor open;
     
-
     do
     {
         std::cout << "Waiting for poll motherfucker ... ! : " << my_pollfd[0].revents << std::endl;
@@ -87,8 +91,8 @@ void	Servers::start()
         //We check all our tracked socket descriptors
         for (int i = 0; i < currentsize; i++)
         {
-            std::cout << "Poll fd : " << my_pollfd[i].fd << std::endl;
-            std::cout << "Poll revent : " << my_pollfd[i].revents << std::endl;
+            if (my_pollfd[i].revents != 0)
+                std::cout << "Poll fd : " << my_pollfd[i].fd << " Poll revent : " << my_pollfd[i].revents << std::endl;
             
             //If socket has no changes... go to next;
             if (my_pollfd[i].revents == 0)
@@ -106,7 +110,7 @@ void	Servers::start()
                 // [ACCEPT new connection]
                 do
                 {
-                    new_sd = accept(antho_fd, NULL, NULL); //returna socket description of new connection socket
+                    new_sd = accept(antho_fd, NULL, NULL); //return a socket description of new connection socket
                     if (new_sd < 0)
                     {
                         if (errno != EWOULDBLOCK)
@@ -129,12 +133,9 @@ void	Servers::start()
                 int close_connection = false;
                 char buff[420];
                 memset(buff, 0, sizeof(buff));
-
                 do
                 {
-                    //
-                    result = recv(my_pollfd[i].fd, buff, sizeof(buff), 0); //receive message from socket
-                    
+                    result = recv(my_pollfd[i].fd, buff, sizeof(buff), 0); //receive message from socket   
                     if (result < 0)
                     {
                         if (errno != EWOULDBLOCK)
@@ -149,10 +150,26 @@ void	Servers::start()
                         close_connection = true;
                         break;
                     }
+
+                    //PARSING
+                    Parser parser(reinterpret_cast<char *>(buff));
+                    //ACTION COMMAND
+                    
+                    Users user("Antho", "Le tanant");
+                    //Execute commande
+                    Servers::ServerInit();
+                    // fct pointer = commandMap[parser.getArgs()[0]];
+                    // this->(pointer)(user, parser);
+
+                    std::map<std::string, fct>::iterator it = commandMap.find(parser.getArgs()[0]);
+                    if (it != commandMap.end())
+                        (this->*(it->second))(user, parser);
+
+                    
+                    //Manage Result
+
                     std::cout << "Receive from the other --- : " << buff << std::endl;
                     result = send(my_pollfd[i].fd, buff, sizeof(buff), 0); //send the message through the socket
-                    std::cout << "What is the send result --- : " << result << std::endl;
-                    
                     if (result < 0) //send failed
                     {
                         perror("Send to sucker has failed bitch !");
@@ -178,24 +195,10 @@ void	Servers::start()
     
     } while (end_server == false);
 
-    
-
     close(antho_fd);
 
     return ;
 }
 
-int     Pass(std::string pw)
-{
-    
-}
 
-int     Nick(std::string nick)
-{
 
-}
-
-int     User(std::string username, std::string hostname, std::string serversname, std::string realname)
-{
-
-}
