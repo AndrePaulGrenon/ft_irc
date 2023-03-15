@@ -10,26 +10,34 @@ Parser::Parser(char *buff)
         pos = line.find(' ');
         if (pos == line.npos)
         {
-            my_args.push_back(line);
+            _my_args.push_back(line);
             break;
         }
-        my_args.push_back(line.substr(0, pos));
+        _my_args.push_back(line.substr(0, pos));
         line = line.substr(pos + 1, line.size());
     }
 
+    if (_my_args[0][0] == ':')
+    {
+        _prefix = _my_args[0];
+        _my_args.erase(_my_args.begin());
+    }
+    _command = _my_args[0];
+    _my_args.erase(_my_args.begin());
 
     //CODE is to check what is parse:
-    if (prefix.length() > 0)
-        std::cout << "Prefix: " << prefix << std::endl; 
-    std::cout << "CMD: " << command << std::endl;
-    std::vector<std::string>::iterator it = my_args.begin();
-    std::vector<std::string>::iterator ite = my_args.end();
+    std::cout << MAG;
+    if (_prefix.length() > 0)
+        std::cout << "Prefix: " << _prefix << std::endl; 
+    std::cout <<  "CMD: " << _command << std::endl;
+    std::vector<std::string>::iterator it = _my_args.begin();
+    std::vector<std::string>::iterator ite = _my_args.end();
     std::cout << "ARGS " ;
     for (;it != ite; it++)
     {
         std::cout << " - " << *it;
     }
-    std::cout << std::endl;
+    std::cout << CLEAR << std::endl;
 
 }
 
@@ -40,5 +48,15 @@ Parser::~Parser()
 
 std::vector<std::string> &Parser::getArgs()
 {
-    return this->my_args;
+    return (_my_args);
+}
+
+std::string              &Parser::Command()
+{
+    return (_command);
+}
+
+std::string              &Parser::getPrefix()
+{
+    return (_prefix);
 }
