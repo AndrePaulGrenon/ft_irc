@@ -28,44 +28,49 @@ public:
     ~Servers();
 
     // Operator functions reference: https://www.rfc-editor.org/rfc/rfc1459
-/*     void    Adchat(std::string message);
-    void    Admin();
-    void    Chatops(std::string message);
-    void    Gline(std::string nick, size_t time_to_ban, std::string reason);
-    void    Globops(std::string message);
-    void    Gzline(std::)
-    void    Invite(std::string nick, std::string chan);
-    void    kill(std::string nick, std::message);
-    void    Kline(std::string nick, size_t time_to_ban);
-    void    Locops(std::st  ring message);
-    void    Nachat(std::string message);
-    void    Shun(std::string nick, size_t time_to_ban, std::string reason);
-    void    Wallops(std::string message);
-    void    Zline(std::string ip, size_t time_to_ban, std::string reason) */
-    //int     Admin(std::string tarsget); // Returns information about specified admin
-    //int     Away(std::string message); // Provides the server with a message to automatically send in reply to a PRIVMSG directed at the user, but not to a channel they are on
-    //int     Cnotice(std::string nick, std::string chan, std::string message);
-    //int     Connect(); // À revoir, sert à connecter un server à un autre
-    //int     Cprivmsg(std::string nick, std::string chan, std::string message); //Sends a private message that bypasses food protection. User must be in channel 
+/*     void    Adchat(Users &user, Parser &parser);
+    void    Admin(Users &user, Parser &parser);
+    void    Chatops(Users &user, Parser &parser);
+    void    Gline(Users &user, Parser &parser);
+    void    Globops(Users &user, Parser &parser);
+    void    Gzline(Users &user, Parser &parser)
+    void    Invite(Users &user, Parser &parser);
+    void    kill(Users &user, Parser &parser);
+    void    Kline(Users &user, Parser &parser);
+    void    Locops(Users &user, Parser &parser);
+    void    Nachat(Users &user, Parser &parser);
+    void    Shun(Users &user, Parser &parser);
+    void    Wallops(Users &user, Parser &parser);
+    void    Zline(Users &user, Parser &parser) */
+   
+    //int     Admin(Users &user, Parser &parser); // Returns information about specified admin
+    //int     Away(Users &user, Parser &parser); // Provides the server with a message to automatically send in reply to a PRIVMSG directed at the user, but not to a channel they are on
+    //int     Cnotice(Users &user, Parser &parser);
+    //int     Connect(Users &user, Parser &parser); // À revoir, sert à connecter un server à un autre
+    //int     Cprivmsg(Users &user, Parser &parser); //Sends a private message that bypasses food protection. User must be in channel 
+    int     Die(Users &user, Parser &parser); //Instruct the server to shut down
+    int     Encap(Users &user, Parser &parser); //This command is for use by servers to encapsulate commands so that they will propagate across hub servers not yet updated to support them, and indicates the subcommand and its parameters should be passed unaltered to the destination, where it will be unencapsulated and parsed. This facilitates implementation of new features without a need to restart all servers before they are usable across the network
+    int     Error(Users &user, Parser &parser); //use by servers to report errors to other servers. It is also used before terminating client connections.
     int     Pass(Users &user, Parser &parser); //Set connection password
     int     Nick(Users &user, Parser &parser); //Set or reset user's nickname
     int     User(Users &user, Parser &parser); //Used at beginning of connection to sets usernam, hostname servanem and realname of new user
-    //int     Server(std::string servername, int hopcount, std::string info); // Pas sûr de celui-là
-    //int     Oper(std::string uname, std::string pw);
-    //int     Quit(std::string message);
-    //int     Squit(std::string serv, std::string comment);
-    //int     Join(std::string chan, std::string pw);
-    //int     Part(std::string chan);
-    //int     Mode(std::string chan, char options, );//Revoir celui-là, pas clair
-    //int     Mode(std::string uname, char options);
-    //int     Topic(std::string chan, std::string top);
-    //int     Names(std::string chan);
-    //int     List(std::string chan, std::string serv);
-    //int     Invite(std::string nickname, std::string chan);
-    //int     Kick(std::string chan, std::string user, std::string message);
-    //int     Stats(char c, std::string serv);
-    //int     Links(); // Paramètres à revoir
-    //int     Time(std::string server) //Par sûr des params
+    
+    //int     Server(Users &user, Parser &parser); // Pas sûr de celui-là
+    //int     Oper(Users &user, Parser &parser);
+    //int     Quit(Users &user, Parser &parser);
+    //int     Squit(Users &user, Parser &parser);
+    //int     Join(Users &user, Parser &parser);
+    //int     Part(Users &user, Parser &parser);
+    //int     Mode(Users &user, Parser &parser);//Revoir celui-là, pas clair
+    //int     Mode(Users &user, Parser &parser);
+    //int     Topic(Users &user, Parser &parser);
+    //int     Names(Users &user, Parser &parser);
+    //int     List(Users &user, Parser &parser);
+    //int     Invite(Users &user, Parser &parser);
+    //int     Kick(Users &user, Parser &parser);
+    //int     Stats(Users &user, Parser &parser);
+    //int     Links(Users &user, Parser &parser); // Paramètres à revoir
+    //int     Time(Users &user, Parser &parser) //Par sûr des params
     
     // Méthodes
     void    start();
@@ -73,9 +78,9 @@ public:
 private:
     size_t                          Port;
     std::string                     Password;
-    std::map<int, Users>            usersMap;
+    std::map<int, *Users>            usersMap;
     std::map<std::string, fct>      commandMap;
- //   std::map<std::string, Channels>       Chans;
+ //   std::map<std::string, *Channels>       Chans;
 };
 
 #endif
