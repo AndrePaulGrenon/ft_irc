@@ -78,7 +78,7 @@ public:
 private:
     size_t                          Port;
     std::string                     Password;
-    std::map<int, *Users>            usersMap;
+    std::map<int, Users>            usersMap;
     std::map<std::string, fct>      commandMap;
  //   std::map<std::string, *Channels>       Chans;
 };
