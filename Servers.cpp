@@ -158,7 +158,7 @@ void	Servers::start()
                     Parser parser(reinterpret_cast<char *>(buff));
                     //ACTION COMMAND
                     
-                    Users user("Antho", "Le tanant");
+                    Users user;
                     //Execute commande
                     
                     // fct pointer = commandMap[parser.getArgs()[0]];

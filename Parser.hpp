@@ -14,9 +14,9 @@ public:
     Parser(char *buff);
     ~Parser();
 
-    std::vector<std::string> &getArgs();
-    std::string              &Command();
-    std::string              &getPrefix();
+    std::vector<std::string>    &getArgs();
+    std::string                 &getCommand();
+    std::string                 &getPrefix();
 private:
     std::vector<std::string>    _my_args;
     std::string                 _command;

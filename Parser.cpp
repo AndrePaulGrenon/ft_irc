@@ -51,7 +51,7 @@ std::vector<std::string> &Parser::getArgs()
     return (_my_args);
 }
 
-std::string              &Parser::Command()
+std::string              &Parser::getCommand()
 {
     return (_command);
 }
