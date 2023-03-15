@@ -15,7 +15,9 @@ public:
 
     std::vector<std::string> &getArgs();
 private:
-    std::vector<std::string> my_args;
+    std::vector<std::string>    my_args;
+    std::string                 command;
+    std::string                 prefix;
 };
 
 #endif

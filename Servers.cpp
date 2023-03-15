@@ -72,6 +72,7 @@ void	Servers::start()
     
     do
     {
+        //POLLL
         std::cout << "Waiting for poll motherfucker ... ! : " << my_pollfd[0].revents << std::endl;
         int result = poll(my_pollfd, nfds, countdown);
 
@@ -133,7 +134,7 @@ void	Servers::start()
                 std::cout << " Active socket is readable for data " << std::endl;
 
                 int close_connection = false;
-                char buff[420];
+                char buff[512];
                 memset(buff, 0, sizeof(buff));
                 do
                 {

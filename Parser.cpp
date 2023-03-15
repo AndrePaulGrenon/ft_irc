@@ -17,13 +17,20 @@ Parser::Parser(char *buff)
         line = line.substr(pos + 1, line.size());
     }
 
-    // std::vector<std::string>::iterator it = my_args.begin();
-    // std::vector<std::string>::iterator ite = my_args.end();
-    // for (;it != ite; it++)
-    // {
-    //     std::cout << "ICI " << std::endl;
-    //     std::cout << *it << std::endl;
-    // }
+
+    //CODE is to check what is parse:
+    if (prefix.length() > 0)
+        std::cout << "Prefix: " << prefix << std::endl; 
+    std::cout << "CMD: " << command << std::endl;
+    std::vector<std::string>::iterator it = my_args.begin();
+    std::vector<std::string>::iterator ite = my_args.end();
+    std::cout << "ARGS " ;
+    for (;it != ite; it++)
+    {
+        std::cout << " - " << *it;
+    }
+    std::cout << std::endl;
+
 }
 
 Parser::~Parser()
