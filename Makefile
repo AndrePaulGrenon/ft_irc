@@ -24,7 +24,7 @@ all		: 	$(NAME)
 
 $(NAME)	:	$(OBJS)
 			@$(CC) -o $(NAME) $(FLAGS) $(OBJS)
-			@echo "\n\n\033[32;1m----- Ft_containers succesfully built -----\033[0;0m\n"
+			@echo "\n\n\033[32;1m----- Ft_irc succesfully built -----\033[0;0m\n"
 
 $(OBJS)	:	$(addprefix $(PATH_CON), $(HEADER_CON)) $(addprefix $(PATH_TEM), $(HEADER_TEM)) \
 			$(addprefix $(PATH_ITE), $(HEADER_ITE))
