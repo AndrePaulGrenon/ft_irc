@@ -10,6 +10,7 @@ class Users
 {
     public:
         Users();
+        Users(std::string nname, std::string uname);
         ~Users();
 
         //Getters
@@ -23,13 +24,13 @@ class Users
         void    setNickname(std::string &name);
         void    setUserName(std::string &name);
 
-        void    addChan(Channels &Chan);
-        bool    isInChan(Channels &Chan);
+/*         void    addChan(Channels &Chan);
+        bool    isInChan(Channels &Chan); */
     private:
         int                             fd;
         std::string                     Nickname;
         std::string                     Username;
-        std::map<std::string, Channels> Chans;
+        //std::map<std::string, Channels> Chans;
 };
 
 #endif
