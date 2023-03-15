@@ -4,6 +4,7 @@ void    compress_function(struct pollfd *fds, int nfds);
 
 Servers::Servers(size_t pt, std::string pw): Port(pt), Password(pw)
 {
+    Servers::ServerInit();
 	std::cout << "Welcome, it is I, your server" << std::endl;
 }
 
@@ -16,12 +17,13 @@ Servers::~Servers()
 void Servers::ServerInit()
 {
     commandMap["PASS"] = &Servers::Pass;
+    commandMap["NICK"] = &Servers::Nick;
+    commandMap["USER"] = &Servers::User;
 }
-
 
 void	Servers::start()
 {
-  int i_bind, i_listen;
+    int i_bind, i_listen;
     bool end_server = false, compression = false;
 
   // [message]
@@ -157,16 +159,17 @@ void	Servers::start()
                     
                     Users user("Antho", "Le tanant");
                     //Execute commande
-                    Servers::ServerInit();
+                    
                     // fct pointer = commandMap[parser.getArgs()[0]];
                     // this->(pointer)(user, parser);
 
-                    std::map<std::string, fct>::iterator it = commandMap.find(parser.getArgs()[0]);
-                    if (it != commandMap.end())
-                        (this->*(it->second))(user, parser);
+                    //ASSUMES FIRST ELEMENT IS ALWAYS A COMMANDS
+                    std::map<std::string, fct>::iterator it = commandMap.find(parser.getArgs()[0]); //Looks for iterator pointing to Command function
+                    if (it != commandMap.end()) //If command exists
+                        (this->*(it->second))(user, parser); //execute function throught pointer on funciton
 
                     
-                    //Manage Result
+                    //Manage return/error
 
                     std::cout << "Receive from the other --- : " << buff << std::endl;
                     result = send(my_pollfd[i].fd, buff, sizeof(buff), 0); //send the message through the socket

@@ -17,13 +17,13 @@ Parser::Parser(char *buff)
         line = line.substr(pos + 1, line.size());
     }
 
-    std::vector<std::string>::iterator it = my_args.begin();
-    std::vector<std::string>::iterator ite = my_args.end();
-    for (;it != ite; it++)
-    {
-        std::cout << "ICI " << std::endl;
-        std::cout << *it << std::endl;
-    }
+    // std::vector<std::string>::iterator it = my_args.begin();
+    // std::vector<std::string>::iterator ite = my_args.end();
+    // for (;it != ite; it++)
+    // {
+    //     std::cout << "ICI " << std::endl;
+    //     std::cout << *it << std::endl;
+    // }
 }
 
 Parser::~Parser()
