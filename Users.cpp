@@ -2,6 +2,8 @@
 
 Users::Users(){}
 
+Users::Users(std::string nname, std::string uname): Nickname(nname), Username(uname){}
+
 Users::~Users(){}
 
 int	Users::getFd()
@@ -30,7 +32,7 @@ void	Users::setUserName(std::string &name)
 	Username = name;
 }
 
-void	Users::addChan(Channels &Chan)
+/* void	Users::addChan(Channels &Chan)
 {
 	if (Chans.find(Chan.getname()) == Chans.end())
 		Chans.insert(std::pair(Chan.getname(), Chan));
@@ -41,4 +43,4 @@ bool	Users::isInChan(std::string &Chan)
 	if (Chans.find(Chan.getname()) == Chans.end())
 		return false;
 	return true;
-}
+} */

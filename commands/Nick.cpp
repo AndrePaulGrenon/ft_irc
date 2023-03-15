@@ -2,10 +2,14 @@
 
 int     Servers::Nick(Users &user, Parser &parser)
 {
-     std::cout << " -- [NICK] Command has been Chosen " << std::endl;
-    char buff[] = ":IRC 001 borja :Welcome to the Internet Relay Network ";
-    send(4, buff, sizeof(buff), 0); //send the message through the socket
-    (void) user;
-    (void) parser;
+    (void)user;
+    (void)parser;
+/*     if (usersMap.find(parser.getArgs()[0]) == usersMap.end())
+    {
+            send();
+            return (1);
+    }
+    user.setNickname(parser.getArgs()[0]);
+    send(user.getFd(), , 0); */
     return (0);
 }
