@@ -2,7 +2,7 @@
 #include "colours.hpp"
 #include <iostream>
 
-Users::Users(): Pass(false), Registration(false){}
+Users::Users(): Pass(false), Registration(false)
 {
 	std::cout << GRN "new empty user is created" CLEAR<< std::endl;
 }
