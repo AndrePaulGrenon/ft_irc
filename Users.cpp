@@ -1,8 +1,8 @@
 #include "Users.hpp"
 
-Users::Users(){}
+Users::Users(): Pass(false), Registration(false){}
 
-Users::Users(const std::string nname, const std::string uname): Nickname(nname), Username(uname){}
+Users::Users(const std::string nname, const std::string uname, const std::string realname, bool passw, bool reg): Nickname(nname), Username(uname), Realname(realname), Pass(passw), Registration(reg){}
 
 Users::Users(const Users &other)
 {
@@ -16,6 +16,9 @@ const Users   &Users::operator=(const Users &other)
 	fd = other.getFd();
 	Nickname = other.getNickname();
 	Username = other.getUsername();
+	Realname = other.getRealname();
+	Pass = other.getPass();
+	Registration = other.getRegStat();
 	return *this;
 }
 
@@ -31,6 +34,20 @@ const std::string	&Users::getUsername() const
 {
 	return Username;
 }
+const std::string	&Users::getRealname() const
+{
+	return Realname;
+}
+
+bool	Users::getPass() const
+{
+	return Pass;
+}
+
+bool	Users::getRegStat() const
+{
+	return Registration;
+}
 
 void	Users::setFd(int fdesc)
 {
@@ -44,6 +61,19 @@ void	Users::setUserName(const std::string &name)
 {
 	Username = name;
 }
+void	Users::setRealName(const std::string &name)
+{
+	Realname = name;
+}
+void	Users::setPass(bool passw)
+{
+	Pass = passw;
+}
+void	Users::setRegistration(bool reg)
+{
+	Registration = reg;
+}
+
 
 /* void	Users::addChan(Channels &Chan)
 {

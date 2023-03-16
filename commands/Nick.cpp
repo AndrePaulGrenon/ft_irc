@@ -16,6 +16,12 @@ bool    ft_isgoodchar(std::string nick)
 
 int     Servers::Nick(Users &user, Parser &parser)
 {
+    if (user.getPass() == false)
+    {
+            send(user.getFd(), parser.SendReply("461", parser.getArgs()[0], "No password entered, please enter password\n"), sizeof(parser.getReply()), 0);
+            close_connection = true;
+            return (1);
+    }
     if (parser.getArgs().empty())
     {
             send(user.getFd(), parser.SendReply("431", parser.getArgs()[0], "Nickname empty, please enter valid Nickname\n"), sizeof(parser.getReply()), 0);
