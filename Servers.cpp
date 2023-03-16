@@ -56,7 +56,7 @@ void	Servers::start()
     i_bind = bind(antho_fd, reinterpret_cast<struct sockaddr *>(&address), sizeof(address));
 
     //  [LISTENING]
-
+    //defines the sockets to listen to, and the amount of request that can be pending
     i_listen = listen(antho_fd, SOMAXCONN);
 
     // [POLLING]: Checks if a FD is ready to perform. It allows the process to wait for an event to occur. 
@@ -88,7 +88,6 @@ void	Servers::start()
             std::cout << "Nobody loves you ! No messages :(" << std::endl;
             break;
         }
-
         int currentsize = nfds;
 
         //We check all our tracked socket descriptors
@@ -103,7 +102,12 @@ void	Servers::start()
             if (my_pollfd[i].revents != POLLIN) //if error, end server;
             {
                 // end_server = true; //Original line to close server when socket disconnects
-                close_connection = true;
+                DeleteUsers(usersMap[my_pollfd[i].fd]);
+                close(my_pollfd[i].fd);
+                my_pollfd[i].fd = -1;
+                compression = true;
+                if (my_pollfd[0].revents == 32)
+                    end_server = true;
                 break;
             }
             if (my_pollfd[i].fd == antho_fd) // If listenning socket has a change, accept new connection
@@ -127,6 +131,7 @@ void	Servers::start()
                     my_pollfd[nfds].fd = new_sd;
                     my_pollfd[nfds].events = POLLIN;
                     nfds++;
+                    usersMap[new_sd];
                     std::cout << " New connection has been added to descriptor: " << new_sd << std::endl;
                 } while (new_sd != -1);
             }
@@ -157,31 +162,32 @@ void	Servers::start()
 
                     //PARSING
                     Parser parser(reinterpret_cast<char *>(buff));
-                    //ACTION COMMAND
-                    
-                    Users user;
-                    // std::map<>
+                    std::map<int, Users>::iterator itUM = usersMap.find(my_pollfd[i].fd); //Tries to find the user
 
                     //EXECUTE CMD:
                     std::map<std::string, fct>::iterator it = commandMap.find(parser.getCommand()); //Looks for iterator pointing to Command function
                     if (it != commandMap.end()) //If command exists
-                        (this->*(it->second))(user, parser); //execute function throught pointer on funciton
-
-                    
-                    //Manage return/error
-
-                    std::cout << "Receive from the other --- : " << buff << std::endl;
-                    result = send(my_pollfd[i].fd, buff, sizeof(buff), 0); //send the message through the socket
-                    if (result < 0) //send failed
                     {
-                        perror("Send to sucker has failed bitch !");
-                        close_connection = true;
-                        break;
+                        // if (itUM == usersMap.end())
+                        //     (this->*(it->second))(user, parser); //execute function throught pointer on function (non existing user)
+                        // else
+                        (this->*(it->second))(itUM->second, parser); // send the reference of existing user
                     }
+                    //Manage return/error of send
+
+                    // std::cout << "Receive from the other --- : " << buff << std::endl;
+                    // // result = send(my_pollfd[i].fd, buff, sizeof(buff), 0); //send the message through the socket
+                    // if (result < 0) //send failed
+                    // {
+                    //     perror("Send to sucker has failed bitch !");
+                    //     close_connection = true;
+                    //     break;
+                    // }
                 } while (true);
 
                 if (close_connection == true)
                 {
+                    DeleteUsers(usersMap[my_pollfd[i].fd]);
                     close(my_pollfd[i].fd);
                     my_pollfd[i].fd = -1;
                     compression = true;
@@ -190,9 +196,9 @@ void	Servers::start()
         } //End of polling loop
         if (compression)
         {
+             std::cout << "Enters compression !" << std::endl;
             compress_function(my_pollfd, nfds);
             compression = false;
-
         }
     
     } while (end_server == false);
@@ -201,6 +207,18 @@ void	Servers::start()
 
     return ;
 }
+
+
+void    Servers::DeleteUsers(Users &user)
+{
+    Nickname_list.erase(user.getNickname());
+    Username_list.erase(user.getUsername());
+    usersMap.erase(user.getFd());
+    std::cout << RED "User has been removed " CLEAR << std::endl;
+    return ;
+}
+
+
 
 
 

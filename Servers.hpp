@@ -76,15 +76,21 @@ public:
     // Méthodes
     void    start();
     void    ServerInit();
+    void    DeleteUsers(Users &user);
+
 private:
     size_t                          Port;
     std::string                     Password;
-    std::map<int, Users>            usersMap;
     std::map<std::string, fct>      commandMap;
+
+    //Users info
+    std::map<int, Users>            usersMap;
     std::set<std::string>           Nickname_list;
     std::set<std::string>           Username_list;
-    bool                            close_connection;
-    bool                            end_server;
+
+    //Server status 
+    bool                            close_connection;//close specific socket that the server in currently workingon
+    bool                            end_server; //Ends the servers
  //   std::map<std::string, *Channels>       Chans;
 };
 
