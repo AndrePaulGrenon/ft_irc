@@ -175,14 +175,14 @@ void	Servers::start()
                     }
                     //Manage return/error of send
 
-                    std::cout << "Receive from the other --- : " << buff << std::endl;
-                    // result = send(my_pollfd[i].fd, buff, sizeof(buff), 0); //send the message through the socket
-                    if (result < 0) //send failed
-                    {
-                        perror("Send to sucker has failed bitch !");
-                        close_connection = true;
-                        break;
-                    }
+                    // std::cout << "Receive from the other --- : " << buff << std::endl;
+                    // // result = send(my_pollfd[i].fd, buff, sizeof(buff), 0); //send the message through the socket
+                    // if (result < 0) //send failed
+                    // {
+                    //     perror("Send to sucker has failed bitch !");
+                    //     close_connection = true;
+                    //     break;
+                    // }
                 } while (true);
 
                 if (close_connection == true)
