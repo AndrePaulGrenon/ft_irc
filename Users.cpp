@@ -1,6 +1,11 @@
 #include "Users.hpp"
+#include "colours.hpp"
+#include <iostream>
 
-Users::Users(){}
+Users::Users()
+{
+	std::cout << GRN "new empty user is created" CLEAR<< std::endl;
+}
 
 Users::Users(const std::string nname, const std::string uname): Nickname(nname), Username(uname){}
 

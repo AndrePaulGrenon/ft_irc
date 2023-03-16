@@ -7,11 +7,11 @@ int     Servers::Pass(Users &user, Parser &parser)
 
     parser.PrintElements();
 
-    // if (parser.getArgs()[0] != Password)
-    // {
+    if (parser.getArgs()[0] != Password)
+    {
     
-    //     close_connection = true;
-    // }
+        close_connection = true;
+    }
     
 
     (void)user;
