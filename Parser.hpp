@@ -25,7 +25,7 @@ public:
     const std::string                 &getCommand() const;
     const std::string                 &getPrefix() const;
     const std::string                 &getMessage() const;
-
+    const std::string                 &getReply() const;
     const char                              *SendReply(const std::string code, const std::string args, const std::string message) ;
     
 private:
