@@ -3,6 +3,9 @@
 
 #pragma once
 #include <string>
+#include <iostream>
+#include <map>
+#include "Users.hpp"
 
 using std::string;
 
@@ -23,15 +26,15 @@ public:
   const bool &getFlag(const int &where) const;
   const int &getLimit() const;
 
-
-
 private:
-  bool flags[6];
-  int limit;
-  string topic;
-  string pass;
-  string name;
+  int _limit;
+  string _pass;
+  string _name;
+  string _topic;
+  bool _flags[6];
+  std::map<Users, bool> _operators;
 
+  static const _
 };
 
 #endif
