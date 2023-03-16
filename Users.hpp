@@ -15,14 +15,14 @@ class Users
 
         //Getters
         int         getFd();
-        std::string &getNickname();
-        std::string &getUsername();
-        std::string &getChans();
+        const std::string &getNickname() const;
+        const std::string &getUsername() const;
+        const std::string &getChans() const;
         
         //Setters
         void    setFd(int fdesc);
-        void    setNickname(std::string &name);
-        void    setUserName(std::string &name);
+        void    setNickname(const std::string &name);
+        void    setUserName(const std::string &name);
 
 /*         void    addChan(Channels &Chan);
         bool    isInChan(Channels &Chan); */
