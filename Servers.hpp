@@ -94,12 +94,16 @@ public:
   void ServerInit();
 
 private:
-  size_t Port;
-  std::string Password;
-  std::map<int, Users> usersMap;
-  std::map<string, fct> commandMap;
-  std::map<string, Channels> chanMap;
-  //   std::map<std::string, *Channels>       Chans;
+    size_t                          Port;
+    std::string                     Password;
+    std::map<int, Users>            usersMap;
+    std::map<std::string, fct>      commandMap;
+    std::map<string, Channels> chanMap;
+    std::set<std::string>           Nickname_list;
+    std::set<std::string>           Username_list;
+    bool                            close_connection;
+    bool                            end_server;
+ //   std::map<std::string, *Channels>       Chans;
 };
 
 #endif

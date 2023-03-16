@@ -24,8 +24,9 @@ void Servers::ServerInit()
 void	Servers::start()
 {
     int i_bind, i_listen;
-    bool end_server = false, compression = false;
-
+    bool compression = false;
+    end_server = false;
+    
   // [message]
     char message[256] = "Anthony est sexy, Arrêtez de me demander !";
     (void) message;
@@ -132,7 +133,7 @@ void	Servers::start()
             {
                 std::cout << " Active socket is readable for data " << std::endl;
 
-                int close_connection = false;
+                close_connection = false;
                 char buff[512];
                 memset(buff, 0, sizeof(buff));
                 do
