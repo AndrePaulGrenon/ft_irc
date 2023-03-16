@@ -4,7 +4,10 @@ int     Servers::Nick(Users &user, Parser &parser)
 {
     (void)user;
     (void)parser;
-/*     if (usersMap.find(parser.getArgs()[0]) == usersMap.end())
+/*     std::set<std::string>::iterator it;
+    it = this->Nickname_list.begin();
+
+    if (usersMap.find(parser.getArgs()[0]) == usersMap.end())
     {
             send();
             return (1);
