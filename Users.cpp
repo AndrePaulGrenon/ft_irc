@@ -4,9 +4,22 @@ Users::Users(){}
 
 Users::Users(const std::string nname, const std::string uname): Nickname(nname), Username(uname){}
 
+Users::Users(const Users &other)
+{
+	*this = other;
+}
+
 Users::~Users(){}
 
-int	Users::getFd()
+const Users   &Users::operator=(const Users &other)
+{
+	fd = other.getFd();
+	Nickname = other.getNickname();
+	Username = other.getUsername();
+	return *this;
+}
+
+int	Users::getFd() const
 {
 	return fd;
 }
