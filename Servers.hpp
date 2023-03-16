@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 #include "Users.hpp"
 #include "Channels.hpp"
 #include "Parser.hpp"
@@ -80,6 +81,10 @@ private:
     std::string                     Password;
     std::map<int, Users>            usersMap;
     std::map<std::string, fct>      commandMap;
+    std::set<std::string>           Nickname_list;
+    std::set<std::string>           Username_list;
+    bool                            close_connection;
+    bool                            end_server;
  //   std::map<std::string, *Channels>       Chans;
 };
 
