@@ -3,6 +3,7 @@
 Parser::Parser(char *buff)
 {
     std::string line(buff);
+    _server_name = IRC;
     unsigned long pos = 0;
     bool first = true;
 
@@ -39,7 +40,7 @@ Parser::Parser(char *buff)
 }
 
 Parser::Parser(const Parser &other) : _command(other.getCommand()), _my_args(other.getArgs()), _prefix(other.getPrefix()), 
-        _message(other.getMessage()) 
+        _message(other.getMessage()), _server_name(other._server_name)
 {
 
 }
@@ -56,6 +57,16 @@ Parser  &Parser::operator=(const Parser &other)
     _my_args = other.getArgs();
     _prefix = other.getPrefix();
     return (*this);
+}
+
+const char    *Parser::SendReply(const std::string code, 
+                const std::string args, const std::string message) 
+{
+    _reply.clear();
+    _reply = _server_name + ".42.qc " + code + " " + args + " :" + message + "\r\n";
+    if (_reply.size() > 512)
+        return NULL;
+    return (_reply.c_str());
 }
 
 //CODE Pints every elements of the Parser
