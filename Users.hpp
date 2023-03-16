@@ -11,10 +11,12 @@ class Users
     public:
         Users();
         Users(std::string nname, std::string uname);
+        Users(const Users &other);
+        const Users   &operator=(const Users &other);
         ~Users();
 
         //Getters
-        int         getFd();
+        int         getFd() const;
         const std::string &getNickname() const;
         const std::string &getUsername() const;
         const std::string &getChans() const;
