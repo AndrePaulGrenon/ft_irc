@@ -20,7 +20,10 @@ Parser::Parser(char *buff)
         pos = line.find(' ');
         if (pos == line.npos)
         {
+            line.erase(line.end() - 1);
+            line.erase(line.end() - 1);
             _my_args.push_back(line);
+            
             break;
         }
         _my_args.push_back(line.substr(0, pos));
@@ -35,7 +38,7 @@ Parser::Parser(char *buff)
     }
     _command = _my_args[0];
     _my_args.erase(_my_args.begin());
-    // PrintElements();
+    PrintElements();
 }
 
 Parser::Parser(const Parser &other) : _command(other.getCommand()), _my_args(other.getArgs()), _prefix(other.getPrefix()), 
