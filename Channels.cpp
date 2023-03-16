@@ -6,7 +6,7 @@ Channels::Channels(const string &name)
     this->_flags[i] = false;
 }
 
-Channels::~Channels() { std::cout << "Goodbye world" << std::endl;}
+Channels::~Channels() { std::cout << "Goodbye world" << std::endl; }
 
 void Channels::setTopic(const string &topic) { this->_topic = topic; }
 
@@ -20,6 +20,11 @@ void Channels::setFlag(const int &which, const bool &flag) {
 
 void Channels::setLimit(const int &limit) { this->_limit = limit; }
 
+void Channels::setOp(const Users &user, const bool &op) {
+  if (this->_operators.find(user) != this->_operators.end())
+    this->_operators.at(user) = op;
+}
+
 const string &Channels::getTopic() const { return this->_topic; }
 
 const string &Channels::getPass() const { return this->_pass; }
@@ -31,3 +36,8 @@ const bool &Channels::getFlag(const int &where) const {
 }
 
 const int &Channels::getLimit() const { return this->_limit; }
+
+const bool &Channels::getOp(const Users &user) const {
+  if (this->_operators.find(user) != this->_operators.end())
+    return this->_operators.at(user);
+}

@@ -2,10 +2,17 @@
 #define CHANNELS_HPP
 
 #pragma once
-#include <string>
+#include "Users.hpp"
 #include <iostream>
 #include <map>
-#include "Users.hpp"
+#include <string>
+
+#define P 0;
+#define S 1;
+#define I 2;
+#define T 3;
+#define N 4;
+#define M 5;
 
 using std::string;
 
@@ -19,12 +26,14 @@ public:
   void setName(const string &name);
   void setFlag(const int &which, const bool &flag);
   void setLimit(const int &limit);
+  void setOp(const Users &user, const bool &op);
 
   const string &getTopic() const;
   const string &getPass() const;
   const string &getName() const;
   const bool &getFlag(const int &where) const;
   const int &getLimit() const;
+  const bool &getOp(const Users &user) const;
 
 private:
   int _limit;
@@ -33,8 +42,6 @@ private:
   string _topic;
   bool _flags[6];
   std::map<Users, bool> _operators;
-
-  static const _
 };
 
 #endif
