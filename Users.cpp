@@ -2,7 +2,7 @@
 
 Users::Users(){}
 
-Users::Users(std::string nname, std::string uname): Nickname(nname), Username(uname){}
+Users::Users(const std::string nname, const std::string uname): Nickname(nname), Username(uname){}
 
 Users::~Users(){}
 
@@ -10,11 +10,11 @@ int	Users::getFd()
 {
 	return fd;
 }
-std::string	&Users::getNickname()
+const std::string	&Users::getNickname() const
 {
 	return Nickname;
 }
-std::string	&Users::getUsername()
+const std::string	&Users::getUsername() const
 {
 	return Username;
 }
@@ -23,11 +23,11 @@ void	Users::setFd(int fdesc)
 {
 	fd = fdesc;
 }
-void	Users::setNickname(std::string &name)
+void	Users::setNickname(const std::string &name)
 {
 	Nickname = name;
 }
-void	Users::setUserName(std::string &name)
+void	Users::setUserName(const std::string &name)
 {
 	Username = name;
 }
