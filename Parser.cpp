@@ -38,7 +38,7 @@ Parser::Parser(char *buff)
     }
     _command = _my_args[0];
     _my_args.erase(_my_args.begin());
-    PrintElements();
+    // PrintElements();
 }
 
 Parser::Parser(const Parser &other) : _command(other.getCommand()), _my_args(other.getArgs()), _prefix(other.getPrefix()), 
