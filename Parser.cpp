@@ -26,7 +26,6 @@ Parser::Parser(char *buff)
         line = line.substr(pos + 1, line.size());
         first = false;
     }
-
     if (_my_args[0][0] == ':')
     {
         _prefix = _my_args[0];
@@ -35,21 +34,13 @@ Parser::Parser(char *buff)
     }
     _command = _my_args[0];
     _my_args.erase(_my_args.begin());
+    PrintElements();
 
-    //CODE is to check what is parse:
-    std::cout << MAG;
-    if (_prefix.length() > 0)
-        std::cout << "Prefix: " << _prefix << std::endl; 
-    std::cout <<  "CMD: " << _command << std::endl;
-    std::cout <<  "Message: " << _message << std::endl;
-    std::vector<std::string>::iterator it = _my_args.begin();
-    std::vector<std::string>::iterator ite = _my_args.end();
-    std::cout << "ARGS " ;
-    for (;it != ite; it++)
-    {
-        std::cout << " - " << *it;
-    }
-    std::cout << CLEAR << std::endl;
+}
+
+Parser::Parser(const Parser &other) : _command(other.getCommand()), _my_args(other.getArgs()), _prefix(other.getPrefix()), 
+        _message(other.getMessage()) 
+{
 
 }
 
@@ -58,17 +49,53 @@ Parser::~Parser()
 
 }
 
-std::vector<std::string> &Parser::getArgs()
+Parser  &Parser::operator=(const Parser &other)
+{
+    _command = other.getCommand();
+    _message = other.getMessage();
+    _my_args = other.getArgs();
+    _prefix = other.getPrefix();
+    return (*this);
+}
+
+//CODE Pints every elements of the Parser
+void    Parser::PrintElements(void)
+{
+    
+    std::cout << MAG;
+    if (_prefix.length() > 0)
+        std::cout << "Prefix: " << _prefix << std::endl; 
+    std::cout <<  "CMD: " << _command << std::endl;
+    
+    std::vector<std::string>::iterator it = _my_args.begin();
+    std::vector<std::string>::iterator ite = _my_args.end();
+    std::cout << "ARGS " ;
+    for (;it != ite; it++)
+    {
+        std::cout << " - " << *it;
+    }
+    std::cout << std::endl;
+    if (_message.length() > 0)
+        std::cout <<  "Message: " << _message << std::endl;
+    std::cout << CLEAR << std::endl;
+}
+
+const std::vector<std::string>  &Parser::getArgs() const
 {
     return (_my_args);
 }
 
-std::string              &Parser::getCommand()
+const std::string               &Parser::getCommand() const
 {
     return (_command);
 }
 
-std::string              &Parser::getPrefix()
+const std::string               &Parser::getPrefix() const
 {
     return (_prefix);
+}
+
+const std::string               &Parser::getMessage() const
+{
+    return (_message);
 }
