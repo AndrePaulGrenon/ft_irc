@@ -102,7 +102,8 @@ void	Servers::start()
                 continue;
             if (my_pollfd[i].revents != POLLIN) //if error, end server;
             {
-                end_server = true;
+                // end_server = true; //Original line to close server when socket disconnects
+                close_connection = true;
                 break;
             }
             if (my_pollfd[i].fd == antho_fd) // If listenning socket has a change, accept new connection
@@ -159,6 +160,8 @@ void	Servers::start()
                     //ACTION COMMAND
                     
                     Users user;
+                    // std::map<>
+
                     //EXECUTE CMD:
                     std::map<std::string, fct>::iterator it = commandMap.find(parser.getCommand()); //Looks for iterator pointing to Command function
                     if (it != commandMap.end()) //If command exists
