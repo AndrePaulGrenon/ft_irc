@@ -19,6 +19,21 @@ void Servers::ServerInit()
     commandMap["PASS"] = &Servers::Pass;
     commandMap["NICK"] = &Servers::Nick;
     commandMap["USER"] = &Servers::User;
+    commandMap["AWAY"] = &Servers::Away;
+    commandMap["INVITE"] = &Servers::Invite;
+    commandMap["JOIN"] = &Servers::Join;
+    commandMap["KICK"] = &Servers::Kick;
+    commandMap["LIST"] = &Servers::List;
+    commandMap["MODE"] = &Servers::Mode;
+    commandMap["NAMES"] = &Servers::Names;
+    commandMap["NOTICE"] = &Servers::Notice;
+    commandMap["PART"] = &Servers::Part;
+    commandMap["PING"] = &Servers::Ping;
+    commandMap["PONG"] = &Servers::Pong;
+    commandMap["PRIVMSG"] = &Servers::Privmsg;
+    commandMap["QUIT"] = &Servers::Quit;
+    commandMap["SHUTDOWN"] = &Servers::Shutdown;
+    commandMap["TOPIC"] = &Servers::Topic;
 }
 
 void	Servers::start()
