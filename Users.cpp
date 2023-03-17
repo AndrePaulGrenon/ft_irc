@@ -2,7 +2,7 @@
 #include "colours.hpp"
 #include <iostream>
 
-Users::Users(): Pass(false), Registration(false){}
+Users::Users(): Pass(false), Registration(false)
 {
 	std::cout << GRN "new empty user is created" CLEAR<< std::endl;
 }
@@ -14,10 +14,11 @@ Users::Users(const Users &other)
 	*this = other;
 }
 
-Users::~Users(){}
+Users::~Users(){Pass = false; Registration = false; std::cout << RED "user destructor called" CLEAR<< std::endl;}
 
 const Users   &Users::operator=(const Users &other)
 {
+	std::cout << BLU "assign operator called" CLEAR<< std::endl;
 	fd = other.getFd();
 	Nickname = other.getNickname();
 	Username = other.getUsername();

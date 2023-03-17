@@ -2,23 +2,27 @@
 
 int     Servers::User(Users &user, Parser &parser)
 {
+    parser.PrintElements();
     std::cout << " -- [USER] Command has been Chosen " << std::endl;
     if (parser.getArgs().size() != 4)
     {
-        send(user.getFd(), parser.SendReply("461", parser.getArgs()[0], "Command needs 4 parameters\n"), sizeof(parser.getReply()), 0);
+        std::cout << BLU "Enters the first wrong stuff " CLEAR << std::endl;
+        send(user.getFd(), parser.SendReply("461", parser.getArgs()[0], "Command needs 4 parameters\n"), parser.getReply().size(), 0);
         close_connection = true;
         return (1);
     }
-    if (Nickname_list.find(parser.getArgs()[0]) != Username_list.end())
+    if (Username_list.find(parser.getArgs()[0]) != Username_list.end())
     {
-            send(user.getFd(), parser.SendReply("462", parser.getArgs()[0], "Username already in use, please enter another valid Nickname\n"), sizeof(parser.getReply()), 0);
+        std::cout << YEL "Enters the second wrong stuff " CLEAR << std::endl;
+            send(user.getFd(), parser.SendReply("462", parser.getArgs()[0], "Username already in use, please enter another valid Nickname\n"), parser.getReply().size(), 0);
             close_connection = true;
             return (1);
     }
+    std::cout << GRN "User Is accepted " CLEAR << std::endl;
     user.setUserName(parser.getArgs()[0]);
     Username_list.insert(parser.getArgs()[0]);
     user.setRealName(parser.getArgs()[3]);
-    send(user.getFd(), parser.SendReply("001", parser.getArgs()[0], "Username valid\n"), sizeof(parser.getReply()), 0);
+    send(user.getFd(), parser.SendReply("001", parser.getArgs()[0], "Username valid\n"), parser.getReply().size(), 0);
     user.setRegistration(true);
     return (0);
 }

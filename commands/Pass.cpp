@@ -4,18 +4,13 @@ int     Servers::Pass(Users &user, Parser &parser)
 {
     std::cout << " -- [PASS] Command has been Chosen " << std::endl;
 
-
     parser.PrintElements();
-
     // if (parser.getArgs()[0] != Password)
     // {
     
     //     close_connection = true;
-    
+    //     return (-1);
     // }
-    
-
-    (void)user;
-    (void) parser;
+    user.setPass(true);
     return (0);
 }

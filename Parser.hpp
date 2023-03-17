@@ -8,7 +8,7 @@
 #include <iostream>
 #include "colours.hpp"
 
-#define IRC "team_irc42"
+#define IRC "127.0.0.1"
 
 class Parser
 {

@@ -132,6 +132,8 @@ void	Servers::start()
                     my_pollfd[nfds].events = POLLIN;
                     nfds++;
                     usersMap[new_sd];
+                    usersMap[new_sd].setFd(new_sd);
+                    usersMap[new_sd].setFd(new_sd);
                     std::cout << " New connection has been added to descriptor: " << new_sd << std::endl;
                 } while (new_sd != -1);
             }
@@ -141,6 +143,7 @@ void	Servers::start()
 
                 close_connection = false;
                 char buff[512];
+                bool crlf = false;
                 memset(buff, 0, sizeof(buff));
                 do
                 {
@@ -152,7 +155,7 @@ void	Servers::start()
                             perror("Socket reception has failed, massive crash, connection will be flushed ! Bye loser XD");
                             close_connection = true;
                         }
-                        break;
+                        // break;
                     }
                     if (result == 0)
                     {
@@ -160,31 +163,38 @@ void	Servers::start()
                         break;
                     }
 
-                    //PARSING
-                    Parser parser(reinterpret_cast<char *>(buff));
-                    std::map<int, Users>::iterator itUM = usersMap.find(my_pollfd[i].fd); //Tries to find the user
-
-                    //EXECUTE CMD:
-                    std::map<std::string, fct>::iterator it = commandMap.find(parser.getCommand()); //Looks for iterator pointing to Command function
-                    if (it != commandMap.end()) //If command exists
+                    //CHECKS for CR and LR caracters 
+                    int i = 0;
+                    while (buff[i] != '\0' || i > 510)
                     {
-                        // if (itUM == usersMap.end())
-                        //     (this->*(it->second))(user, parser); //execute function throught pointer on function (non existing user)
-                        // else
-                        (this->*(it->second))(itUM->second, parser); // send the reference of existing user
+                        if (buff[i] == '\r' && buff[i + 1] == '\n')
+                        {
+                            buff[i] = ' ';
+                            buff[i + 1] = ' ';
+                            // buff[i + 2] = '\n';
+                            crlf = true;
+                            std::cout << "FOUND backslasshes" << std::endl;
+                            break; 
+                        }
+                        i++;
                     }
-                    //Manage return/error of send
+                    std::cout << "In the loop , use ^M to exit " << std::endl;           
 
-                    // std::cout << "Receive from the other --- : " << buff << std::endl;
-                    // // result = send(my_pollfd[i].fd, buff, sizeof(buff), 0); //send the message through the socket
-                    // if (result < 0) //send failed
-                    // {
-                    //     perror("Send to sucker has failed bitch !");
-                    //     close_connection = true;
-                    //     break;
-                    // }
-                } while (true);
+                } while (crlf == false); //As long has CR - LF (\r\n) has not been found
 
+                
+                std::cout << " REceived in buff :" << buff << std::endl;
+                //PARSING
+                Parser parser(reinterpret_cast<char *>(buff));
+                std::map<int, Users>::iterator itUM = usersMap.find(my_pollfd[i].fd); //Tries to find the user
+
+                //EXECUTE CMD:
+                std::map<std::string, fct>::iterator it = commandMap.find(parser.getCommand()); //Looks for iterator pointing to Command function
+                if (it != commandMap.end()) //If command exists
+                {
+                    (this->*(it->second))(itUM->second, parser); // send the reference of existing user
+                }
+                
                 if (close_connection == true)
                 {
                     DeleteUsers(usersMap[my_pollfd[i].fd]);
@@ -214,7 +224,6 @@ void    Servers::DeleteUsers(Users &user)
     Nickname_list.erase(user.getNickname());
     Username_list.erase(user.getUsername());
     usersMap.erase(user.getFd());
-    std::cout << RED "User has been removed " CLEAR << std::endl;
     return ;
 }
 

@@ -20,8 +20,8 @@ Parser::Parser(char *buff)
         pos = line.find(' ');
         if (pos == line.npos)
         {
-            line.erase(line.end() - 1);
-            line.erase(line.end() - 1);
+            // line.erase(line.end() - 1);
+            // line.erase(line.end() - 1);
             _my_args.push_back(line);
             
             break;
@@ -38,7 +38,13 @@ Parser::Parser(char *buff)
     }
     _command = _my_args[0];
     _my_args.erase(_my_args.begin());
-    // PrintElements();
+    if (_my_args[_my_args.size() - 1][0] == ' ' || _my_args[_my_args.size() - 1][0] == '\r' 
+            || _my_args[_my_args.size() - 1].size() == 0)
+    {
+        _my_args.pop_back();
+    }
+
+
 }
 
 Parser::Parser(const Parser &other) : _command(other.getCommand()), _my_args(other.getArgs()), _prefix(other.getPrefix()), 
@@ -65,7 +71,7 @@ const char    *Parser::SendReply(const std::string code,
                 const std::string args, const std::string message) 
 {
     _reply.clear();
-    _reply = _server_name + ".42.qc " + code + " " + args + " :" + message + "\r\n";
+    _reply = ":" + _server_name + ".42.qc " + code + " " + args + " :" + message + "\r\n";
     if (_reply.size() > 512)
         return NULL;
     return (_reply.c_str());
@@ -85,9 +91,14 @@ void    Parser::PrintElements(void)
     std::cout << "ARGS " ;
     for (;it != ite; it++)
     {
-        std::cout << " - " << *it;
+        std::cout << " - " << *it << " ";
+
+        // for (size_t i = 0; i < (*it).size(); i++)
+        // {
+        //     std::cout << "-" << static_cast<int>((*it)[i]) ;
+        // }
     }
-    std::cout << std::endl;
+    std::cout << std::endl << "Size of args is : " << _my_args.size()<< std::endl;;
     if (_message.length() > 0)
         std::cout <<  "Message: " << _message << std::endl;
     std::cout << CLEAR << std::endl;
