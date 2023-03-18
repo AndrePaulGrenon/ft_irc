@@ -21,25 +21,25 @@ int     Servers::Nick(Users &user, Parser &parser)
     if (user.getPass() == false)
     {
             send(user.getFd(), parser.SendReply("461", parser.getArgs()[0], "No password entered, please enter password\n"), parser.getReply().size(), 0);
-            close_connection = true;
+            _close_connection = true;
             return (1);
     }
     if (parser.getArgs().empty())
     {
             send(user.getFd(), parser.SendReply("431", parser.getArgs()[0], "Nickname empty, please enter valid Nickname\n"), parser.getReply().size(), 0);
-            close_connection = true;
+            _close_connection = true;
             return (1);
     }
     if (parser.getArgs()[0].length() > 9 || !ft_isgoodchar(parser.getArgs()[0]))
     {
             send(user.getFd(), parser.SendReply("432", parser.getArgs()[0], "Nickname invalid, please enter valid Nickname\n"), parser.getReply().size(), 0);
-            close_connection = true;
+            _close_connection = true;
             return (1);
     }
     if (Nickname_list.find(parser.getArgs()[0]) != Nickname_list.end())
     {
             send(user.getFd(), parser.SendReply("433", parser.getArgs()[0], "Nickname already in use, please enter another valid Nickname\n"), parser.getReply().size(), 0);
-            close_connection = true;
+            _close_connection = true;
             return (1);
     }
     if (Nickname_list.find(user.getNickname()) != Nickname_list.end())

@@ -55,6 +55,11 @@ bool	Users::getRegStat() const
 	return Registration;
 }
 
+const std::string	&Users::getBuffer() const
+{
+	return (Buffer);
+}
+
 void	Users::setFd(int fdesc)
 {
 	fd = fdesc;
@@ -78,6 +83,11 @@ void	Users::setPass(bool passw)
 void	Users::setRegistration(bool reg)
 {
 	Registration = reg;
+}
+
+void    Users::setBuffer(std::string str)
+{
+	Buffer = str;
 }
 
 

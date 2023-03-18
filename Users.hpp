@@ -23,6 +23,7 @@ class Users
         const std::string   &getChans() const;
         bool                getPass() const;
         bool                getRegStat() const;
+        const std::string   &getBuffer() const;
         
         //Setters
         void    setFd(int fdesc);
@@ -31,6 +32,7 @@ class Users
         void    setRealName(const std::string &name);
         void    setPass(bool passw);
         void    setRegistration(bool reg);
+        void    setBuffer(std::string str);
 
 /*         void    addChan(Channels &Chan);
         bool    isInChan(Channels &Chan); */
@@ -41,6 +43,7 @@ class Users
         std::string                     Realname;
         bool                            Pass;
         bool                            Registration;
+        std::string                     Buffer;     //Residues of last command
         //std::map<std::string, Channels> Chans;
 };
 

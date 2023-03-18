@@ -14,6 +14,7 @@ class Parser
 {
 public:
     Parser(char *buff);
+    Parser(std::string str);
     Parser(const Parser &other);
 
     Parser  &operator=(const Parser &other);
@@ -35,6 +36,10 @@ private:
     std::string                 _message;
     std::string                 _server_name;
     std::string                 _reply;
+
+    //Private Methods
+    void    ParseCommand(std::string line);
+
 };
 
 #endif
