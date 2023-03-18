@@ -1,5 +1,6 @@
 #include "Servers.hpp"
 
+//Compress the Array tracking our sockets (fds) when a connexion is closed.
 void    compress_function(struct pollfd *fds, int nfds)
 {
     for (int i = 0; i < nfds; i++)

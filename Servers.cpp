@@ -2,9 +2,14 @@
 
 void    compress_function(struct pollfd *fds, int nfds);
 
-Servers::Servers(size_t pt, std::string pw): Port(pt), Password(pw)
+Servers::Servers(size_t pt, std::string pw)
 {
-    Servers::ServerInit();
+    _server_data.Port = pt;
+    _server_data.Password = pw;
+    
+    CommandInit();
+    ServerInit();
+
 	std::cout << "Welcome, it is I, your server" << std::endl;
 }
 
@@ -13,13 +18,20 @@ Servers::~Servers()
 	std::cout << "Get the F out! This ain't 4chan" << std::endl;
 }
 
+void Servers::CommandInit()
+{
+    _command_map["PASS"] = &Servers::Pass;
+    _command_map["NICK"] = &Servers::Nick;
+    _command_map["USER"] = &Servers::User;
+}
 
 void Servers::ServerInit()
 {
-    commandMap["PASS"] = &Servers::Pass;
-    commandMap["NICK"] = &Servers::Nick;
-    commandMap["USER"] = &Servers::User;
+    
+
 }
+
+
 
 void	Servers::start()
 {

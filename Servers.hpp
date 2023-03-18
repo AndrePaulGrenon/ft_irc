@@ -75,13 +75,36 @@ public:
     
     // Méthodes
     void    start();
-    void    ServerInit();
-    void    DeleteUsers(Users &user);
+
 
 private:
-    size_t                          Port;
-    std::string                     Password;
-    std::map<std::string, fct>      commandMap;
+
+    // --------------------------
+    //      [PRIVATE METHODS]
+    // --------------------------
+
+    void    ServerInit();
+    void    CommandInit()
+    void    DeleteUsers(Users &user);
+
+
+
+    // -------------
+    //     [DATA]
+    // -------------
+    struct ServerData
+    {
+        size_t                          Port; //Port to connect to our server;
+        std::string                     Password;
+        struct sock
+
+    };
+
+    // Servers' data struct;
+    ServerData                      _server_data;
+
+    //
+    std::map<std::string, fct>      _command_map;
 
     //Users info
     std::map<int, Users>            usersMap;
