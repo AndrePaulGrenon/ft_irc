@@ -17,6 +17,7 @@
 #include "Users.hpp"
 #include "Channels.hpp"
 #include "Parser.hpp"
+#include <arpa/inet.h>
 
 #define MAX_SOCKET 248           // Maximum amount of open sockets in the server
 #define COUNTDOWN  3 * 60 * 1000 //Waiting period to poll in milliseconds
@@ -69,6 +70,7 @@ private:
     void    ManageUserBuffer(Users &user);
     void    ExecuteCmd(Users &user, std::string &cmd_line);
     void    CloseSocket(int socket, int i);
+    void    MuteSocket(int i);
 
 
     // -------------

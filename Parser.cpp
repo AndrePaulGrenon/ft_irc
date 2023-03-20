@@ -39,7 +39,7 @@ void    Parser::ParseCommand(std::string line)
     unsigned long pos = 0;
     bool first = true;
 
-    while (pos != line.npos)
+    while (pos != line.npos && line.size() > 0)
     {
         while (line[0] == ' ')
             line.erase(line.begin());
@@ -69,11 +69,11 @@ void    Parser::ParseCommand(std::string line)
     }
     _command = _my_args[0];
     _my_args.erase(_my_args.begin());
-    if (_my_args[_my_args.size() - 1][0] == ' ' || _my_args[_my_args.size() - 1][0] == '\r' 
-            || _my_args[_my_args.size() - 1].size() == 0)
-    {
-        _my_args.pop_back();
-    }
+    // if (_my_args[_my_args.size() - 1][0] == ' ' || _my_args[_my_args.size() - 1][0] == '\r' 
+    //         || _my_args[_my_args.size() - 1].size() == 0)
+    // {
+    //     _my_args.pop_back();
+    // }
 }
 
 const char    *Parser::SendReply(const std::string code, 
@@ -95,17 +95,20 @@ void    Parser::PrintElements(void)
         std::cout << "Prefix: " << _prefix << std::endl; 
     std::cout <<  "CMD: " << _command << std::endl;
     
-    std::vector<std::string>::iterator it = _my_args.begin();
-    std::vector<std::string>::iterator ite = _my_args.end();
-    std::cout << "ARGS " ;
-    for (;it != ite; it++)
+    if (_my_args.size() > 0)
     {
-        std::cout << " - " << *it << " ";
+        std::vector<std::string>::iterator it = _my_args.begin();
+        std::vector<std::string>::iterator ite = _my_args.end();
+        std::cout << "ARGS " ;
+        for (;it != ite; it++)
+        {
+            std::cout << " - " << *it << " ";
 
-        // for (size_t i = 0; i < (*it).size(); i++)
-        // {
-        //     std::cout << "-" << static_cast<int>((*it)[i]) ;
-        // }
+            // for (size_t i = 0; i < (*it).size(); i++)
+            // {
+            //     std::cout << "-" << static_cast<int>((*it)[i]) ;
+            // }
+        }   
     }
     std::cout << std::endl << "Size of args is : " << _my_args.size()<< std::endl;;
     if (_message.length() > 0)

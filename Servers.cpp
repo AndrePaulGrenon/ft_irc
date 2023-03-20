@@ -42,6 +42,7 @@ void Servers::CommandInit()
 // [SERVER SOCKET CREATION] : Open server socket and preps it 
 void Servers::ServerInit()    
 {
+    int yes = 1;
     int r_bind, r_listen;
 
     _server_data.address.sin_family = AF_INET; //Address family for internet protocols (for TCP)
@@ -56,13 +57,14 @@ void Servers::ServerInit()
     // SETSOCKETOPT : Set options for the specified socket. enable to reuse socket address. Prevent error such as "Address already in use" 
         // 1. SOL_SOCKET is default to manipulate options at the socket level 2. SO_REUSEADDR is an option to be able to reuse socket
         // 3. option_value and option len (NULL, 0), is a buffer of len size that returns the value of the option
-    setsockopt(_server_data.server_fd, SOL_SOCKET, SO_REUSEADDR, NULL, 0);
+    if (setsockopt(_server_data.server_fd, SOL_SOCKET, SO_REUSEADDR,  &yes, sizeof(int)) < 0)
+        throw std::runtime_error("Setsockopt failed");
 
     // FCNTL : Enables the descriptor to be in NON-BLOCKING MODE
     fcntl(_server_data.server_fd, F_SETFL, O_NONBLOCK);
   
     //BIND : binds the socket to the address and port number specified in the sockaddr_in struct
-    r_bind = bind(_server_data.server_fd, reinterpret_cast<struct sockaddr *>(&_server_data.address), sizeof( _server_data.address));
+    r_bind = bind(_server_data.server_fd, (struct sockaddr *)&_server_data.address, sizeof( _server_data.address));
 
     //  [LISTENING] Defines the sockets to listen to, and max amount of pendind requests
     r_listen = listen(_server_data.server_fd, SOMAXCONN);
@@ -94,6 +96,8 @@ void    Servers::start()
             compress_function(_server_data.poll_fd, _server_data.nfds);
             _compression = false;
         }
+        std::cout << "Fds count: " YEL << _server_data.nfds << CLEAR " User count :" MAG << usersMap.size() << CLEAR << std::endl;
+
     }
     close(_server_data.server_fd); //Close server file descriptor, need to close the others with a function probable.
     
@@ -109,10 +113,17 @@ int Servers::TrackingFd()
             continue;
         if (_server_data.poll_fd[i].revents != POLLIN) //if error in socket received from socket, close socket
         {
+            std::cout << "POll_fd[" << i << "] has revents : " MAG <<  _server_data.poll_fd[i].revents << CLEAR << std::endl;
+            if (_server_data.poll_fd[i].revents == 17)
+            {
+                // MuteSocket(i);
+                CloseSocket(_server_data.poll_fd[i].fd, i);
+            
+                continue;
+            }
             CloseSocket(_server_data.poll_fd[i].fd, i);
-            // return (-1);
         }
-        else if (_server_data.poll_fd[i].fd == _server_data.server_fd) // If server socket has a change, accept new connection
+        else if (_server_data.poll_fd[i].fd == _server_data.server_fd)// If server socket has a change, accept new connection
             AcceptConnection();
         else                    //if any active other socket has a change, then receive data
             ReceiveData(usersMap[_server_data.poll_fd[i].fd]);
@@ -120,6 +131,39 @@ int Servers::TrackingFd()
             CloseSocket(_server_data.poll_fd[i].fd, i);
     }
     return 0;
+}
+
+ // [ACCEPT] : Accepts a new connection
+void    Servers::AcceptConnection()
+{
+    std::cout << "New connection is requested" <<  std::endl;
+    struct sockaddr_in client;
+    socklen_t addre_len = sizeof(client);
+
+    int new_sd = 0;
+    while (new_sd != -1)
+    {
+        new_sd = accept(_server_data.server_fd, (struct sockaddr *)(&client) , &addre_len); //return a socket description of new connection socket
+        if (new_sd < 0)
+        {
+            if (errno != EWOULDBLOCK) //If accept encunters a fatal error, server stops
+            {
+                perror("Acceptance of new connection has failed !");  
+                _end_server = true;
+            }
+            return;
+        }
+
+        std::cout << "CLIENT IP ADDRESS: " << inet_ntoa(client.sin_addr) << std::endl;
+
+        _server_data.poll_fd[_server_data.nfds].fd = new_sd;
+        _server_data.poll_fd[_server_data.nfds].events = POLLIN;
+        _server_data.nfds++;
+        usersMap[new_sd];
+        usersMap[new_sd].setFd(new_sd);
+        std::cout << " New connection has been added to descriptor: " << new_sd << std::endl;
+    } 
+    return ;
 }
 
 // [RECEIVE DATA] : Receives the data, adds it in the buffer and calls for the buffer management
@@ -174,12 +218,12 @@ void    Servers::ManageUserBuffer(Users &user)
             std::cout << "CMD line too big: " << temp << std::endl;
             ExecuteCmd(user, temp);
         }
-        else if ( pos != std::string::npos)
+        else if (pos != std::string::npos)
         {
             std::string temp = user.getBuffer().substr(0, pos + 2);
             std::cout << "CMD line pos found: " << temp << std::endl;
             ExecuteCmd(user, temp);
-            user.setBuffer(user.getBuffer().substr(pos + 2, user.getBuffer().size() - pos + 2));
+            user.setBuffer(user.getBuffer().substr(pos + 2, user.getBuffer().size() - (pos + 2)));
         }
         pos = user.getBuffer().find("\r\n");
     }
@@ -192,42 +236,15 @@ void    Servers::ManageUserBuffer(Users &user)
 // [EXECUTE COMMAND]
 void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
 {
-    //PARSING
+    //PARSING:
     Parser parser(cmd_line);
 
     //EXECUTE CMD:
     std::map<std::string, fct>::iterator it = _command_map.find(parser.getCommand()); //Looks for iterator pointing to Command function
     if (it != _command_map.end()) //If command exists
         (this->*(it->second))(user, parser); // send the reference of existing user
-    return ;
-}
-
-
- // [ACCEPT] : Accepts a new connection
-void    Servers::AcceptConnection()
-{
-    std::cout << "New connection is requested" <<  std::endl;
-    int new_sd = 0;
-
-    while (new_sd != -1)
-    {
-        new_sd = accept(_server_data.server_fd, NULL, NULL); //return a socket description of new connection socket
-        if (new_sd < 0)
-        {
-            if (errno != EWOULDBLOCK) //If accept encunters a fatal error, server stops
-            {
-                perror("Acceptance of new connection has failed !");  
-                _end_server = true;
-            }
-            return;
-        }
-        _server_data.poll_fd[_server_data.nfds].fd = new_sd;
-        _server_data.poll_fd[_server_data.nfds].events = POLLIN;
-        _server_data.nfds++;
-        usersMap[new_sd];
-        usersMap[new_sd].setFd(new_sd);
-        std::cout << " New connection has been added to descriptor: " << new_sd << std::endl;
-    } 
+    else
+        std::cout << "NO command found " << std::endl;
     return ;
 }
 
@@ -236,10 +253,21 @@ void    Servers::CloseSocket(int socket, int i)
     DeleteUsers(usersMap[socket]);
     close(socket);
     _server_data.poll_fd[i].fd = -1;
+    _server_data.poll_fd[i].revents = 0;
+    _server_data.poll_fd[i].events = 0;
+
+    _server_data.nfds--;
     _compression = true;
     if (_server_data.poll_fd[0].revents == 32) //Server Timeout
         _end_server = true;
+    _close_connection = false;
     return ;
+}
+
+void    Servers::MuteSocket(int i)
+{
+    _server_data.poll_fd[i].revents = 0;
+    _server_data.poll_fd[i].events = 0;
 }
 
 void    Servers::DeleteUsers(Users &user)
