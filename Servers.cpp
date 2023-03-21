@@ -19,6 +19,7 @@ void Servers::ServerInit()
     commandMap["PASS"] = &Servers::Pass;
     commandMap["NICK"] = &Servers::Nick;
     commandMap["USER"] = &Servers::User;
+    commandMap["TOPIC"] = &Servers::Topic;
 }
 
 void	Servers::start()

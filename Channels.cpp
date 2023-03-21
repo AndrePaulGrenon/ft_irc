@@ -1,7 +1,7 @@
 #include "Channels.hpp"
 
 Channels::Channels(const string &name)
-    : _name(name), _limit(-1), _topic(NULL), _pass(NULL) {
+    : _limit(-1), _pass(NULL), _name(name), _topic(NULL) {
   for (size_t i = 0; i < 6; i++)
     this->_flags[i] = false;
 }
@@ -20,7 +20,7 @@ void Channels::setFlag(const int &which, const bool &flag) {
 
 void Channels::setLimit(const int &limit) { this->_limit = limit; }
 
-void Channels::setOp(const Users &user, const bool &op) {
+void Channels::setOp(const string &user, const bool &op) {
   if (this->_operators.find(user) != this->_operators.end())
     this->_operators.at(user) = op;
 }
@@ -37,7 +37,6 @@ const bool &Channels::getFlag(const int &where) const {
 
 const int &Channels::getLimit() const { return this->_limit; }
 
-const bool &Channels::getOp(const Users &user) const {
-  if (this->_operators.find(user) != this->_operators.end())
-    return this->_operators.at(user);
+const bool &Channels::getOp(const string &user) const {
+  return this->_operators.at(user);
 }

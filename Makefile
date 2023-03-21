@@ -8,8 +8,8 @@ COM			= commands
 CC			=	c++
 FLAGS		=	-Wall -Wextra -Werror -std=c++98
 
-SRCS		=	main.cpp Servers.cpp utility.cpp Users.cpp Parser.cpp $(COM)/Pass.cpp $(COM)/User.cpp $(COM)/Nick.cpp \
-				$(COM)/Topic.cpp
+SRCS		=	main.cpp Servers.cpp utility.cpp Users.cpp Channels.cpp Parser.cpp $(COM)/Pass.cpp $(COM)/User.cpp $(COM)/Nick.cpp \
+				$(COM)/Topic.cpp 
 
 
 HEADER_CON	=	

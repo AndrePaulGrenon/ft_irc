@@ -26,14 +26,14 @@ public:
   void setName(const string &name);
   void setFlag(const int &which, const bool &flag);
   void setLimit(const int &limit);
-  void setOp(const Users &user, const bool &op);
+  void setOp(const string &user, const bool &op);
 
   const string &getTopic() const;
   const string &getPass() const;
   const string &getName() const;
   const bool &getFlag(const int &where) const;
   const int &getLimit() const;
-  const bool &getOp(const Users &user) const;
+  const bool &getOp(const string &user) const;
 
 private:
   int _limit;
@@ -41,7 +41,7 @@ private:
   string _name;
   string _topic;
   bool _flags[6];
-  std::map<Users, bool> _operators;
+  std::map<string, bool> _operators;
 };
 
 #endif

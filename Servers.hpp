@@ -2,13 +2,14 @@
 #define SERVERS_HPP
 
 #pragma once
-#include "Users.hpp"
 #include "Channels.hpp"
 #include "Parser.hpp"
+#include "Users.hpp"
 #include <errno.h>
 #include <fcntl.h>
 #include <iostream>
 #include <map>
+#include <set>
 #include <netinet/in.h>
 #include <poll.h>
 #include <string>
@@ -76,7 +77,7 @@ public:
   // int     Oper(Users &user, Parser &parser);
   // int     Quit(Users &user, Parser &parser);
   // int     Squit(Users &user, Parser &parser);
-  // int     Join(Users &user, Parser &parser);
+  int Join(Users &user, Parser &parser);
   // int     Part(Users &user, Parser &parser);
   // int     Mode(Users &user, Parser &parser);//Revoir celui-là, pas clair
   // int     Mode(Users &user, Parser &parser);
@@ -94,16 +95,16 @@ public:
   void ServerInit();
 
 private:
-    size_t                          Port;
-    std::string                     Password;
-    std::map<int, Users>            usersMap;
-    std::map<std::string, fct>      commandMap;
-    std::map<string, Channels> chanMap;
-    std::set<std::string>           Nickname_list;
-    std::set<std::string>           Username_list;
-    bool                            close_connection;
-    bool                            end_server;
- //   std::map<std::string, *Channels>       Chans;
+  size_t Port;
+  std::string Password;
+  std::map<int, Users> usersMap;
+  std::map<std::string, fct> commandMap;
+  std::map<string, Channels> chanMap;
+  std::set<std::string> Nickname_list;
+  std::set<std::string> Username_list;
+  bool close_connection;
+  bool end_server;
+  //   std::map<std::string, *Channels>       Chans;
 };
 
 #endif
