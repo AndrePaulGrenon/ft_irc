@@ -2,6 +2,12 @@
 
 int     Servers::User(Users &user, Parser &parser)
 {
+    if (user.getNickname().size() == 0)
+    {
+        send(user.getFd(), parser.SendReply("431", "", "Nickname must be validated before entering username\n"), parser.getReply().size(), 0);
+        _close_connection = true;
+        return (1);
+    }
     parser.PrintElements();
     std::cout << " -- [USER] Command has been Chosen " << std::endl;
     if (parser.getArgs().size() != 4)
@@ -14,9 +20,9 @@ int     Servers::User(Users &user, Parser &parser)
     if (Username_list.find(parser.getArgs()[0]) != Username_list.end())
     {
         std::cout << YEL "Enters the second wrong stuff " CLEAR << std::endl;
-            send(user.getFd(), parser.SendReply("462", parser.getArgs()[0], "Username already in use, please enter another valid Nickname\n"), parser.getReply().size(), 0);
-            _close_connection = true;
-            return (1);
+        send(user.getFd(), parser.SendReply("462", parser.getArgs()[0], "Username already in use, please enter another valid Nickname\n"), parser.getReply().size(), 0);
+        _close_connection = true;
+        return (1);
     }
     std::cout << GRN "User Is accepted " CLEAR << std::endl;
     user.setUserName(parser.getArgs()[0]);
