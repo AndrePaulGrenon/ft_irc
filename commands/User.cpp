@@ -11,7 +11,7 @@ int     Servers::User(Users &user, Parser &parser)
         _close_connection = true;
         return (1);
     }
-    if (Username_list.find(parser.getArgs()[0]) != Username_list.end())
+    if (userPointer.find(parser.getArgs()[0]) != userPointer.end())
     {
         std::cout << YEL "Enters the second wrong stuff " CLEAR << std::endl;
             send(user.getFd(), parser.SendReply("462", parser.getArgs()[0], "Username already in use, please enter another valid Nickname\n"), parser.getReply().size(), 0);
@@ -20,7 +20,6 @@ int     Servers::User(Users &user, Parser &parser)
     }
     std::cout << GRN "User Is accepted " CLEAR << std::endl;
     user.setUserName(parser.getArgs()[0]);
-    Username_list.insert(parser.getArgs()[0]);
     user.setRealName(parser.getArgs()[3]);
     send(user.getFd(), parser.SendReply("001", parser.getArgs()[0], "Username valid\n"), parser.getReply().size(), 0);
     user.setRegistration(true);

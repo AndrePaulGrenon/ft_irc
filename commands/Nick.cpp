@@ -7,8 +7,8 @@ bool    ft_isgoodchar(std::string nick)
         if (it == nick.end())
             return true;
         if (!isalnum(*it) && *it != '-' && *it != '[' &&
-            *it != ']' && *it != '_' && *it != '{' && *it != '\r' &&
-            *it != '}' && *it != '\\' && *it != '`' && *it != '|' && *it != '\n')
+            *it != ']' && *it != '_' && *it != '{' &&
+            *it != '}' && *it != '\\' && *it != '`' && *it != '|')
             return false;
     }
     return true;
@@ -36,16 +36,16 @@ int     Servers::Nick(Users &user, Parser &parser)
             _close_connection = true;
             return (1);
     }
-    if (Nickname_list.find(parser.getArgs()[0]) != Nickname_list.end())
+    if (userPointer.find(parser.getArgs()[0]) != userPointer.end())
     {
             send(user.getFd(), parser.SendReply("433", parser.getArgs()[0], "Nickname already in use, please enter another valid Nickname\n"), parser.getReply().size(), 0);
             _close_connection = true;
             return (1);
     }
-    if (Nickname_list.find(user.getNickname()) != Nickname_list.end())
-        Nickname_list.erase(user.getNickname());
+    if (userPointer.find(user.getNickname()) != userPointer.end())
+        userPointer.erase(user.getNickname());
     user.setNickname(parser.getArgs()[0]);
-    Nickname_list.insert(parser.getArgs()[0]);
+    userPointer.insert(std::make_pair<std::string, Users *>(parser.getArgs()[0], &user));
     send(user.getFd(), parser.SendReply("001", parser.getArgs()[0], "Nickname valid\n"), parser.getReply().size(), 0);
     return (0);
 }
