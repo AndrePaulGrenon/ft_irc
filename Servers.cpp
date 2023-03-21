@@ -116,9 +116,7 @@ int Servers::TrackingFd()
             std::cout << "POll_fd[" << i << "] has revents : " MAG <<  _server_data.poll_fd[i].revents << CLEAR << std::endl;
             if (_server_data.poll_fd[i].revents == 17)
             {
-                // MuteSocket(i);
                 CloseSocket(_server_data.poll_fd[i].fd, i);
-            
                 continue;
             }
             CloseSocket(_server_data.poll_fd[i].fd, i);
@@ -204,10 +202,9 @@ void    Servers::ManageUserBuffer(Users &user)
     size_t pos = user.getBuffer().find("\r\n");
 
     // for (size_t i = 0; i < user.getBuffer().size(); i++) //CHECKS FOR ASCII caracters in the buffer
-    // {
     //     std::cout <<  " - " << static_cast<int>(str[i]);
-    // }
     // std::cout << std::endl;
+
     while (pos != std::string::npos || user.getBuffer().size() >= 512)
     {
         std::cout << BRED "ENTERS the loops" CLEAR << std::endl;
@@ -239,10 +236,16 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     //PARSING:
     Parser parser(cmd_line);
 
+    if (user.getPass() == false)
+    {
+        
+    }
+
     //EXECUTE CMD:
     std::map<std::string, fct>::iterator it = _command_map.find(parser.getCommand()); //Looks for iterator pointing to Command function
-    if (it != _command_map.end()) //If command exists
+    if (it != _command_map.end())  //If command exists
         (this->*(it->second))(user, parser); // send the reference of existing user
+
     else
         std::cout << "NO command found " << std::endl;
     return ;
@@ -262,12 +265,6 @@ void    Servers::CloseSocket(int socket, int i)
         _end_server = true;
     _close_connection = false;
     return ;
-}
-
-void    Servers::MuteSocket(int i)
-{
-    _server_data.poll_fd[i].revents = 0;
-    _server_data.poll_fd[i].events = 0;
 }
 
 void    Servers::DeleteUsers(Users &user)
