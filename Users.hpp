@@ -4,6 +4,7 @@
 #pragma once
 #include <map>
 #include <string>
+#include "Timer.hpp"
 // #include "Channels.hpp"
 
 class Users
@@ -36,6 +37,10 @@ class Users
 
 /*         void    addChan(Channels &Chan);
         bool    isInChan(Channels &Chan); */
+
+        //User Timer Class
+        Timer                           timer;      //Tracks User interaction last time with server
+
     private:
         int                             fd;
         std::string                     Nickname;
@@ -44,6 +49,8 @@ class Users
         bool                            Pass;
         bool                            Registration;
         std::string                     Buffer;     //Residues of last command
+        bool                            active;     //Is active when receives PONG
+
         //std::map<std::string, Channels> Chans;
 };
 

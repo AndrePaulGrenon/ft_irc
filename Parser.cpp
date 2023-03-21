@@ -95,7 +95,6 @@ const char    *Parser::SendReply(const std::string code,
 //CODE Pints every elements of the Parser
 void    Parser::PrintElements(void)
 {
-    
     std::cout << MAG;
     if (_prefix.length() > 0)
         std::cout << "Prefix: " << _prefix << std::endl; 
@@ -109,14 +108,13 @@ void    Parser::PrintElements(void)
         for (;it != ite; it++)
         {
             std::cout << " - " << *it << " ";
-
             for (size_t i = 0; i < (*it).size(); i++)
             {
                 std::cout << "-" << static_cast<int>((*it)[i]) ;
             }
         }   
     }
-    std::cout << std::endl << "Size of args is : " << _my_args.size()<< std::endl;;
+    std::cout << std::endl << "Size of args is : " << _my_args.size() << std::endl;;
     if (_message.length() > 0)
         std::cout <<  "Message: " << _message << std::endl;
     std::cout << CLEAR << std::endl;
