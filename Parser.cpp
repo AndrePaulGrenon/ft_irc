@@ -69,11 +69,11 @@ void    Parser::ParseCommand(std::string line)
     }
     _command = _my_args[0];
     _my_args.erase(_my_args.begin());
-    // if (_my_args[_my_args.size() - 1][0] == ' ' || _my_args[_my_args.size() - 1][0] == '\r' 
-    //         || _my_args[_my_args.size() - 1].size() == 0)
-    // {
-    //     _my_args.pop_back();
-    // }
+    if ( _my_args.size() > 0 && (_my_args[_my_args.size() - 1][0] == ' ' || _my_args[_my_args.size() - 1][0] == '\r' 
+            || _my_args[_my_args.size() - 1].size() == 0))
+    {
+        _my_args.pop_back();
+    }
 }
 
 const char    *Parser::SendReply(const std::string code, 
