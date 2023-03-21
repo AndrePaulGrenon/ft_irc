@@ -21,7 +21,7 @@ public:
     ~Parser();
 
     void                        PrintElements();
-    std::vector<std::string>    ListUsers(std::string args);
+    std::vector<std::string>    SplitComa(std::string args);
 
     const std::vector<std::string>    &getArgs() const;
     const std::string                 &getCommand() const;
