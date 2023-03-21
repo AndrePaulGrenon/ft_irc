@@ -236,9 +236,9 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     //PARSING:
     Parser parser(cmd_line);
 
-    if (user.getPass() == false)
+    if (user.getRegStat() == false && (parser.getCommand() != "NICK" || parser.getCommand() != "USER" 
+            || parser.getCommand() != "PASS"))
     {
-        
         return ;
     }
 
@@ -246,9 +246,12 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     std::map<std::string, fct>::iterator it = _command_map.find(parser.getCommand()); //Looks for iterator pointing to Command function
     if (it != _command_map.end())  //If command exists
         (this->*(it->second))(user, parser); // send the reference of existing user
-
     else
+    {
+        send(user.getFd(), parser.SendReply("421", parser.getCommand(), "This command doesn't exist"), parser.getReply().size(), 0);
         std::cout << "NO command found " << std::endl;
+    }
+
     return ;
 }
 
