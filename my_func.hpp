@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <errno.h>
 #include <string>
+#include <arpa/inet.h>
 
 void    compress_function(struct pollfd *fds, int nfds);
 
