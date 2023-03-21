@@ -2,9 +2,9 @@
 #define USERS_HPP
 
 #pragma once
-#include <string>
 #include <map>
-#include "Channels.hpp"
+#include <string>
+// #include "Channels.hpp"
 
 class Users
 {

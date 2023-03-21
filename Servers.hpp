@@ -2,15 +2,19 @@
 #define SERVERS_HPP
 
 #pragma once
-#include <poll.h>
-#include <string.h>
-#include <unistd.h>
-#include <iostream>
-#include <sys/socket.h>
-#include <fcntl.h>
-#include <netinet/in.h>
+#include "Channels.hpp"
+#include "Parser.hpp"
+#include "Users.hpp"
 #include <errno.h>
+#include <fcntl.h>
+#include <iostream>
+#include <map>
+#include <set>
+#include <netinet/in.h>
+#include <poll.h>
 #include <string>
+#include <sys/socket.h>
+#include <unistd.h>
 #include <vector>
 #include <map>
 #include <set>
@@ -23,15 +27,18 @@
 #define MAX_SOCKET 248           // Maximum amount of open sockets in the server
 #define COUNTDOWN  3 * 60 * 1000 //Waiting period to poll in milliseconds
 
-class Servers
-{
-public:
-    typedef Users &users_reference;
-    typedef Parser &parser_reference;
-    typedef int (Servers::*fct)(users_reference, parser_reference);
+using std::string;
 
-    Servers(size_t pt, std::string pw);
-    ~Servers();
+class Servers {
+public:
+  typedef Users &users_reference;
+  typedef Parser &parser_reference;
+  typedef int (Servers::*fct)(users_reference, parser_reference);
+
+  Servers(size_t pt, std::string pw);
+  ~Servers();
+
+  // Méthodes
 
     int     Pass(Users &user, Parser &parser); //Set connection password
     int     Nick(Users &user, Parser &parser); //Set or reset user's nickname
@@ -102,7 +109,7 @@ private:
     bool                            _close_connection;  //close specific socket that the server in currently workingon
     bool                            _end_server;        //Ends the servers
     bool                            _compression;       //Asks for compression
- //   std::map<std::string, *Channels>       Chans;
+    std::map<std::string, Channels>       Chans;
 };
 
 #endif
