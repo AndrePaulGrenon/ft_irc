@@ -116,6 +116,25 @@ void    Parser::PrintElements(void)
     std::cout << CLEAR << std::endl;
 }
 
+std::vector<std::string>    Parser::ListUsers(std::string line)
+{
+    std::vector<std::string> temp;
+    size_t pos;
+
+    while (pos != line.npos && line.size() > 0)
+    {
+        pos = line.find(',');
+        if (pos == line.npos)
+        {
+            temp.push_back(line);
+            break;
+        }
+        _my_args.push_back(line.substr(0, pos));
+        line = line.substr(pos + 1, line.size());
+    }
+    return temp;
+}
+
 const std::vector<std::string>  &Parser::getArgs() const
 {
     return (_my_args);
