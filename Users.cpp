@@ -93,13 +93,13 @@ void    Users::setBuffer(std::string str)
 
 /* void	Users::addChan(Channels &Chan)
 {
-	if (Chans.find(Chan.getname()) == Chans.end())
-		Chans.insert(std::pair(Chan.getname(), Chan));
+        if (Chans.find(Chan.getname()) == Chans.end())
+                Chans.insert(std::pair(Chan.getname(), Chan));
 }
 
 bool	Users::isInChan(std::string &Chan)
 {
-	if (Chans.find(Chan.getname()) == Chans.end())
-		return false;
-	return true;
+        if (Chans.find(Chan.getname()) == Chans.end())
+                return false;
+        return true;
 } */
