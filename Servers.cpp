@@ -207,7 +207,6 @@ void    Servers::ManageUserBuffer(Users &user)
 
     while (pos != std::string::npos || user.getBuffer().size() >= 512)
     {
-        std::cout << BRED "ENTERS the loops" CLEAR << std::endl;
         if (user.getBuffer().size() >= 512)
         {
             std::string temp = user.getBuffer().substr(0, 510) + "\r\n";
@@ -236,9 +235,10 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     //PARSING:
     Parser parser(cmd_line);
 
-    if (user.getRegStat() == false && (parser.getCommand() != "NICK" || parser.getCommand() != "USER" 
-            || parser.getCommand() != "PASS"))
+    if (user.getRegStat() == false && (parser.getCommand() != "NICK" && parser.getCommand() != "USER" 
+            && parser.getCommand() != "PASS"))
     {
+        std::cout <<RED "NON validated : " CLEAR << parser.getCommand() << std::endl;
         return ;
     }
 
