@@ -11,7 +11,7 @@ int     Servers::User(Users &user, Parser &parser)
         _close_connection = true;
         return (1);
     }
-    if (userPointer.find(parser.getArgs()[0]) != userPointer.end())
+    if (Username_list.find(parser.getArgs()[0]) != Username_list.end())
     {
         std::cout << YEL "Enters the second wrong stuff " CLEAR << std::endl;
             send(user.getFd(), parser.SendReply("462", parser.getArgs()[0], "Username already in use, please enter another valid Nickname\n"), parser.getReply().size(), 0);

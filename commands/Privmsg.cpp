@@ -48,6 +48,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 		{
 			send(userPointer.find(parser.getArgs()[i])->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 		}
+		send(user.getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	}
 	return (0);
 }
