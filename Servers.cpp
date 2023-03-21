@@ -192,7 +192,6 @@ void    Servers::ReceiveData(Users &user)
     }
     std::string str(buff);
     user.setBuffer(user.getBuffer() + str);
-    std::cout << "User : "GRN << user.getNickname() << CLEAR " buffer: " << user.getBuffer() << std::endl;
     ManageUserBuffer(user);
 }
 
@@ -238,6 +237,7 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     if (user.getRegStat() == false && (parser.getCommand() != "NICK" && parser.getCommand() != "USER" 
             && parser.getCommand() != "PASS"))
     {
+        _close_connection = true;
         std::cout <<RED "NON validated : " CLEAR << parser.getCommand() << std::endl;
         return ;
     }

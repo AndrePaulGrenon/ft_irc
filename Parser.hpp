@@ -20,7 +20,8 @@ public:
     Parser  &operator=(const Parser &other);
     ~Parser();
 
-    void    PrintElements();
+    void                        PrintElements();
+    std::vector<std::string>    ListUsers(std::string args);
 
     const std::vector<std::string>    &getArgs() const;
     const std::string                 &getCommand() const;
