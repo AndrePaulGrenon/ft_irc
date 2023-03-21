@@ -14,7 +14,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				_close_connection = true;
 				return (1);
 	}
-	if (parser.getArgs()[0][0] == '#')
+	/* if (parser.getArgs()[0][0] == '#')
 	{
 		if (user.getChans().find(parser.getArgs()[0]) == user.getChans().npos)
 		{
@@ -32,7 +32,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 		{
 			// find user in channel and dispatch message
 		}
-	}
+	} */
 	else
 	{
 		for (size_t i = 0; i < (parser.getArgs().size()); i++)
