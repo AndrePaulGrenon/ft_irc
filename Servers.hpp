@@ -70,7 +70,6 @@ private:
     void    ManageUserBuffer(Users &user);
     void    ExecuteCmd(Users &user, std::string &cmd_line);
     void    CloseSocket(int socket, int i);
-    void    MuteSocket(int i);
 
 
     // -------------
@@ -95,7 +94,7 @@ private:
 
     //Users info
     std::map<int, Users>            usersMap;           //Store all Users
-    std::set<std::string>           Nickname_list;      //Store nicknames
+    std::map<std::string, Users*>   userPointer;        //Check with nickname
     std::set<std::string>           Username_list;      //Store Username
 
     //Server status 
