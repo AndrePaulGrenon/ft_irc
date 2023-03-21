@@ -37,7 +37,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 	{
 		for (size_t i = 0; i < (parser.getArgs().size()); i++)
 		{
-			if (Nickname_list.find(parser.getArgs()[i]) == Nickname_list.end())
+			if (userPointer.find(parser.getArgs()[i]) == userPointer.end())
 			{
 				send(user.getFd(), parser.SendReply("401", parser.getArgs()[i], "User you try to communicate with doesn't exists\n"), parser.getReply().size(), 0);
 				_close_connection = true;
@@ -46,7 +46,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 		}
 		for (size_t i = 0; i < (parser.getArgs().size()); i++)
 		{
-			send(
+			send(userPointer.find(parser.getArgs()[i])->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 		}
 	}
 	return (0);
