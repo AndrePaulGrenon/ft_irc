@@ -239,6 +239,7 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     if (user.getPass() == false)
     {
         
+        return ;
     }
 
     //EXECUTE CMD:
@@ -269,7 +270,7 @@ void    Servers::CloseSocket(int socket, int i)
 
 void    Servers::DeleteUsers(Users &user)
 {
-    Nickname_list.erase(user.getNickname());
+    userPointer.erase(user.getNickname());
     Username_list.erase(user.getUsername());
     usersMap.erase(user.getFd());
     return ;
