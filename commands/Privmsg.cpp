@@ -1,17 +1,28 @@
 #include "../Servers.hpp"
 
+bool	ft_is_empty_string(std::string msg)
+{
+	for (size_t i = 0; i < msg.size(); i++)
+	{
+		if (msg[i] != ' ' && msg[i] != '\r' && msg[i] != '\n' && msg[i] != ':')
+			return false;
+	}
+	return true;
+}
+
 int	Servers::Privmsg(Users &user, Parser &parser)
 {
-	if (parser.getMessage().size() == 0)
+	parser.PrintElements();
+	if (ft_is_empty_string(parser.getMessage()))
 	{
 				send(user.getFd(), parser.SendReply("412", "", "No message to send!\n"), parser.getReply().size(), 0);
-				_close_connection = true;
+				//_close_connection = true;
 				return (1);
 	}
 	if (parser.getArgs()[0].size() == 0)
 	{
 				send(user.getFd(), parser.SendReply("411", "", "No recipient has been given!\n"), parser.getReply().size(), 0);
-				_close_connection = true;
+				//_close_connection = true;
 				return (1);
 	}
 	/* if (parser.getArgs()[0][0] == '#')
@@ -35,18 +46,19 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 	} */
 	else
 	{
-		for (size_t i = 0; i < (parser.getArgs().size()); i++)
+		std::vector<std::string> ulist(parser.SplitComa(parser.getArgs()[0]));
+		for (size_t i = 0; i < ulist.size(); i++)
 		{
-			if (userPointer.find(parser.getArgs()[i]) == userPointer.end())
+			if (userPointer.find(ulist[i]) == userPointer.end())
 			{
 				send(user.getFd(), parser.SendReply("401", parser.getArgs()[i], "User you try to communicate with doesn't exists\n"), parser.getReply().size(), 0);
-				_close_connection = true;
+				//_close_connection = true;
 				return (1);
 			}
 		}
-		for (size_t i = 0; i < (parser.getArgs().size()); i++)
+		for (size_t i = 0; i < ulist.size(); i++)
 		{
-			send(userPointer.find(parser.getArgs()[i])->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+			send(userPointer.find(ulist[i])->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 		}
 		send(user.getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	}

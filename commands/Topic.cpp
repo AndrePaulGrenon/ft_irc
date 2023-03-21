@@ -2,7 +2,7 @@
 
 int     Servers::Topic(Users &user, Parser &parser)
 {
-    switch (this->Chans.size()){
+    switch (parser.getArgs().size()){
 		case 0:
 			send(user.getFd(), parser.SendReply("461", parser.getCommand(), "Not enough parameters"), parser.getReply().size(), 0); 
 			break;
