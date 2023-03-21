@@ -1,8 +1,19 @@
 #include "../Servers.hpp"
 
+bool	ft_is_empty_string(std::string msg)
+{
+	for (size_t i = 0; i < msg.size(); i++)
+	{
+		if (msg[i] != ' ' && msg[i] != '\r' && msg[i] != '\n' && msg[i] != ':')
+			return false;
+	}
+	return true;
+}
+
 int	Servers::Privmsg(Users &user, Parser &parser)
 {
-	if (parser.getMessage().size() == 0)
+	parser.PrintElements();
+	if (ft_is_empty_string(parser.getMessage()))
 	{
 				send(user.getFd(), parser.SendReply("412", "", "No message to send!\n"), parser.getReply().size(), 0);
 				//_close_connection = true;
@@ -35,8 +46,8 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 	} */
 	else
 	{
-		std::vector<std::string> ulist;
-		for (size_t i = 0; i < (ulist.size()); i++)
+		std::vector<std::string> ulist(parser.SplitComa(parser.getArgs()[0]));
+		for (size_t i = 0; i < ulist.size(); i++)
 		{
 			if (userPointer.find(ulist[i]) == userPointer.end())
 			{
@@ -45,9 +56,9 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				return (1);
 			}
 		}
-		for (size_t i = 0; i < (ulist.size()); i++)
+		for (size_t i = 0; i < ulist.size(); i++)
 		{
-			send(userPointer.find(parser.getArgs()[i])->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+			send(userPointer.find(ulist[i])->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 		}
 		send(user.getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	}
