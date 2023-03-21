@@ -11,4 +11,6 @@ int     Servers::Join(Users &user, Parser &parser){
 	default:
 		break;
 	}
+	(void) user;
+	return (0);
 }

@@ -6,12 +6,6 @@
 #include <string>
 // #include "Channels.hpp"
 
-class Users {
-public:
-  Users();
-  Users(std::string nname, std::string uname);
-  ~Users();
-
 class Users
 {
     public:
