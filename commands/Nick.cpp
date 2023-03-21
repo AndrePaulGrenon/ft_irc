@@ -7,8 +7,8 @@ bool    ft_isgoodchar(std::string nick)
         if (it == nick.end())
             return true;
         if (!isalnum(*it) && *it != '-' && *it != '[' &&
-            *it != ']' && *it != '_' && *it != '{' && *it != '\r' &&
-            *it != '}' && *it != '\\' && *it != '`' && *it != '|' && *it != '\n')
+            *it != ']' && *it != '_' && *it != '{' &&
+            *it != '}' && *it != '\\' && *it != '`' && *it != '|')
             return false;
     }
     return true;
