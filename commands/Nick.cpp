@@ -45,7 +45,7 @@ int     Servers::Nick(Users &user, Parser &parser)
     if (userPointer.find(user.getNickname()) != userPointer.end())
         userPointer.erase(user.getNickname());
     user.setNickname(parser.getArgs()[0]);
-    userPointer.insert(std::make_pair<std::string, Users *>(parser.getArgs()[0], &user));
+    userPointer.insert(std::make_pair(parser.getArgs()[0], &user));
     send(user.getFd(), parser.SendReply("001", parser.getArgs()[0], "Nickname valid\n"), parser.getReply().size(), 0);
     return (0);
 }
