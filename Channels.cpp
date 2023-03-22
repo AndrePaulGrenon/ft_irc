@@ -54,3 +54,8 @@ void  Channels::addUser(const Users &user){
   else
     std::cout << "the user is already present" << std::endl; // va falloir regarder pour un message derreur
 }
+
+std::vector<Users>  Channels::getUsers() const
+{
+    return _users;
+}
