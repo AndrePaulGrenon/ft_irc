@@ -11,5 +11,6 @@ void Timer::Start()
 
 float Timer::Timing() 
 {
-    return static_cast<float>( ((clock() - _start_time) / CLOCKS_PER_SEC) * 10000);
+    float time = (clock() - _start_time);
+    return static_cast<float>((time / CLOCKS_PER_SEC) * 10000);
 }
