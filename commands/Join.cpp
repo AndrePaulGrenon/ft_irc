@@ -37,7 +37,25 @@ int     Servers::Join(Users &user, Parser &parser){
 	}
 	case 2: //check if passwords are used
 	{
-		
+		std::vector<std::string> channels = parser.SplitComa(parser.getArgs().at(0));
+		std::vector<std::string> password = parser.SplitComa(parser.getArgs().at(1));
+		for (size_t i = 0; i < channels.size(); i++){
+			std::map<std::string, Channels>::iterator it = this->Chans.find(channels.at(i));
+			if (it != this->Chans.end()){
+				it->second.addUser(user);
+				it->second.setOp(user.getNickname(), false);
+			}
+			else{
+				if (channels.at(i).size() <= 200 && channels.at(i).find(7, 0) == channels.at(i).npos && (channels.at(0).at(0) == '#' || channels.at(0).at(0) == '&')){
+					Channels hold(channels.at(i));
+					this->Chans.insert(std::pair<std::string, Channels>(channels.at(i), hold));
+					this->Chans.at(channels.at(i)).addUser(user);
+					this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
+				}
+				else
+					std::cout << "The channel is not good" << std::endl; // va falloir mettre un message d'erreur
+			}
+		}
 		break;
 	}
 	default:

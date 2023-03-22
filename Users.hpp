@@ -4,7 +4,7 @@
 #pragma once
 #include <map>
 #include <string>
-// #include "Channels.hpp"
+#include <vector>
 
 class Users
 {
@@ -50,7 +50,7 @@ class Users
         bool                            Registration;
         bool                            is_Away;
         std::string                     Buffer;     //Residues of last command
-        //std::map<std::string, Channels> Chans;
+        std::vector<std::string>        channel;
 };
 
 #endif

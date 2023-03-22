@@ -48,8 +48,9 @@ void  Channels::addUser(const Users &user){
       break;
      it++;
   }
-  if (it == this->_users.end())
+  if (it == this->_users.end()){
     this->_users.push_back(user);
+  }
   else
     std::cout << "the user is already present" << std::endl; // va falloir regarder pour un message derreur
 }
