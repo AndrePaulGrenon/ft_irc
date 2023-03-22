@@ -1,7 +1,7 @@
 #include "../Servers.hpp"
 
 int     Servers::Join(Users &user, Parser &parser){
-	if (this->Chans.empty())
+	/* if (this->Chans.empty())
 	{
 		Channels test("test");
 		this->Chans.insert(std::pair<std::string, Channels>("test", test));
@@ -10,17 +10,38 @@ int     Servers::Join(Users &user, Parser &parser){
 	}
 	else{
 		this->Chans.at("test").addUser(user);
-	}
-	/* switch (parser.getArgs().size())
+	} */
+	switch (parser.getArgs().size())
 	{
 	case 1: //only channel no password
-		this->Chans.at(this->Chans.find(parser.getArgs().at))
+	{
+		std::vector<std::string> channels = parser.SplitComa(parser.getArgs().at(0));
+		for (size_t i = 0; i < channels.size(); i++){
+			std::map<std::string, Channels>::iterator it = this->Chans.find(channels.at(i));
+			if (it != this->Chans.end()){
+				it->second.addUser(user);
+				it->second.setOp(user.getNickname(), false);
+			}
+			else{
+				if (channels.at(i).size() <= 200 && channels.at(i).find(7, 0) == channels.at(i).npos && (channels.at(0).at(0) == '#' || channels.at(0).at(0) == '&')){
+					Channels hold(channels.at(i));
+					this->Chans.insert(std::pair<std::string, Channels>(channels.at(i), hold));
+					this->Chans.at(channels.at(i)).addUser(user);
+					this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
+				}
+				else
+					std::cout << "The channel is not good" << std::endl; // va falloir mettre un message d'erreur
+			}
+		}
 		break;
+	}
 	case 2: //check if passwords are used
+	{
+		
 		break;
+	}
 	default:
 		break;
-	} */
-	(void) parser;
+	}
 	return (0);
 }
