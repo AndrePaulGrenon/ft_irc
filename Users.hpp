@@ -20,7 +20,7 @@ class Users
         const std::string   &getNickname() const;
         const std::string   &getUsername() const;
         const std::string   &getRealname() const;
-        const std::string   &getChans() const;
+        const std::string   &getChans(int index) const; // Va chercher un channel à la fois
         bool                getPass() const;
         bool                getRegStat() const;
         const std::string   &getBuffer() const;
