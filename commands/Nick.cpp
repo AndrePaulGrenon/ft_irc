@@ -20,7 +20,7 @@ int     Servers::Nick(Users &user, Parser &parser)
     parser.PrintElements();
     if (user.getPass() == false)
     {
-            send(user.getFd(), parser.SendReply("461", "PASS", "No password entered, please enter password\n"), parser.getReply().size(), 0);
+            send(user.getFd(), parser.SendReply("464", "PASS", "No password entered, please enter password\n"), parser.getReply().size(), 0);
             _close_connection = true;
             return (1);
     }

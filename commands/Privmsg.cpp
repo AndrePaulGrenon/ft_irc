@@ -10,6 +10,7 @@ bool	ft_is_empty_string(std::string msg)
 	return true;
 }
 
+// If sender is on the channel, make sure he doesn't get the message twice
 int	Servers::Privmsg(Users &user, Parser &parser)
 {
 	parser.PrintElements();
@@ -19,7 +20,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				//_close_connection = true;
 				return (1);
 	}
-	if (parser.getArgs()[0].size() == 0)
+	if (parser.getArgs().size() == 0)
 	{
 				send(user.getFd(), parser.SendReply("411", "", "No recipient has been given!\n"), parser.getReply().size(), 0);
 				//_close_connection = true;
@@ -37,7 +38,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				//_close_connection = true;
 				//return (1);
 			}
-			else if (it->second.getFlag(4) == true /*|| If moderate and banned*/)
+			else if ((it->second.getFlag(4) == true /*&& not part of the channel*/)  /*|| If moderate and banned*/)
 			{
 				send(user.getFd(), parser.SendReply("404", parser.getArgs()[0], "You don't have access to the channel\n"), parser.getReply().size(), 0);
 				_close_connection = true;
@@ -64,12 +65,17 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 			{
 				send(user.getFd(), parser.SendReply("401", parser.getArgs()[i], "User you try to communicate with doesn't exists\n"), parser.getReply().size(), 0);
 				//_close_connection = true;
-				return (1);
+				//return (1);
 			}
 		}
-		for (size_t i = 0; i < ulist.size(); i++)
+		std::map<std::string, Users*>::iterator it;
+		for (size_t j = 0; j < ulist.size(); j++)
 		{
-			send(userPointer.find(ulist[i])->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+			it = userPointer.find(ulist[j]);
+			if (it->second->getAway() == true)
+				send(user.getFd(), parser.SendReply("301", it->second->getNickname(), it->second->getAwayMsg()), parser.getReply().size(), 0);
+			else
+				send(it->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 		}
 		send(user.getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	}

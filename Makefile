@@ -7,7 +7,12 @@ NAME = IRC #(Nom de L'exécutable)
 CC			=	c++
 FLAGS		=	-Wall -Wextra -Werror -std=c++98
 
-SRCS		=	main.cpp Servers.cpp Channels.cpp utility.cpp Users.cpp Parser.cpp commands/Pass.cpp commands/User.cpp commands/Nick.cpp commands/Away.cpp commands/Invite.cpp commands/Join.cpp commands/Kick.cpp commands/List.cpp commands/Mode.cpp commands/Names.cpp commands/Notice.cpp commands/Part.cpp commands/Ping.cpp commands/Pong.cpp commands/Privmsg.cpp commands/Quit.cpp commands/Shutdown.cpp commands/Topic.cpp
+SRCS		=	main.cpp Users.cpp Channels.cpp Servers.cpp  utility.cpp  Parser.cpp \
+				commands/Pass.cpp commands/User.cpp commands/Nick.cpp commands/Away.cpp \
+				commands/Invite.cpp commands/Join.cpp commands/Kick.cpp commands/List.cpp \
+				commands/Mode.cpp commands/Names.cpp commands/Notice.cpp commands/Part.cpp \
+				commands/Ping.cpp commands/Pong.cpp commands/Privmsg.cpp commands/Quit.cpp \
+				commands/Topic.cpp Timer.cpp
 
 
 HEADER_CON	=	

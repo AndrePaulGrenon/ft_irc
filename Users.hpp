@@ -4,7 +4,11 @@
 #pragma once
 #include <map>
 #include <string>
+<<<<<<< HEAD
 #include <vector>
+=======
+#include "Timer.hpp"
+>>>>>>> 17780c4c8a41658ac9501c7e8f3c0bfd43e58465
 
 class Users
 {
@@ -26,6 +30,7 @@ class Users
         bool                getAway() const;
         const std::string   &getBuffer() const;
         const std::string   &getAwayMsg() const;
+        bool                getActive() const;
         
         //Setters
         void    setFd(int fdesc);
@@ -37,9 +42,11 @@ class Users
         void    setBuffer(std::string str);
         void    setAway(bool stat);
         void    setAwayMsg(std::string msg);
+        void    setActive(bool status);
 
-/*         void    addChan(Channels &Chan);
-        bool    isInChan(Channels &Chan); */
+        //User Timer Class
+        Timer                           timer;      //Tracks User interaction last time with server
+
     private:
         int                             fd;
         std::string                     Nickname;
@@ -51,6 +58,7 @@ class Users
         bool                            is_Away;
         std::string                     Buffer;     //Residues of last command
         std::vector<std::string>        channel;
+        bool                            active;     //Is active when receives PONG
 };
 
 #endif

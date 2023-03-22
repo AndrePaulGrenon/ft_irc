@@ -35,7 +35,6 @@ void Servers::CommandInit()
     _command_map["PONG"] = &Servers::Pong;
     _command_map["PRIVMSG"] = &Servers::Privmsg;
     _command_map["QUIT"] = &Servers::Quit;
-    _command_map["SHUTDOWN"] = &Servers::Shutdown;
     _command_map["TOPIC"] = &Servers::Topic;
 }
 
@@ -110,23 +109,29 @@ int Servers::TrackingFd()
     for (int i = 0; i < _server_data.nfds; i++) //Loops throught all sockets
     {
         if (_server_data.poll_fd[i].revents == 0) //If socket has no changes... go to next one;
+        {
+            if(i != 0)
+                CheckClient(usersMap[_server_data.poll_fd[i].fd], i);
             continue;
+        }
         if (_server_data.poll_fd[i].revents != POLLIN) //if error in socket received from socket, close socket
         {
             std::cout << "POll_fd[" << i << "] has revents : " MAG <<  _server_data.poll_fd[i].revents << CLEAR << std::endl;
-            if (_server_data.poll_fd[i].revents == 17)
-            {
-                CloseSocket(_server_data.poll_fd[i].fd, i);
-                continue;
-            }
-            CloseSocket(_server_data.poll_fd[i].fd, i);
+            // if (_server_data.poll_fd[i].revents == 17)
+            // {
+            //     CloseSocket(i);
+            //     continue;
+            // }
+            CloseSocket(i);
         }
         else if (_server_data.poll_fd[i].fd == _server_data.server_fd)// If server socket has a change, accept new connection
             AcceptConnection();
         else                    //if any active other socket has a change, then receive data
             ReceiveData(usersMap[_server_data.poll_fd[i].fd]);
+        
         if (_close_connection == true) 
-            CloseSocket(_server_data.poll_fd[i].fd, i);
+            CloseSocket(i);
+        
     }
     return 0;
 }
@@ -151,16 +156,16 @@ void    Servers::AcceptConnection()
             }
             return;
         }
-
         std::cout << "CLIENT IP ADDRESS: " << inet_ntoa(client.sin_addr) << std::endl;
-
         _server_data.poll_fd[_server_data.nfds].fd = new_sd;
         _server_data.poll_fd[_server_data.nfds].events = POLLIN;
         _server_data.nfds++;
         usersMap[new_sd];
         usersMap[new_sd].setFd(new_sd);
+        usersMap[new_sd].timer.Start();
+        usersMap[new_sd].setActive(true);
         std::cout << " New connection has been added to descriptor: " << new_sd << std::endl;
-    } 
+    }
     return ;
 }
 
@@ -193,6 +198,7 @@ void    Servers::ReceiveData(Users &user)
     std::string str(buff);
     user.setBuffer(user.getBuffer() + str);
     ManageUserBuffer(user);
+    user.timer.Start();
 }
 
 //
@@ -249,16 +255,16 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     else
     {
         send(user.getFd(), parser.SendReply("421", parser.getCommand(), "This command doesn't exist"), parser.getReply().size(), 0);
-        std::cout << "NO command found " << std::endl;
+        std::cout << "Non-existing command taken" << std::endl;
     }
 
     return ;
 }
 
-void    Servers::CloseSocket(int socket, int i)
+void    Servers::CloseSocket(int i)
 {
-    DeleteUsers(usersMap[socket]);
-    close(socket);
+    DeleteUsers(usersMap[_server_data.poll_fd[i].fd]);
+    close(_server_data.poll_fd[i].fd);
     _server_data.poll_fd[i].fd = -1;
     _server_data.poll_fd[i].revents = 0;
     _server_data.poll_fd[i].events = 0;
@@ -279,162 +285,20 @@ void    Servers::DeleteUsers(Users &user)
     return ;
 }
 
-/*
-void	Servers::start()
+void    Servers::CheckClient(Users &user, int i)
 {
-    bool compression = false;
-    end_server = false;
-    // [POLLING]: Checks if a FD is ready to perform. It allows the process to wait for an event to occur.     
+    std::cout << YEL "Enters checkclient " << user.timer.Timing() <<  CLEAR<<std::endl;
 
-    int countdown = (3 * 60 * 1000); // Countdown 
-    
-    int nfds = 1;//current numbre of socket descriptor open;
-    
-    do
+    if (user.getActive() && user.timer.Timing() > IDLE_TIME)
     {
-        //POLLL
-        std::cout << "Waiting for poll motherfucker ... ! : " << _server_data.poll_fd[0].revents << std::endl;
-        int result = poll(_server_data.poll_fd, nfds, countdown);
-
-        //If an error with poll : exit
-        if (result < 0 || end_server)
-        {
-            std::cerr << "Its not working man ! :( I'm CRASSSSSHHHING ... \n" ;
-            break;
-        }
-        //If poll timesout : exit
-        if (result == 0)
-        {
-            std::cout << "Nobody loves you ! No messages :(" << std::endl;
-            break;
-        }
-        int currentsize = nfds;
-
-        //We check all our tracked socket descriptors
-        for (int i = 0; i < currentsize; i++)
-        {
-            if (_server_data.poll_fd[i].revents != 0)
-                std::cout << "Poll fd : " << _server_data.poll_fd[i].fd << " Poll revent : " << _server_data.poll_fd[i].revents << std::endl;
-            
-            //If socket has no changes... go to next;
-            if (_server_data.poll_fd[i].revents == 0)
-                continue;
-            if (_server_data.poll_fd[i].revents != POLLIN) //if error, end server;
-            {
-                // end_server = true; //Original line to close server when socket disconnects
-                DeleteUsers(usersMap[_server_data.poll_fd[i].fd]);
-                close(_server_data.poll_fd[i].fd);
-                _server_data.poll_fd[i].fd = -1;
-                compression = true;
-                if (_server_data.poll_fd[0].revents == 32)
-                    end_server = true;
-                break;
-            }
-            if (_server_data.poll_fd[i].fd == _server_data.server_fd) // If listenning socket has a change, accept new connection
-            {
-                std::cout << "New connection is requested" <<  std::endl;
-
-                int new_sd;
-                // [ACCEPT new connection]
-                do
-                {
-                    new_sd = accept(_server_data.server_fd, NULL, NULL); //return a socket description of new connection socket
-                    if (new_sd < 0)
-                    {
-                        if (errno != EWOULDBLOCK)
-                        {
-                            perror("Acceptance of new connection has failed !");
-                            end_server = true;
-                        }
-                        break;
-                    }
-                    _server_data.poll_fd[nfds].fd = new_sd;
-                    _server_data.poll_fd[nfds].events = POLLIN;
-                    nfds++;
-                    usersMap[new_sd];
-                    usersMap[new_sd].setFd(new_sd);
-                    usersMap[new_sd].setFd(new_sd);
-                    std::cout << " New connection has been added to descriptor: " << new_sd << std::endl;
-                } while (new_sd != -1);
-            }
-            else //if any active socket has a change, then receive data
-            {
-                std::cout << " Active socket is readable for data " << std::endl;
-
-                close_connection = false;
-                char buff[512];
-                bool crlf = false;
-                memset(buff, 0, sizeof(buff));
-                do
-                {
-                    result = recv(_server_data.poll_fd[i].fd, buff, sizeof(buff), 0); //receive message from socket   
-                    if (result < 0)
-                    {
-                        if (errno != EWOULDBLOCK)
-                        {
-                            perror("Socket reception has failed, massive crash, connection will be flushed ! Bye loser XD");
-                            close_connection = true;
-                        }
-                        // break;
-                    }
-                    if (result == 0)
-                    {
-                        close_connection = true;
-                        break;
-                    }
-
-                    //CHECKS for CR and LR caracters 
-                    int i = 0;
-                    while (buff[i] != '\0' || i > 510)
-                    {
-                        if (buff[i] == '\r' && buff[i + 1] == '\n')
-                        {
-                            buff[i] = ' ';
-                            buff[i + 1] = ' ';
-                            // buff[i + 2] = '\n';
-                            crlf = true;
-                            std::cout << "FOUND backslasshes" << std::endl;
-                            break; 
-                        }
-                        i++;
-                    }
-                    std::cout << "In the loop , use ^M to exit " << std::endl;           
-
-                } while (crlf == false); //As long has CR - LF (\r\n) has not been found
-
-                
-                std::cout << " REceived in buff :" << buff << std::endl;
-                //PARSING
-                Parser parser(reinterpret_cast<char *>(buff));
-                std::map<int, Users>::iterator itUM = usersMap.find(_server_data.poll_fd[i].fd); //Tries to find the user
-
-                //EXECUTE CMD:
-                std::map<std::string, fct>::iterator it = _command_map.find(parser.getCommand()); //Looks for iterator pointing to Command function
-                if (it != _command_map.end()) //If command exists
-                {
-                    (this->*(it->second))(itUM->second, parser); // send the reference of existing user
-                }
-                
-                if (close_connection == true)
-                {
-                    DeleteUsers(usersMap[_server_data.poll_fd[i].fd]);
-                    close(_server_data.poll_fd[i].fd);
-                    _server_data.poll_fd[i].fd = -1;
-                    compression = true;
-                }
-            } //End of tracking loop
-        } //End of polling loop
-        if (compression)
-        {
-             std::cout << "Enters compression !" << std::endl;
-            compress_function(_server_data.poll_fd, nfds);
-            compression = false;
-        }
-    
-    } while (end_server == false);
-
-    close(_server_data.server_fd);
-
-    return ;
+        std::cout << user.getNickname() << BLU "Has beeen set to inactive " CLEAR << std::endl;
+        Parser empty;
+        (this->*(_command_map["PING"]))(user, empty);
+        user.timer.Start();
+    }
+    else if (user.getActive() == false && user.timer.Timing() > KILL_TIME)
+    {
+        std::cout << user.getNickname() << RED "Has been kickout due to inactivity " CLEAR << std::endl;
+        CloseSocket(i);
+    }
 }
-*/

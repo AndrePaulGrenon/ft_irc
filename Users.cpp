@@ -60,6 +60,13 @@ const std::string	&Users::getBuffer() const
 	return (Buffer);
 }
 
+bool                Users::getActive() const
+{
+	return (active);
+}
+
+//SETTERS
+
 void	Users::setFd(int fdesc)
 {
 	fd = fdesc;
@@ -122,4 +129,9 @@ const std::string	&Users::getAwayMsg() const
 void	Users::setAwayMsg(std::string msg)
 {
 	AwayMsg = msg;
+}
+
+void	Users::setActive(bool status)
+{
+	active = status;
 }
