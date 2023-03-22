@@ -4,11 +4,8 @@
 #pragma once
 #include <map>
 #include <string>
-<<<<<<< HEAD
 #include <vector>
-=======
 #include "Timer.hpp"
->>>>>>> 17780c4c8a41658ac9501c7e8f3c0bfd43e58465
 
 class Users
 {
