@@ -1,5 +1,7 @@
 #include "Channels.hpp"
 
+Channels::Channels(){}
+
 Channels::Channels(const string &name) :_limit(-1), _name(name){
   for (size_t i = 0; i < 6; i++)
     this->_flags[i] = false;

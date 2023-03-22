@@ -34,8 +34,35 @@ int	Servers::Names(Users &user, Parser &parser)
 			}
 		}
 	}
-	
-
-	(void) parser;
+	std::map<int, Users>::iterator uit = usersMap.begin();
+	std::map<int, Users>::iterator uite = usersMap.end();
+	std::string other_users;
+	bool oneuser = false;
+	for (; uit != uite; uit++)
+	{
+		if (tempList.end() == tempList.find(uit->second.getNickname()))
+		{
+			if (other_users.size())
+				other_users += " ";
+			other_users += uit->second.getNickname();
+			oneuser = true;
+		}
+	}
+	if (oneuser)
+	{
+			while (other_users.size())
+			{
+				if (other_users.size() > 510)
+				{
+					send(user.getFd(), parser.SendReply("353", "*", other_users.substr(0, 510)), parser.getReply().size(), 0);
+					other_users = other_users.substr(0, 510);
+				}
+				else
+				{
+					send(user.getFd(), parser.SendReply("366", "*", other_users), parser.getReply().size(), 0);
+					break ; 
+				}
+			}
+	}
 	return (0);
 }

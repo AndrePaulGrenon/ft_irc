@@ -25,9 +25,9 @@
 #include <utility>
 
 #define MAX_SOCKET 248              // Maximum amount of open sockets in the server
-#define COUNTDOWN  1 * 1000     //Waiting period to poll in milliseconds
-#define IDLE_TIME 1 * 60        //Waiting period for client to become inactive (seconds)
-#define KILL_TIME 100            //Inactive time allowed before client is killed (seconds)
+#define COUNTDOWN  15 * 1000     //Waiting period to poll in milliseconds
+#define IDLE_TIME 15 * 60        //Waiting period for client to become inactive (seconds)
+#define KILL_TIME 100            //Inactives time allowed before client is killed (seconds)
 
 using std::string;
 

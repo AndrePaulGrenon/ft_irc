@@ -21,6 +21,7 @@ using std::string;
 
 class Channels {
 public:
+  Channels();
   Channels(const string &nam);
   ~Channels();
 
