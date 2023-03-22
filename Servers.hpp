@@ -58,7 +58,6 @@ public:
     int     Pong(Users &user, Parser &parser); //
     int     Privmsg(Users &user, Parser &parser); //
     int     Quit(Users &user, Parser &parser); //
-    int     Shutdown(Users &user, Parser &parser); //
     int     Topic(Users &user, Parser &parser); //
     
     // Méthodes
