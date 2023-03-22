@@ -1,5 +1,7 @@
 #include "Parser.hpp"
 
+Parser::Parser() {}
+
 Parser::Parser(char *buff)
 {
     std::string line(buff);
@@ -99,7 +101,6 @@ void    Parser::PrintElements(void)
     if (_prefix.length() > 0)
         std::cout << "Prefix: " << _prefix << std::endl; 
     std::cout <<  "CMD: " << _command << std::endl;
-    
     if (_my_args.size() > 0)
     {
         std::vector<std::string>::iterator it = _my_args.begin();

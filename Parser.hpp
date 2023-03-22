@@ -13,6 +13,7 @@
 class Parser
 {
 public:
+    Parser();
     Parser(char *buff);
     Parser(std::string str);
     Parser(const Parser &other);
@@ -40,7 +41,6 @@ private:
 
     //Private Methods
     void    ParseCommand(std::string line);
-
 };
 
 #endif
