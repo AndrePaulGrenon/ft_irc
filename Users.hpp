@@ -27,6 +27,7 @@ class Users
         bool                getAway() const;
         const std::string   &getBuffer() const;
         const std::string   &getAwayMsg() const;
+        bool                getActive() const;
         
         //Setters
         void    setFd(int fdesc);
@@ -38,6 +39,8 @@ class Users
         void    setBuffer(std::string str);
         void    setAway(bool stat);
         void    setAwayMsg(std::string msg);
+        void    setActive(bool status);
+
 
 /*         void    addChan(Channels &Chan);
         bool    isInChan(Channels &Chan); */

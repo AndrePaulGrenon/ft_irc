@@ -2,7 +2,7 @@
 
 int	Servers::Ping(Users &user, Parser &parser)
 {
-	(void)user;
-	(void)parser;
+	user.setActive(false);
+	(void) parser;
 	return (0);
 }

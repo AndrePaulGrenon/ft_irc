@@ -166,6 +166,7 @@ void    Servers::AcceptConnection()
         usersMap[new_sd];
         usersMap[new_sd].setFd(new_sd);
         usersMap[new_sd].timer.Start();
+        usersMap[new_sd].setActive(true);
         std::cout << " New connection has been added to descriptor: " << new_sd << std::endl;
     }
     return ;
@@ -257,7 +258,7 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     else
     {
         send(user.getFd(), parser.SendReply("421", parser.getCommand(), "This command doesn't exist"), parser.getReply().size(), 0);
-        std::cout << "NO command found " << std::endl;
+        std::cout << "Non-existing command taken" << std::endl;
     }
 
     return ;
