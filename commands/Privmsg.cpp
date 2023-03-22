@@ -20,7 +20,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				//_close_connection = true;
 				return (1);
 	}
-	if (parser.getArgs()[0].size() == 0)
+	if (parser.getArgs().size() == 0)
 	{
 				send(user.getFd(), parser.SendReply("411", "", "No recipient has been given!\n"), parser.getReply().size(), 0);
 				//_close_connection = true;

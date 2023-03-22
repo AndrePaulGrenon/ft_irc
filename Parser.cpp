@@ -39,18 +39,24 @@ void    Parser::ParseCommand(std::string line)
     unsigned long pos = 0;
     bool first = true;
 
+    while (line[0] == ' ') //Eliminates all spaces
+            line.erase(line.begin());
+    if (line.size() == 0)
+        return ; 
     while (pos != line.npos && line.size() > 0)
     {
-        while (line[0] == ' ')
+        while (line[0] == ' ') //Eliminates all spaces inbetween strings
             line.erase(line.begin());
-        if (line[0] == ':' && first == false)
+        if (line[0] == ':' && first == false) //End Message management 
         {
             _message = line;
             _message.erase(_message.begin());
+            line.erase(line.end() - 1);
+            line.erase(line.end() - 1);
             break ;
         }
-        pos = line.find(' ');
-        if (pos == line.npos)
+        pos = line.find(' '); //Checks for next space
+        if (pos == line.npos) 
         {
             line.erase(line.end() - 1);
             line.erase(line.end() - 1);
@@ -61,7 +67,7 @@ void    Parser::ParseCommand(std::string line)
         line = line.substr(pos + 1, line.size());
         first = false;
     }
-    if (_my_args[0][0] == ':')
+    if (_my_args.size() > 0 && _my_args[0][0] == ':')
     {
         _prefix = _my_args[0];
         _prefix.erase(_prefix.begin());
@@ -89,7 +95,6 @@ const char    *Parser::SendReply(const std::string code,
 //CODE Pints every elements of the Parser
 void    Parser::PrintElements(void)
 {
-    
     std::cout << MAG;
     if (_prefix.length() > 0)
         std::cout << "Prefix: " << _prefix << std::endl; 
@@ -103,14 +108,13 @@ void    Parser::PrintElements(void)
         for (;it != ite; it++)
         {
             std::cout << " - " << *it << " ";
-
-            // for (size_t i = 0; i < (*it).size(); i++)
-            // {
-            //     std::cout << "-" << static_cast<int>((*it)[i]) ;
-            // }
+            for (size_t i = 0; i < (*it).size(); i++)
+            {
+                std::cout << "-" << static_cast<int>((*it)[i]) ;
+            }
         }   
     }
-    std::cout << std::endl << "Size of args is : " << _my_args.size()<< std::endl;;
+    std::cout << std::endl << "Size of args is : " << _my_args.size() << std::endl;;
     if (_message.length() > 0)
         std::cout <<  "Message: " << _message << std::endl;
     std::cout << CLEAR << std::endl;
@@ -121,6 +125,8 @@ std::vector<std::string>    Parser::SplitComa(std::string line)
     std::vector<std::string> temp;
     size_t pos = 0;
 
+    if (line.size() == 0)
+        return temp;
     while (pos != line.npos && line.size() > 0)
     {
         pos = line.find(',');
