@@ -1,5 +1,10 @@
 #include "../Servers.hpp"
 
+/* bool	is_part_of_chan()
+{
+
+} */
+
 int	Servers::Part(Users &user, Parser &parser)
 {
 	std::vector<std::string> clist(parser.SplitComa(parser.getArgs()[0]));
@@ -12,7 +17,7 @@ int	Servers::Part(Users &user, Parser &parser)
 			//_close_connection = true;
 			//return (1);
 		}
-		else if ((it->second.getFlag(4) == true) /*&&*/ /*|| If moderate and banned*/)
+		else if ((it->second.getFlag(4) == true &&  /*|| If moderate and banned*/)
 		{
 			send(user.getFd(), parser.SendReply("404", parser.getArgs()[0], "You don't have access to the channel\n"), parser.getReply().size(), 0);
 			_close_connection = true;
