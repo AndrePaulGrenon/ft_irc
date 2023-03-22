@@ -4,7 +4,7 @@
 #pragma once
 #include <map>
 #include <string>
-#include <vector>
+#include <set>
 #include "Timer.hpp"
 
 class Users
@@ -17,17 +17,17 @@ class Users
         ~Users();
 
         //Getters
-        int                 getFd() const;
-        const std::string   &getNickname() const;
-        const std::string   &getUsername() const;
-        const std::string   &getRealname() const;
-        const std::string   &getChans(int index) const; // Va chercher un channel à la fois
-        bool                getPass() const;
-        bool                getRegStat() const;
-        bool                getAway() const;
-        const std::string   &getBuffer() const;
-        const std::string   &getAwayMsg() const;
-        bool                getActive() const;
+        int                             getFd() const;
+        const std::string               &getNickname() const;
+        const std::string               &getUsername() const;
+        const std::string               &getRealname() const;
+        const std::set<std::string>     &getChannels() const;
+        bool                            getPass() const;
+        bool                            getRegStat() const;
+        bool                            getAway() const;
+        const std::string               &getBuffer() const;
+        const std::string               &getAwayMsg() const;
+        bool                            getActive() const;
         
         //Setters
         void    setFd(int fdesc);
@@ -40,6 +40,8 @@ class Users
         void    setAway(bool stat);
         void    setAwayMsg(std::string msg);
         void    setActive(bool status);
+        void    addChannel(const std::string &chan_name);
+        void    removeChannel(const std::string &chan_name);
 
         //User Timer Class
         Timer                           timer;      //Tracks User interaction last time with server
@@ -54,7 +56,7 @@ class Users
         bool                            Registration;
         bool                            is_Away;
         std::string                     Buffer;     //Residues of last command
-        std::vector<std::string>        channel;
+        std::set<std::string>           Channels;
         bool                            active;     //Is active when receives PONG
 };
 

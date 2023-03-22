@@ -45,6 +45,11 @@ const std::string	&Users::getRealname() const
 	return Realname;
 }
 
+const std::set<std::string>     &Users::getChannels() const
+{
+	return Channels;
+}
+
 bool	Users::getPass() const
 {
 	return Pass;
@@ -97,20 +102,6 @@ void    Users::setBuffer(std::string str)
 	Buffer = str;
 }
 
-
-/* void	Users::addChan(Channels &Chan)
-{
-        if (Chans.find(Chan.getname()) == Chans.end())
-                Chans.insert(std::pair(Chan.getname(), Chan));
-}
-
-bool	Users::isInChan(std::string &Chan)
-{
-        if (Chans.find(Chan.getname()) == Chans.end())
-                return false;
-        return true;
-} */
-
 bool	Users::getAway() const
 {
 	return is_Away;
@@ -134,4 +125,14 @@ void	Users::setAwayMsg(std::string msg)
 void	Users::setActive(bool status)
 {
 	active = status;
+}
+
+void    Users::addChannel(const std::string &chan_name)
+{
+	Channels.insert(chan_name);
+}
+
+void    Users::removeChannel(const std::string &chan_name)
+{
+	Channels.erase(chan_name);
 }
