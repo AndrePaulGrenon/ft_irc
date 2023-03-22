@@ -112,18 +112,18 @@ int Servers::TrackingFd()
         if (_server_data.poll_fd[i].revents == 0) //If socket has no changes... go to next one;
         {
             if(i != 0)
-                CheckClient(usersMap[_server_data.poll_fd[i].fd]);
+                CheckClient(usersMap[_server_data.poll_fd[i].fd], i);
             continue;
         }
         if (_server_data.poll_fd[i].revents != POLLIN) //if error in socket received from socket, close socket
         {
             std::cout << "POll_fd[" << i << "] has revents : " MAG <<  _server_data.poll_fd[i].revents << CLEAR << std::endl;
-            if (_server_data.poll_fd[i].revents == 17)
-            {
-                CloseSocket(_server_data.poll_fd[i].fd, i);
-                continue;
-            }
-            CloseSocket(_server_data.poll_fd[i].fd, i);
+            // if (_server_data.poll_fd[i].revents == 17)
+            // {
+            //     CloseSocket(i);
+            //     continue;
+            // }
+            CloseSocket(i);
         }
         else if (_server_data.poll_fd[i].fd == _server_data.server_fd)// If server socket has a change, accept new connection
             AcceptConnection();
@@ -131,7 +131,7 @@ int Servers::TrackingFd()
             ReceiveData(usersMap[_server_data.poll_fd[i].fd]);
         
         if (_close_connection == true) 
-            CloseSocket(_server_data.poll_fd[i].fd, i);
+            CloseSocket(i);
         
     }
     return 0;
@@ -157,9 +157,7 @@ void    Servers::AcceptConnection()
             }
             return;
         }
-
         std::cout << "CLIENT IP ADDRESS: " << inet_ntoa(client.sin_addr) << std::endl;
-
         _server_data.poll_fd[_server_data.nfds].fd = new_sd;
         _server_data.poll_fd[_server_data.nfds].events = POLLIN;
         _server_data.nfds++;
@@ -264,10 +262,10 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     return ;
 }
 
-void    Servers::CloseSocket(int socket, int i)
+void    Servers::CloseSocket(int i)
 {
-    DeleteUsers(usersMap[socket]);
-    close(socket);
+    DeleteUsers(usersMap[_server_data.poll_fd[i].fd]);
+    close(_server_data.poll_fd[i].fd);
     _server_data.poll_fd[i].fd = -1;
     _server_data.poll_fd[i].revents = 0;
     _server_data.poll_fd[i].events = 0;
@@ -288,19 +286,20 @@ void    Servers::DeleteUsers(Users &user)
     return ;
 }
 
-void    Servers::CheckClient(Users &user)
+void    Servers::CheckClient(Users &user, int i)
 {
     std::cout << YEL "Enters checkclient " << user.timer.Timing() <<  CLEAR<<std::endl;
 
     if (user.getActive() && user.timer.Timing() > IDLE_TIME)
     {
-        std::cout << user.getNickname() << "Has beeen started again " << std::endl;
+        std::cout << user.getNickname() << BLU "Has beeen set to inactive " CLEAR << std::endl;
         Parser empty;
         (this->*(_command_map["PING"]))(user, empty);
         user.timer.Start();
     }
     else if (user.getActive() == false && user.timer.Timing() > KILL_TIME)
     {
-       
+        std::cout << user.getNickname() << RED "Has been kickout due to inactivity " CLEAR << std::endl;
+        CloseSocket(i);
     }
 }

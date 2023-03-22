@@ -41,7 +41,6 @@ private:
 
     //Private Methods
     void    ParseCommand(std::string line);
-
 };
 
 #endif
