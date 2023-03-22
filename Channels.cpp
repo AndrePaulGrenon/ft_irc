@@ -1,9 +1,8 @@
 #include "Channels.hpp"
 
-Channels::Channels(const string &name) : _name(name){
-    //: _limit(-1), _pass(NULL), _name(name), _topic(NULL) {
-  //for (size_t i = 0; i < 6; i++)
-    //this->_flags[i] = false;
+Channels::Channels(const string &name) :_limit(-1), _name(name){
+  for (size_t i = 0; i < 6; i++)
+    this->_flags[i] = false;
 }
 
 Channels::~Channels() { std::cout << "Goodbye world" << std::endl; }
@@ -49,8 +48,9 @@ void  Channels::addUser(const Users &user){
       break;
      it++;
   }
-  if (it == this->_users.end())
+  if (it == this->_users.end()){
     this->_users.push_back(user);
+  }
   else
     std::cout << "the user is already present" << std::endl; // va falloir regarder pour un message derreur
 }

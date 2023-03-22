@@ -4,7 +4,11 @@
 #pragma once
 #include <map>
 #include <string>
+<<<<<<< HEAD
+#include <vector>
+=======
 #include "Timer.hpp"
+>>>>>>> 17780c4c8a41658ac9501c7e8f3c0bfd43e58465
 
 class Users
 {
@@ -53,6 +57,7 @@ class Users
         bool                            Registration;
         bool                            is_Away;
         std::string                     Buffer;     //Residues of last command
+        std::vector<std::string>        channel;
         bool                            active;     //Is active when receives PONG
 };
 
