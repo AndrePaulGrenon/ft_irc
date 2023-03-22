@@ -23,7 +23,9 @@ class Users
         const std::string   &getChans(int index) const; // Va chercher un channel à la fois
         bool                getPass() const;
         bool                getRegStat() const;
+        bool                getAway() const;
         const std::string   &getBuffer() const;
+        const std::string   &getAwayMsg() const;
         
         //Setters
         void    setFd(int fdesc);
@@ -33,6 +35,8 @@ class Users
         void    setPass(bool passw);
         void    setRegistration(bool reg);
         void    setBuffer(std::string str);
+        void    setAway(bool stat);
+        void    setAwayMsg(std::string msg);
 
 /*         void    addChan(Channels &Chan);
         bool    isInChan(Channels &Chan); */
@@ -41,8 +45,10 @@ class Users
         std::string                     Nickname;
         std::string                     Username;
         std::string                     Realname;
+        std::string                     AwayMsg;
         bool                            Pass;
         bool                            Registration;
+        bool                            is_Away;
         std::string                     Buffer;     //Residues of last command
         //std::map<std::string, Channels> Chans;
 };

@@ -103,3 +103,23 @@ bool	Users::isInChan(std::string &Chan)
                 return false;
         return true;
 } */
+
+bool	Users::getAway() const
+{
+	return is_Away;
+}
+
+void	Users::setAway(bool stat)
+{
+	is_Away = stat;
+}
+
+const std::string	&Users::getAwayMsg() const
+{
+	return AwayMsg;
+}
+
+void	Users::setAwayMsg(std::string msg)
+{
+	AwayMsg = msg;
+}

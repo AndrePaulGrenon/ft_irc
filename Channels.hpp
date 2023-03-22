@@ -35,6 +35,7 @@ public:
   const bool &getFlag(const int &where) const;
   const int &getLimit() const;
   const bool &getOp(const string &user) const;
+  std::vector<Users>  getUsers() const;
 
   void  addUser(const Users &user);
 
