@@ -13,6 +13,7 @@
 class Parser
 {
 public:
+    Parser();
     Parser(char *buff);
     Parser(std::string str);
     Parser(const Parser &other);

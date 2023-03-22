@@ -290,12 +290,17 @@ void    Servers::DeleteUsers(Users &user)
 
 void    Servers::CheckClient(Users &user)
 {
-    std::cout << YEL"Enters checkclient " << user.timer.Timing() <<  CLEAR<<std::endl;
+    std::cout << YEL "Enters checkclient " << user.timer.Timing() <<  CLEAR<<std::endl;
 
-    if (user.timer.Timing() > IDLE_TIME)
+    if (user.getActive() && user.timer.Timing() > IDLE_TIME)
     {
         std::cout << user.getNickname() << "Has beeen started again " << std::endl;
-        
+        Parser empty;
+        (this->*(_command_map["PING"]))(user, empty);
         user.timer.Start();
+    }
+    else if (user.getActive() == false && user.timer.Timing() > KILL_TIME)
+    {
+       
     }
 }
