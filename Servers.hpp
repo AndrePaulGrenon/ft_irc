@@ -110,7 +110,7 @@ private:
     bool                            _close_connection;          //close current socket being tracked
     bool                            _end_server;                //Ends the servers
     bool                            _compression;               //Asks for compression
-    std::map<std::string, Channels>       Chans;
+    std::map<std::string, Channels>       Chans;                
 };
 
 #endif

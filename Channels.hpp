@@ -3,17 +3,19 @@
 
 #pragma once
 #include "Users.hpp"
+#include "Parser.hpp"
+#include <sys/socket.h>
 #include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
 
-#define P 0;
-#define S 1;
-#define I 2;
-#define T 3;
-#define N 4;
-#define M 5;
+#define P 0
+#define S 1
+#define I 2
+#define T 3
+#define N 4
+#define M 5
 
 using std::string;
 
@@ -34,10 +36,12 @@ public:
   const string &getName() const;
   const bool &getFlag(const int &where) const;
   const int &getLimit() const;
-  const bool &getOp(const string &user) const;
+  bool getOp(const string &user) const;
   std::vector<Users>  getUsers() const;
+  bool getBan(const string user) const;
 
-  void  addUser(const Users &user);
+  void  addUser(const Users &user, const std::string &pass, Parser &parser);
+  void  RemoveUser(std::string nickname);
 
 private:
   int _limit;
@@ -46,6 +50,7 @@ private:
   string _topic;
   bool _flags[6];
   std::vector<Users>  _users;
+  std::map<string, bool> _ban;
   std::map<string, bool> _operators;
 };
 
