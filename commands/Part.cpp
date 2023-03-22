@@ -1,9 +1,9 @@
 #include "../Servers.hpp"
 
-/* bool	is_part_of_chan()
+bool	is_part_of_chan()
 {
 
-} */
+}
 
 int	Servers::Part(Users &user, Parser &parser)
 {
