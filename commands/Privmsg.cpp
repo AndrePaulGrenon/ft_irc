@@ -38,7 +38,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				//_close_connection = true;
 				//return (1);
 			}
-			else if (it->second.getFlag(4) == true /*|| If moderate and banned*/)
+			else if ((it->second.getFlag(4) == true /*&& not part of the channel*/)  /*|| If moderate and banned*/)
 			{
 				send(user.getFd(), parser.SendReply("404", parser.getArgs()[0], "You don't have access to the channel\n"), parser.getReply().size(), 0);
 				_close_connection = true;

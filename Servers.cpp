@@ -35,7 +35,6 @@ void Servers::CommandInit()
     _command_map["PONG"] = &Servers::Pong;
     _command_map["PRIVMSG"] = &Servers::Privmsg;
     _command_map["QUIT"] = &Servers::Quit;
-    _command_map["SHUTDOWN"] = &Servers::Shutdown;
     _command_map["TOPIC"] = &Servers::Topic;
 }
 
