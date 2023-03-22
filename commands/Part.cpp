@@ -2,30 +2,36 @@
 
 int	Servers::Part(Users &user, Parser &parser)
 {
+	if (parser.getArgs()[0].size() == 0)
+	{
+		send(user.getFd(), parser.SendReply("461", parser.getCommand(), "No Channels were given"), parser.getReply().size(), 0);
+		return (1);
+	}
 	std::vector<std::string> clist(parser.SplitComa(parser.getArgs()[0]));
 	for (size_t i = 0; i < clist.size(); i++)
 	{
 		std::map<std::string, Channels>::iterator	it = Chans.find(clist[i]);
 		if (it == Chans.end())
 		{
-			send(user.getFd(), parser.SendReply("403", parser.getArgs()[i], "Channel inexistant\n"), parser.getReply().size(), 0);
+			send(user.getFd(), parser.SendReply("403", parser.getArgs()[i], "non-existant Channel"), parser.getReply().size(), 0);
 			//_close_connection = true;
 			//return (1);
 		}
-		else if ((it->second.getFlag(4) == true) /*&&*/ /*|| If moderate and banned*/)
+		else if ((it->second.getFlag(4) == true && user.getChannels().find(it->second.getName()) != user.getChannels().end())) /*|| If moderate and banned*/
 		{
-			send(user.getFd(), parser.SendReply("404", parser.getArgs()[0], "You don't have access to the channel\n"), parser.getReply().size(), 0);
-			_close_connection = true;
+			send(user.getFd(), parser.SendReply("442", parser.getArgs()[0], "You don't have access to the channel"), parser.getReply().size(), 0);
+			//_close_connection = true;
 			//return (1);
 		}
 		else
 		{
-			for (size_t j = 0; j < it->second.getUsers().size(); j++)
+			user.removeChannel(it->second.getName());
+			for (std::vector<Users>::iterator vec_it = it->second.getUsers().begin(); vec_it != it->second.getUsers().end(); vec_it++)
 			{
-				if (it->second.getUsers()[j].getAway() == true)
-					send(user.getFd(), parser.SendReply("301", it->second.getUsers()[j].getNickname(), it->second.getUsers()[j].getAwayMsg()), parser.getReply().size(), 0);
-				else
-					send(it->second.getUsers()[j].getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+				if (vec_it->getNickname() == user.getNickname())
+				{
+					it->second.getUsers().erase(vec_it);
+				}
 			}
 		}
 	}

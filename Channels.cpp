@@ -36,11 +36,24 @@ const bool &Channels::getFlag(const int &where) const {
 
 const int &Channels::getLimit() const { return this->_limit; }
 
-const bool &Channels::getOp(const string &user) const {
+bool Channels::getOp(const string &user) const {
+  if (this->_ban.find(user) == this->_ban.end())
+    return (false);
   return this->_operators.at(user);
 }
 
-void  Channels::addUser(const Users &user){
+std::vector<Users>  Channels::getUsers() const
+{
+    return _users;
+}
+
+bool Channels::getBan(const string user) const{
+  if (this->_ban.find(user) == this->_ban.end())
+    return (false);
+  return this->_ban.at(user);
+}
+
+void  Channels::addUser(const Users &user, const std::string &pass, Parser &parser){
   std::vector<Users>::iterator it = this->_users.begin();
   while (it != this->_users.end())
   {
@@ -49,13 +62,22 @@ void  Channels::addUser(const Users &user){
      it++;
   }
   if (it == this->_users.end()){
-    this->_users.push_back(user);
-  }
-  else
-    std::cout << "the user is already present" << std::endl; // va falloir regarder pour un message derreur
+    if (this->getFlag(I) == false)
+      if (this->getBan(user.getNickname()) == false)
+        if (this->getLimit() == -1 || (const int) this->getUsers().size() < this->getLimit())
+          if (!this->getPass().empty())
+            if (this->getPass() == pass)
+              this->_users.push_back(user);
+            else
+              send(user.getFd(), parser.SendReply("475", parser.getArgs().at(0), "Cannot join channel (+k)"), parser.getReply().size(), 0);
+          else
+            this->_users.push_back(user);
+        else
+          send(user.getFd(), parser.SendReply("471", parser.getArgs().at(0), "Cannot join channel (+l)"), parser.getReply().size(), 0);
+      else
+        send(user.getFd(), parser.SendReply("474", parser.getArgs().at(0), "Cannot join channel (+b)"), parser.getReply().size(), 0);
+    else
+      send(user.getFd(), parser.SendReply("473", parser.getArgs().at(0), "Cannot join channel (+i)"), parser.getReply().size(), 0);
+    }
 }
 
-std::vector<Users>  Channels::getUsers() const
-{
-    return _users;
-}
