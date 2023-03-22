@@ -283,24 +283,14 @@ void    Servers::DeleteUsers(Users &user)
     Username_list.erase(user.getUsername());
     
     //ERASES user from channel 
-    // std::set<std::string> userChannels = user.getChannels();
-    // std::set<std::string>::iterator it = userChannels.begin();
-    // for (; it != userChannels.end(); it++)
-    // {
-    //     // std::vector<Users> *temp = &Chans[(*it)].getUsers();
-    //     std::vector<Users>::iterator vit = temp->begin();
-    //     std::vector<Users>::iterator vite = temp->end();
-    //     for (; vit != vite; vit++)
-    //     {
-    //         if (vit->getNickname() == user.getNickname())
-    //         {
-    //             temp->erase(vit);
-    //             break;
-    //         }
-    //     }
-    //     if (temp->size() == 0) // IF channel has no users -> delete channel
-    //         Chans.erase(*it);
-    // }
+    std::set<std::string> userChannels = user.getChannels();
+    std::set<std::string>::iterator it = userChannels.begin();
+    for (; it != userChannels.end(); it++)
+    {
+        Chans[(*it)].RemoveUser(user.getNickname());
+        if (Chans[(*it)].getUsers().size() == 0) // IF channel has no users -> delete channel
+            Chans.erase(*it);
+    }
     usersMap.erase(user.getFd());
     return ;
 }

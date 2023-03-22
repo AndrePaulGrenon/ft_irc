@@ -81,3 +81,20 @@ void  Channels::addUser(const Users &user, const std::string &pass, Parser &pars
     }
 }
 
+  void  Channels::RemoveUser(std::string nickname)
+  {
+      std::vector<Users>::iterator it = _users.begin();
+      std::vector<Users>::iterator ite = _users.end();
+
+      while(it != ite)
+      {
+        if (nickname == it->getNickname())
+        {
+          _users.erase(it);
+          break;
+        }
+
+        it++;
+      }
+      
+  }

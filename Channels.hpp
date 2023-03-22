@@ -41,6 +41,7 @@ public:
   bool getBan(const string user) const;
 
   void  addUser(const Users &user, const std::string &pass, Parser &parser);
+  void  RemoveUser(std::string nickname);
 
 private:
   int _limit;
