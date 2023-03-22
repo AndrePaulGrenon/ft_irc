@@ -24,7 +24,7 @@ int	Servers::Notice(Users &user, Parser &parser)
 				//_close_connection = true;
 				return (1);
 	} */
-	if (parser.getArgs()[0][0] == '#')
+	if (parser.getArgs()[0][0] == '#' || parser.getArgs()[0][0] == '&')
 	{
 		std::map<std::string, Channels>::iterator it = Chans.find(parser.getArgs()[0]);
 		for (size_t j = 0; j < it->second.getUsers().size(); j++)

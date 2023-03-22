@@ -26,7 +26,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				//_close_connection = true;
 				return (1);
 	}
-	if (parser.getArgs()[0][0] == '#')
+	if (parser.getArgs()[0][0] == '#' || parser.getArgs()[0][0])
 	{
 		std::vector<std::string> clist(parser.SplitComa(parser.getArgs()[0]));
 		for (size_t i = 0; i < clist.size(); i++)
