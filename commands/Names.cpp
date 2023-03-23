@@ -71,7 +71,6 @@ int	Servers::Names(Users &user, Parser &parser)
 	return (0);
 }
 
-
 //IF specific channels are entered as arguemnts
 int     Servers::NamesDefine(Users &user, Parser &parser) 
 {

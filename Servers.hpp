@@ -26,8 +26,8 @@
 
 #define MAX_SOCKET 248              // Maximum amount of open sockets in the server
 #define COUNTDOWN  15 * 1000     //Waiting period to poll in milliseconds
-#define IDLE_TIME 15 * 60        //Waiting period for client to become inactive (seconds)
-#define KILL_TIME 1000000            //Inactives time allowed before client is killed (seconds)
+#define IDLE_TIME 60 * 60        //Waiting period for client to become inactive (seconds)
+#define KILL_TIME 10            //Inactives time allowed before client is killed (seconds)
 
 using std::string;
 
@@ -82,9 +82,13 @@ private:
 
 
     //NAMES COMMAND
-     int    NamesDefine(Users &user, Parser &parser);
-     bool   UsersIsSubscribe(std::string channel, Users &user);
-     void   SendChannelUsers(std::vector<Users> list_users, Users &user, Parser &parser, std::string channel_name);
+    int    NamesDefine(Users &user, Parser &parser);
+    bool   UsersIsSubscribe(std::string channel, Users &user);
+    void   SendChannelUsers(std::vector<Users> list_users, Users &user, Parser &parser, std::string channel_name);
+    
+    //LIST COMMAND
+    void    ListDefine(Users &user, Parser &parser);
+    
     // -------------
     //     [DATA]
     // -------------
