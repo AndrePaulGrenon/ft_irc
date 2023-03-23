@@ -18,17 +18,9 @@ int	Servers::Part(Users &user, Parser &parser)
 		else
 		{
 			user.removeChannel(it->second.getName());
-			for (std::vector<Users>::iterator vec_it = it->second.getUsers().begin(); vec_it != it->second.getUsers().end(); vec_it++)
-			{
-				if (vec_it->getNickname() == user.getNickname())
-				{
-					it->second.getUsers().erase(vec_it);
-					if (it->second.getUsers().size() == 0)
-					{
-						Chans.erase(it);
-					}
-				}
-			}
+			it->second.RemoveUser(user.getNickname());
+			if (it->second.getUsers().size() == 0)
+				Chans.erase(it);
 		}
 	}
 	return (0);
