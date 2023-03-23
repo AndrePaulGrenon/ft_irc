@@ -15,13 +15,14 @@ int	Servers::List(Users &user, Parser &parser)
 		if (UsersIsSubscribe(it->second.getName(), user) || !it->second.getFlag(S))
 		{
 			if (it->second.getFlag(P) && !UsersIsSubscribe(it->second.getName(), user))
-				send(user.getFd(), parser.SendReply("353", it->second.getName(), 
+				send(user.getFd(), parser.SendReply("321", it->second.getName(), 
 					"You are not subscribed to this private channel "), parser.getReply().size(), 0);
 			else
-				send(user.getFd(), parser.SendReply("353", it->second.getName(), 
+				send(user.getFd(), parser.SendReply("321", it->second.getName(), 
 					"Topic : " + it->second.getTopic()), parser.getReply().size(), 0);
 		}
 	}
+	send(user.getFd(), parser.SendReply("323", "","End of list"), parser.getReply().size(), 0);
 	return (0);
 }
 
@@ -34,12 +35,13 @@ void	Servers::ListDefine(Users &user, Parser &parser)
 		if (UsersIsSubscribe(comaChannels[i], user) || Chans[comaChannels[i]].getFlag(S))
 		{
 			if (Chans[comaChannels[i]].getFlag(P) && !UsersIsSubscribe(comaChannels[i], user))
-				send(user.getFd(), parser.SendReply("353", comaChannels[i], 
+				send(user.getFd(), parser.SendReply("321", comaChannels[i], 
 					"You are not subscribed to this private channel "), parser.getReply().size(), 0);
 			else
-				send(user.getFd(), parser.SendReply("353", comaChannels[i], 
+				send(user.getFd(), parser.SendReply("321", comaChannels[i], 
 					"Topic : " + Chans[comaChannels[i]].getTopic()), parser.getReply().size(), 0);
 		}
 	}
+	send(user.getFd(), parser.SendReply("323", "","End of list"), parser.getReply().size(), 0);
 	return ;
 }
