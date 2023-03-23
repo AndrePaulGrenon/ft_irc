@@ -51,6 +51,7 @@ private:
   string _topic;
   bool _flags[6];
   std::vector<Users>  _users;
+  std::map<string, bool> _mod;
   std::map<string, bool> _ban;
   std::map<string, bool> _operators;
 };
