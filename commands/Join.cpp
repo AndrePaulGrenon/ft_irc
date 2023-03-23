@@ -13,23 +13,18 @@ int     Servers::Join(Users &user, Parser &parser){
 				user.addChannel(it->second.getName());
 				switch (it->second.addUser(user, null)){
 					case 1:
-						std::cout << "allo1" << std::endl;
 						send(user.getFd(), parser.SendReply("475", parser.getArgs().at(0), "Cannot join channel (+k)"), parser.getReply().size(), 0);
 						break;
 					case 2:
-						std::cout << "allo" << std::endl;
 						send(user.getFd(), parser.SendReply("471", parser.getArgs().at(0), "Cannot join channel (+l)"), parser.getReply().size(), 0);
 						break;
 					case 3:
-						std::cout << "allo2" << std::endl;
 						send(user.getFd(), parser.SendReply("474", parser.getArgs().at(0), "Cannot join channel (+b)"), parser.getReply().size(), 0);
 						break;
 					case 4:
-						std::cout << "allo4" << std::endl;
 						send(user.getFd(), parser.SendReply("473", parser.getArgs().at(0), "Cannot join channel (+i)"), parser.getReply().size(), 0);
 						break;
 					default:
-						std::cout << "lol\n";
 						it->second.setOp(user.getNickname(), false);
 						send(user.getFd(), parser.SendReply("332", parser.getArgs().at(0), this->Chans.at(channels.at(i)).getTopic()), parser.getReply().size(), 0);
 						break;
@@ -92,6 +87,5 @@ int     Servers::Join(Users &user, Parser &parser){
 		break;
 	}
 	}
-	
 	return (0);
 }
