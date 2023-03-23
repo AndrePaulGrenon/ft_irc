@@ -44,7 +44,7 @@ bool Channels::getOp(const string &user) const {
   return this->_operators.at(user);
 }
 
-std::vector<Users>  Channels::getUsers() const
+std::vector<Users>  &Channels::getUsers()
 {
     return _users;
 }
