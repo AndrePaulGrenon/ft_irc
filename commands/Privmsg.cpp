@@ -18,7 +18,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				send(user.getFd(), parser.SendReply("412", "", "No message to send!"), parser.getReply().size(), 0);
 	if (parser.getArgs().size() == 0)
 				send(user.getFd(), parser.SendReply("411", "", "No recipient has been given!"), parser.getReply().size(), 0);
-	if (parser.getArgs()[0][0] == '#' || parser.getArgs()[0][0])
+	if (parser.getArgs()[0][0] == '#' || parser.getArgs()[0][0] == '&')
 	{
 		std::vector<std::string> clist(parser.SplitComa(parser.getArgs()[0]));
 		for (size_t i = 0; i < clist.size(); i++)
@@ -26,7 +26,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 			std::map<std::string, Channels>::iterator	it = Chans.find(clist[i]);
 			if (it == Chans.end())
 				send(user.getFd(), parser.SendReply("403", parser.getArgs()[i], "Channel inexistant"), parser.getReply().size(), 0);
-			else if (it->second.getFlag(4) == true && user.getChannels().find(it->second.getName()) != user.getChannels().end()) //Ne pas oublier le ban
+			else if ((it->second.getFlag(4) == true && user.getChannels().find(it->second.getName()) != user.getChannels().end()) || it->second.getBan(user.getNickname()))
 				send(user.getFd(), parser.SendReply("404", parser.getArgs()[0], "You don't have access to the channel"), parser.getReply().size(), 0);
 			else
 			{
@@ -43,16 +43,15 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 	else
 	{
 		std::vector<std::string> ulist(parser.SplitComa(parser.getArgs()[0]));
+		std::map<std::string, Users*>::iterator it;
 		for (size_t i = 0; i < ulist.size(); i++)
 		{
-			if (userPointer.find(ulist[i]) == userPointer.end())
-				send(user.getFd(), parser.SendReply("401", parser.getArgs()[i], "User you try to communicate with doesn't exists"), parser.getReply().size(), 0);
-		}
-		std::map<std::string, Users*>::iterator it;
-		for (size_t j = 0; j < ulist.size(); j++)
-		{
-			it = userPointer.find(ulist[j]);
-			if (it->second->getAway() == true)
+			it = userPointer.find(ulist[i]);
+			if (it == userPointer.end())
+				send(user.getFd(), parser.SendReply("401", ulist[i], "User you try to communicate with doesn't exists"), parser.getReply().size(), 0);
+			else if(it->second->getNickname() == user.getNickname())
+				continue;
+			else if (it->second->getAway() == true)
 				send(user.getFd(), parser.SendReply("301", it->second->getNickname(), it->second->getAwayMsg()), parser.getReply().size(), 0);
 			else
 				send(it->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);

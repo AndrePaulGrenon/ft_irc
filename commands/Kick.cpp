@@ -35,17 +35,9 @@ int	Servers::Kick(Users &user, Parser &parser)
 	{
 		std::map<std::string, Users *>::iterator uit = userPointer.find(parser.getArgs()[1]);
 		uit->second->removeChannel(it->second.getName());
-		for (std::vector<Users>::iterator vec_it = it->second.getUsers().begin(); vec_it != it->second.getUsers().end(); vec_it++)
-		{
-			if (vec_it->getNickname() == uit->second->getNickname())
-			{
-				it->second.getUsers().erase(vec_it);
-				if (it->second.getUsers().size() == 0)
-				{
-					Chans.erase(it);
-				}
-			}
-		}
+		it->second.RemoveUser(parser.getArgs()[1]);
+		if (it->second.getUsers().size() == 0)
+			Chans.erase(it);
 	}
 	return (0);
 }
