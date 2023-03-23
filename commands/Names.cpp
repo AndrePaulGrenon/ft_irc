@@ -5,7 +5,7 @@ int	Servers::Names(Users &user, Parser &parser)
 	if (parser.getArgs().size() > 0)
 	{
 		NamesDefine(user, parser);
-		return ;
+		return (0);
 	}
 	std::map<std::string, Channels>::iterator it = Chans.begin();
 	std::map<std::string, Channels>::iterator ite = Chans.end();
