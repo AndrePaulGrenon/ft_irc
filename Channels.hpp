@@ -41,7 +41,7 @@ public:
   std::vector<Users>  getUsers() const;
   bool getBan(const string user) const;
 
-  void  addUser(const Users &user, const std::string &pass, Parser &parser);
+  int addUser(const Users &user, const std::string &pass);
   void  RemoveUser(std::string nickname);
 
 private:

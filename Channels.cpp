@@ -2,12 +2,12 @@
 
 Channels::Channels(){}
 
-Channels::Channels(const string &name) :_limit(-1), _name(name){
+Channels::Channels(const string &name) :_limit(0), _name(name){
   for (size_t i = 0; i < 6; i++)
     this->_flags[i] = false;
 }
 
-Channels::~Channels() { std::cout << "Goodbye world" << std::endl; }
+Channels::~Channels() {}
 
 void Channels::setTopic(const string &topic) { this->_topic = topic; }
 
@@ -55,7 +55,7 @@ bool Channels::getBan(const string user) const{
   return this->_ban.at(user);
 }
 
-void  Channels::addUser(const Users &user, const std::string &pass, Parser &parser){
+int  Channels::addUser(const Users &user, const std::string &pass){
   std::vector<Users>::iterator it = this->_users.begin();
   while (it != this->_users.end())
   {
@@ -68,23 +68,25 @@ void  Channels::addUser(const Users &user, const std::string &pass, Parser &pars
       if (this->getBan(user.getNickname()) == false)
         if (this->getLimit() == -1 || (const int) this->getUsers().size() < this->getLimit())
           if (!this->getPass().empty())
-            if (this->getPass() == pass)
+            if (this->getPass() == pass){
               this->_users.push_back(user);
+            }
             else
-              send(user.getFd(), parser.SendReply("475", parser.getArgs().at(0), "Cannot join channel (+k)"), parser.getReply().size(), 0);
+              return 1;
           else
             this->_users.push_back(user);
         else
-          send(user.getFd(), parser.SendReply("471", parser.getArgs().at(0), "Cannot join channel (+l)"), parser.getReply().size(), 0);
+          return 2;
       else
-        send(user.getFd(), parser.SendReply("474", parser.getArgs().at(0), "Cannot join channel (+b)"), parser.getReply().size(), 0);
+        return 3;
     else
-      send(user.getFd(), parser.SendReply("473", parser.getArgs().at(0), "Cannot join channel (+i)"), parser.getReply().size(), 0);
-    }
+      return 4;
+  }
+  return 5;
 }
 
-  void  Channels::RemoveUser(std::string nickname)
-  {
+void  Channels::RemoveUser(std::string nickname)
+ {
       std::vector<Users>::iterator it = _users.begin();
       std::vector<Users>::iterator ite = _users.end();
 
