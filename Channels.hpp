@@ -38,7 +38,7 @@ public:
   const bool &getFlag(const int &where) const;
   const int &getLimit() const;
   bool getOp(const string &user) const;
-  std::vector<Users>  getUsers() const;
+  std::vector<Users>  &getUsers();
   bool getBan(const string user) const;
 
   void  addUser(const Users &user, const std::string &pass, Parser &parser);
