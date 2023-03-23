@@ -4,7 +4,7 @@
 
 Users::Users(): Pass(false), Registration(false)
 {
-	std::cout << GRN "new empty user is created" CLEAR<< std::endl;
+
 }
 
 Users::Users(const std::string nname, const std::string uname, const std::string realname, bool passw, bool reg): Nickname(nname), Username(uname), Realname(realname), Pass(passw), Registration(reg){}
@@ -14,7 +14,7 @@ Users::Users(const Users &other)
 	*this = other;
 }
 
-Users::~Users(){Pass = false; Registration = false; std::cout << RED "user destructor called" CLEAR<< std::endl;}
+Users::~Users(){Pass = false; Registration = false;}
 
 const Users   &Users::operator=(const Users &other)
 {
