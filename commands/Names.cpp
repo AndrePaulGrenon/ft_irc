@@ -5,7 +5,7 @@ int	Servers::Names(Users &user, Parser &parser)
 	if (parser.getArgs().size() > 0)
 	{
 
-		return ;
+		return (1);
 	}
 
 	std::map<std::string, Channels>::iterator it = Chans.begin();
@@ -16,6 +16,7 @@ int	Servers::Names(Users &user, Parser &parser)
 	{
 		if (!it->second.getFlag(P) && !it->second.getFlag(S))
 		{
+		
 			std::string message;
 			std::vector<Users> list_users = it->second.getUsers();
 			for (unsigned int i = 0; i < list_users.size(); i++)
