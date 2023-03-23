@@ -8,6 +8,7 @@ int	Servers::Kick(Users &user, Parser &parser)
 		return (1);
 	}
 	std::map<std::string, Channels>::iterator	it = Chans.find(parser.getArgs()[0]);
+	std::map<std::string, Users *>::iterator uit = userPointer.find(parser.getArgs()[1]);
 	if (parser.getArgs().size() < 2)
 	{
 		if (it == Chans.end())
@@ -16,12 +17,12 @@ int	Servers::Kick(Users &user, Parser &parser)
 			send(user.getFd(), parser.SendReply("461", parser.getCommand(), "No user was given"), parser.getReply().size(), 0);
 		return (1);
 	}
-	if (Chans.find(parser.getArgs()[0]) == Chans.end())
+	if (it == Chans.end())
 	{
 		send(user.getFd(), parser.SendReply("403", parser.getArgs()[0], "Non-existant channel"), parser.getReply().size(), 0);
 		return (1);
 	}
-	if (user.getChannels().find(it->second.getName()) == user.getChannels().end())
+	if (uit->second->getChannels().find(it->second.getName()) == uit->second->getChannels().end())
 	{
 		send(user.getFd(), parser.SendReply("442", "", "User already not on channel"), parser.getReply().size(), 0);
 		return (1);
@@ -33,7 +34,6 @@ int	Servers::Kick(Users &user, Parser &parser)
 	}
 	else
 	{
-		std::map<std::string, Users *>::iterator uit = userPointer.find(parser.getArgs()[1]);
 		uit->second->removeChannel(it->second.getName());
 		it->second.RemoveUser(parser.getArgs()[1]);
 		if (it->second.getUsers().size() == 0)
