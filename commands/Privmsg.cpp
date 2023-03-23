@@ -13,7 +13,6 @@ bool	ft_is_empty_string(std::string msg)
 // If sender is on the channel, make sure he doesn't get the message twice
 int	Servers::Privmsg(Users &user, Parser &parser)
 {
-	parser.PrintElements();
 	if (ft_is_empty_string(parser.getMessage()))
 				send(user.getFd(), parser.SendReply("412", "", "No message to send!"), parser.getReply().size(), 0);
 	if (parser.getArgs().size() == 0)
