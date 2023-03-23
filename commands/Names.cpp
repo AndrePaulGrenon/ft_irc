@@ -2,6 +2,12 @@
 
 int	Servers::Names(Users &user, Parser &parser)
 {
+	if (parser.getArgs().size() > 0)
+	{
+
+		return ;
+	}
+
 	std::map<std::string, Channels>::iterator it = Chans.begin();
 	std::map<std::string, Channels>::iterator ite = Chans.end();
 	std::set<std::string> tempList;
