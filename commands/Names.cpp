@@ -101,6 +101,16 @@ int     Servers::NamesDefine(Users &user, Parser &parser)
 bool	Servers::UsersIsSubscribe(std::string channel, Users &user)
 {
 	std::set<string> user_channels = user.getChannels();
+	
+	std::set<string>::iterator it = user_channels.begin();
+	std::set<string>::iterator ite = user_channels.end();
+
+	std::cout << MAG << std::endl;
+	for (; it != ite; it++)
+	{
+		std::cout << "User channel " << (*it) << std::endl;
+	}
+
 
 	if (user_channels.find(channel) == user_channels.end())
 	{

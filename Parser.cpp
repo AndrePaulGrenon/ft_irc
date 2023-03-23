@@ -101,6 +101,11 @@ void    Parser::PrintElements(void)
     if (_prefix.length() > 0)
         std::cout << "Prefix: " << _prefix << std::endl; 
     std::cout <<  "CMD: " << _command << std::endl;
+    // for (size_t i = 0; i < _command.size(); i++)
+    // {
+    //     std::cout << "-" << static_cast<int>(_command[i]) ;
+    // }
+    // std::cout << std::endl;
     if (_my_args.size() > 0)
     {
         std::vector<std::string>::iterator it = _my_args.begin();
