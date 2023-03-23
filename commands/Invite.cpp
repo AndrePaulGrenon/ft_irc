@@ -4,21 +4,21 @@ int	Servers::Invite(Users &user, Parser &parser)
 {
 	if (parser.getArgs().size() < 2)
 	{
-		send(user.getFd(), parser.SendReply("461", parser.getCommand(), "Not enough arguments, need a nickname then a user"), parser.getReply().size(), 0);
+		send(user.getFd(), parser.SendReply("461", parser.getCommand(), "Not enough arguments, needs a nickname then a user"), parser.getReply().size(), 0);
 		return (1);
 	}
-	std::map<std::string, Channels>::iterator	it = Chans.find(parser.getArgs()[1]);
 	std::map<std::string, Users *>::iterator uit = userPointer.find(parser.getArgs()[0]);
 	if (uit == userPointer.end())
 	{
 		send(user.getFd(), parser.SendReply("401", "", "User is inexistant"), parser.getReply().size(), 0);
 		return (1);
 	}
+	std::map<std::string, Channels>::iterator	it = Chans.find(parser.getArgs()[1]);
 	if (it == Chans.end())
 	{
 		return (1);
 	}
-	if (user.getChannels().find(parser.getArgs()[0]) == user.getChannels().end())
+	if (user.getChannels().find(parser.getArgs()[1]) == user.getChannels().end())
 	{
 		send(user.getFd(), parser.SendReply("442", "", "You can't invite somebody in a channel you are not in"), parser.getReply().size(), 0);
 		return (1);
