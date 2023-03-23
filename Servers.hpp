@@ -26,8 +26,8 @@
 
 #define MAX_SOCKET 248              // Maximum amount of open sockets in the server
 #define COUNTDOWN  15 * 1000     //Waiting period to poll in milliseconds
-#define IDLE_TIME 15 * 60        //Waiting period for client to become inactive (seconds)
-#define KILL_TIME 1000000            //Inactives time allowed before client is killed (seconds)
+#define IDLE_TIME 60 * 60        //Waiting period for client to become inactive (seconds)
+#define KILL_TIME 10            //Inactives time allowed before client is killed (seconds)
 
 using std::string;
 
@@ -80,6 +80,15 @@ private:
     void    CloseSocket(int i);
     void    CheckClient(Users &user, int i);
 
+
+    //NAMES COMMAND
+    int    NamesDefine(Users &user, Parser &parser);
+    bool   UsersIsSubscribe(std::string channel, Users &user);
+    void   SendChannelUsers(std::vector<Users> list_users, Users &user, Parser &parser, std::string channel_name);
+    
+    //LIST COMMAND
+    void    ListDefine(Users &user, Parser &parser);
+    
     // -------------
     //     [DATA]
     // -------------
@@ -107,10 +116,10 @@ private:
     std::set<std::string>           Username_list;              //Store Usernames
 
     //Server status 
-    bool                            _close_connection;          //close current socket being tracked
-    bool                            _end_server;                //Ends the servers
-    bool                            _compression;               //Asks for compression
-    std::map<std::string, Channels>       Chans;                
+    bool                                _close_connection;          //close current socket being tracked
+    bool                                _end_server;                //Ends the servers
+    bool                                _compression;               //Asks for compression
+    std::map<std::string, Channels>     Chans;
 };
 
 #endif
