@@ -36,7 +36,7 @@ int     Servers::Join(Users &user, Parser &parser){
 					this->Chans.insert(std::pair<std::string, Channels>(channels.at(i), hold));
 					this->Chans.at(channels.at(i)).addUser(user, null);
 					this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
-					user.addChannel(it->second.getName());
+					user.addChannel(channels.at(i));
 					send(user.getFd(), parser.SendReply("332", parser.getArgs().at(0), this->Chans.at(channels.at(i)).getTopic()), parser.getReply().size(), 0);
 				}
 			}
@@ -74,7 +74,7 @@ int     Servers::Join(Users &user, Parser &parser){
 				if (channels.at(i).size() <= 200 && channels.at(i).find(7, 0) == channels.at(i).npos && (channels.at(0).at(0) == '#' || channels.at(0).at(0) == '&')){
 							Channels hold(channels.at(i));
 							this->Chans.insert(std::pair<std::string, Channels>(channels.at(i), hold));
-							user.addChannel(it->second.getName());
+							user.addChannel(channels.at(i));
 							if (password.size() > i)
 								this->Chans.at(channels.at(i)).addUser(user, password.at(i));
 							else
