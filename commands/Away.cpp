@@ -3,7 +3,7 @@
 
 int	Servers::Away(Users &user, Parser &parser)
 {
-	if (parser.getArgs()[0].size() == 0)
+	if (parser.getArgs().size() == 0)
 	{
 		if (user.getAway() == true)
 			user.setAway(false);

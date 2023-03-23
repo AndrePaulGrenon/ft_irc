@@ -2,7 +2,7 @@
 
 int	Servers::Part(Users &user, Parser &parser)
 {
-	if (parser.getArgs()[0].size() == 0)
+	if (parser.getArgs().size() == 0)
 	{
 		send(user.getFd(), parser.SendReply("461", parser.getCommand(), "No Channels were given"), parser.getReply().size(), 0);
 		return (1);
@@ -18,14 +18,17 @@ int	Servers::Part(Users &user, Parser &parser)
 		else
 		{
 			user.removeChannel(it->second.getName());
-			//it->second.removeUser(user); //utiliser nouvelle fonction delete user de a-p
-/* 			for (std::vector<Users>::iterator vec_it = it->second.getUsers().begin(); vec_it != it->second.getUsers().end(); vec_it++)
+			for (std::vector<Users>::iterator vec_it = it->second.getUsers().begin(); vec_it != it->second.getUsers().end(); vec_it++)
 			{
 				if (vec_it->getNickname() == user.getNickname())
 				{
 					it->second.getUsers().erase(vec_it);
+					if (it->second.getUsers().size() == 0)
+					{
+						Chans.erase(it);
+					}
 				}
-			} */
+			}
 		}
 	}
 	return (0);

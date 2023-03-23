@@ -2,6 +2,8 @@
 
 int	Servers::Notice(Users &user, Parser &parser)
 {
+	if (parser.getArgs().size() == 0)
+		return (1);
 	if (parser.getArgs()[0][0] == '#' || parser.getArgs()[0][0] == '&')
 	{
 		std::map<std::string, Channels>::iterator it = Chans.find(parser.getArgs()[0]);
