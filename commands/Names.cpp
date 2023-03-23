@@ -2,6 +2,7 @@
 
 int	Servers::Names(Users &user, Parser &parser)
 {
+	
 	std::map<std::string, Channels>::iterator tit = Chans.begin();
 	std::map<std::string, Channels> ::iterator tite = Chans.end();
 
@@ -10,7 +11,6 @@ int	Servers::Names(Users &user, Parser &parser)
 	{
 		std::cout << "Channel existing : " << tit->first << std::endl;
 	}
-	
 
 	if (parser.getArgs().size() > 0)
 	{
