@@ -18,13 +18,16 @@ Users::~Users(){Pass = false; Registration = false;}
 
 const Users   &Users::operator=(const Users &other)
 {
-	std::cout << BLU "assign operator called" CLEAR<< std::endl;
+	// std::cout << BLU "assign operator called" CLEAR<< std::endl;
 	fd = other.getFd();
 	Nickname = other.getNickname();
 	Username = other.getUsername();
 	Realname = other.getRealname();
 	Pass = other.getPass();
 	Registration = other.getRegStat();
+	is_Away = other.getAway();
+	Channels = other.getChannels();
+	active = other.active;
 	return *this;
 }
 

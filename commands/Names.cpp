@@ -78,11 +78,10 @@ int     Servers::NamesDefine(Users &user, Parser &parser)
 
 	for (size_t i = 0; i < comaChannels.size(); i++)
 	{
-		if ( UsersIsSubscribe(comaChannels[i], user) || (!Chans[comaChannels[i]].getFlag(P) && !Chans[comaChannels[i]].getFlag(S)))
+		if (UsersIsSubscribe(comaChannels[i], user) || (!Chans[comaChannels[i]].getFlag(P) && !Chans[comaChannels[i]].getFlag(S)))
 		{
 			SendChannelUsers(Chans[comaChannels[i]].getUsers(), user, parser, Chans[comaChannels[i]].getName());
 		}
-		
 	}
 	return (0);
 }
@@ -104,22 +103,20 @@ void	Servers::SendChannelUsers(std::vector<Users> list_users, Users &user, Parse
 	for (unsigned int i = 0; i < list_users.size(); i++)
 	{
 		if (i != 0)
-		{
 			message += " ";
-			message += list_users[i].getNickname();
-		}
-		while (message.size())
+		message += list_users[i].getNickname();
+	}
+	while (message.size())
+	{
+		if (message.size() > 510)
 		{
-			if (message.size() > 510)
-			{
-				send(user.getFd(), parser.SendReply("353", channel_name, message.substr(0, 510)), parser.getReply().size(), 0);
-				message = message.substr(0, 510);
-			}
-			else
-			{
-				send(user.getFd(), parser.SendReply("366", channel_name, message), parser.getReply().size(), 0);
-				break ; 
-			}
+			send(user.getFd(), parser.SendReply("353", channel_name, message.substr(0, 510)), parser.getReply().size(), 0);
+			message = message.substr(0, 510);
+		}
+		else
+		{
+			send(user.getFd(), parser.SendReply("366", channel_name, message), parser.getReply().size(), 0);
+			break ; 
 		}
 	}
 }
