@@ -2,20 +2,9 @@
 
 int	Servers::Names(Users &user, Parser &parser)
 {
-	
-	std::map<std::string, Channels>::iterator tit = Chans.begin();
-	std::map<std::string, Channels> ::iterator tite = Chans.end();
-
-	std::cout << "Printing channels " << std::endl;
-	for (; tit != tite; tit++)
-	{
-		std::cout << "Channel existing : " << tit->first << std::endl;
-	}
-
 	if (parser.getArgs().size() > 0)
 	{
 		NamesDefine(user, parser);
-		std::cout << "NAMES DEFINE " << std::endl;
 		return (0);
 	}
 	std::map<std::string, Channels>::iterator it = Chans.begin();
@@ -101,7 +90,7 @@ int     Servers::NamesDefine(Users &user, Parser &parser)
 bool	Servers::UsersIsSubscribe(std::string channel, Users &user)
 {
 	std::set<string> user_channels = user.getChannels();
-
+	
 	if (user_channels.find(channel) == user_channels.end())
 	{
 		return false;

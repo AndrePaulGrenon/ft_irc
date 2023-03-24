@@ -54,7 +54,7 @@ int Servers::Join(Users &user, Parser &parser) {
               std::pair<std::string, Channels>(channels.at(i), hold));
           this->Chans.at(channels.at(i)).addUser(user, null);
           this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
-          user.addChannel(it->second.getName());
+          user.addChannel(channels.at(i));
           send(user.getFd(),
                parser.SendReply("332", parser.getArgs().at(0),
                                 this->Chans.at(channels.at(i)).getTopic()),
@@ -75,7 +75,7 @@ int Servers::Join(Users &user, Parser &parser) {
           this->Chans.find(channels.at(i));
       if (it != this->Chans.end()) {
         user.addChannel(it->second.getName());
-        switch (it->second.addUser(user, null)) {
+        switch (it->second.addUser(user, parser.getArgs().at(1))) {
         case 1:
           send(user.getFd(),
                parser.SendReply("475", parser.getArgs().at(0),
@@ -115,11 +115,8 @@ int Servers::Join(Users &user, Parser &parser) {
           Channels hold(channels.at(i));
           this->Chans.insert(
               std::pair<std::string, Channels>(channels.at(i), hold));
-          user.addChannel(it->second.getName());
-          if (password.size() > i)
-            this->Chans.at(channels.at(i)).addUser(user, password.at(i));
-          else
-            it->second.addUser(user, null);
+          user.addChannel(channels.at(i));
+          this->Chans.at(channels.at(i)).addUser(user, null);
           this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
           send(user.getFd(),
                parser.SendReply("332", parser.getArgs().at(0),

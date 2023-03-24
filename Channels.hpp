@@ -16,6 +16,7 @@
 #define T 3
 #define N 4
 #define M 5
+#define B 6
 
 using std::string;
 
@@ -29,8 +30,10 @@ public:
   void setPass(const string &pass);
   void setName(const string &name);
   void setFlag(const int &which, const bool &flag);
-  void setLimit(const int &limit);
+  void setLimit(const int &limit, const bool &flag);
   void setOp(const string &user, const bool &op);
+  void setBan(const string &user, const bool &ban);
+  void setMod(const string &user, const bool &ban);
 
   const string &getTopic() const;
   const string &getPass() const;
@@ -41,6 +44,7 @@ public:
   std::vector<Users>  &getUsers();
   bool getBan(const string user) const;
 
+  bool is_user(const std::string user);
   int addUser(const Users &user, const std::string &pass);
   void  RemoveUser(std::string nickname);
 
@@ -49,7 +53,7 @@ private:
   string _pass;
   string _name;
   string _topic;
-  bool _flags[6];
+  bool _flags[7];
   std::vector<Users>  _users;
   std::map<string, bool> _mod;
   std::map<string, bool> _ban;

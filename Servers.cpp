@@ -205,11 +205,6 @@ void    Servers::ReceiveData(Users &user)
 void    Servers::ManageUserBuffer(Users &user)
 {
     size_t pos = user.getBuffer().find("\r\n");
-
-    // for (size_t i = 0; i < user.getBuffer().size(); i++) //CHECKS FOR ASCII caracters in the buffer
-    //     std::cout <<  " - " << static_cast<int>(str[i]);
-    // std::cout << std::endl;
-
     while (pos != std::string::npos || user.getBuffer().size() >= 512)
     {
         if (user.getBuffer().size() >= 512)
@@ -240,6 +235,7 @@ void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
     //PARSING:
     Parser parser(cmd_line);
 
+    parser.PrintElements();
     if (user.getRegStat() == false && (parser.getCommand() != "NICK" && parser.getCommand() != "USER" 
             && parser.getCommand() != "PASS"))
     {
@@ -297,8 +293,6 @@ void    Servers::DeleteUsers(Users &user)
 
 void    Servers::CheckClient(Users &user, int i)
 {
-    std::cout << YEL "Enters checkclient " << user.timer.Timing() <<  CLEAR<<std::endl;
-
     if (user.getActive() && user.timer.Timing() > IDLE_TIME)
     {
         std::cout << user.getNickname() << BLU "Has beeen set to inactive " CLEAR << std::endl;

@@ -16,8 +16,6 @@ bool    ft_isgoodchar(std::string nick)
 
 int     Servers::Nick(Users &user, Parser &parser)
 {
-    std::cout << "NICK COMMAND USED" << std::endl;
-    parser.PrintElements();
     if (user.getPass() == false)
     {
             send(user.getFd(), parser.SendReply("464", "PASS", "No password entered, please enter password"), parser.getReply().size(), 0);

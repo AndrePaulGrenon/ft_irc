@@ -8,8 +8,7 @@ int     Servers::User(Users &user, Parser &parser)
         _close_connection = true;
         return (1);
     }
-    parser.PrintElements();
-    std::cout << " -- [USER] Command has been Chosen " << std::endl;
+
     if (parser.getArgs().size() != 4)
     {
         std::cout << BLU "Enters the first wrong stuff " CLEAR << std::endl;

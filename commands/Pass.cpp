@@ -2,9 +2,6 @@
 
 int     Servers::Pass(Users &user, Parser &parser)
 {
-    std::cout << " -- [PASS] Command has been Chosen " << std::endl;
-
-    parser.PrintElements();
     if (parser.getArgs()[0] != _server_data.Password)
     {
         send(user.getFd(), parser.SendReply("464", "", "Incorrect Password\n"), parser.getReply().size(), 0);
