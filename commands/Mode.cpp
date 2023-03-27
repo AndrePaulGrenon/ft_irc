@@ -44,7 +44,6 @@ int Servers::Mode(Users &user, Parser &parser) {
               limit = -1;
             }
           }
-
           if (parser.getArgs().at(1).at(0) == '-') {
             flag = false;
             offset = 1;
@@ -58,18 +57,19 @@ int Servers::Mode(Users &user, Parser &parser) {
           for (size_t i = 0 + offset; i < parser.getArgs().at(1).size(); i++) {
             switch (parser.getArgs().at(1).at(i)) {
             case 'o':
-              if (this->Username_list.find(us) != this->Username_list.end()) { // ici sa fuck je sais pas pk
-                if (!us.empty()) // faut check ici si le user existe
+              if (this->userPointer.find(us) != this->userPointer.end()) {
+                if (!us.empty())
                   this->Chans.at(parser.getArgs().at(0)).setOp(us, flag);
                 else
                   send(user.getFd(),
                        parser.SendReply("461", parser.getCommand(),
                                         "Not enough parameters"),
                        parser.getReply().size(), 0);
-              } else
+              } else{
                 send(user.getFd(),
                      parser.SendReply("401", us, "No such nick/channel"),
                      parser.getReply().size(), 0);
+              }
               break;
             case 'p':
               this->Chans.at(parser.getArgs().at(0)).setFlag(P, flag);
@@ -116,7 +116,7 @@ int Servers::Mode(Users &user, Parser &parser) {
                      parser.getReply().size(), 0);
               break;
             case 'v':
-              if (this->Username_list.find(us) != this->Username_list.end()) {
+              if (this->userPointer.find(us) != this->userPointer.end()) {
                 if (!us.empty())
                   this->Chans.at(parser.getArgs().at(0)).setMod(us, flag);
                 else
