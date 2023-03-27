@@ -34,7 +34,7 @@ int Servers::Topic(Users &user, Parser &parser) {
           topic += parser.getArgs().at(i);
         this->Chans.at(parser.getArgs().at(0)).setTopic(topic);
         send(user.getFd(),
-             parser.SendReply("332", user.getNickname() + " has set topic",
+             parser.SendReply("332", parser.getArgs().at(0),
                               parser.getArgs().at(1)),
              parser.getReply().size(), 0);
       } else {
@@ -45,9 +45,9 @@ int Servers::Topic(Users &user, Parser &parser) {
             topic += parser.getArgs().at(i);
           this->Chans.at(parser.getArgs().at(0)).setTopic(topic);
           send(user.getFd(),
-               parser.SendReply("332", user.getNickname() + " has set topic",
-                                parser.getArgs().at(1)),
-               parser.getReply().size(), 0);
+             parser.SendReply("332", parser.getArgs().at(0),
+                              parser.getArgs().at(1)),
+             parser.getReply().size(), 0);
         } else
           send(user.getFd(),
                parser.SendReply(
