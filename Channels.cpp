@@ -27,10 +27,8 @@ void Channels::setLimit(const int &limit, const bool &flag) {
 }
 
 void Channels::setOp(const string &user, const bool &op) {
-  if (this->_operators.find(user) != this->_operators.end()){
-    std::cout << "ok" << std::endl;
+  if (this->_operators.find(user) != this->_operators.end())
     this->_operators.at(user) = op;
-  }
 }
 
 void Channels::setBan(const string &user, const bool &ban) {
@@ -89,7 +87,7 @@ int Channels::addUser(const Users &user, const std::string &pass) {
     if (this->getFlag(I) == false)
       if (this->getBan(user.getNickname()) == false)
         if (this->getLimit() == -1 ||
-            (const int)this->getUsers().size() < this->getLimit())
+            (const int) this->getUsers().size() < this->getLimit())
           if (!this->getPass().empty())
             if (this->getPass() == pass) {
               this->_users.push_back(user);

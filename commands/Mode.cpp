@@ -26,20 +26,21 @@ int Servers::Mode(Users &user, Parser &parser) {
           int limit;
 
           switch (parser.getArgs().size()) {
+          case 5:
+            pass = parser.getArgs().at(4);
           case 4:
-            pass = parser.getArgs().at(3);
-          case 3:
             if (pass.empty())
-              pass = parser.getArgs().at(2);
+              pass = parser.getArgs().at(3);
+            if (us.empty())
+              us = parser.getArgs().at(3);
+          case 3:
             if (us.empty())
               us = parser.getArgs().at(2);
-          case 2:
-            if (us.empty())
-              us = parser.getArgs().at(1);
             if (pass.empty())
-              pass = parser.getArgs().at(1);
+              pass = parser.getArgs().at(2);
             try {
-              limit = stoi(parser.getArgs().at(1));
+                std::cout << parser.getArgs().at(2);
+                limit = stoi(parser.getArgs().at(2));
             } catch (const std::exception &e) {
               limit = -1;
             }
@@ -90,13 +91,7 @@ int Servers::Mode(Users &user, Parser &parser) {
               this->Chans.at(parser.getArgs().at(0)).setFlag(M, flag);
               break;
             case 'l':
-              if (limit == -1)
-                this->Chans.at(parser.getArgs().at(0)).setLimit(limit, flag);
-              else
-                send(user.getFd(),
-                     parser.SendReply("461", parser.getCommand(),
-                                      "Not enough parameters"),
-                     parser.getReply().size(), 0);
+              this->Chans.at(parser.getArgs().at(0)).setLimit(limit, flag);
               break;
             case 'b':
               if (us.empty())
