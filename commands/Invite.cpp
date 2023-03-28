@@ -13,14 +13,14 @@ int	Servers::Invite(Users &user, Parser &parser)
 		send(user.getFd(), parser.SendReply("401", "", "User is inexistant"), parser.getReply().size(), 0);
 		return (1);
 	}
-	std::map<std::string, Channels>::iterator	it = Chans.find(parser.getArgs()[1]);
-	if (it == Chans.end())
-	{
-		return (1);
-	}
 	if (user.getChannels().find(parser.getArgs()[1]) == user.getChannels().end())
 	{
 		send(user.getFd(), parser.SendReply("442", "", "You can't invite somebody in a channel you are not in"), parser.getReply().size(), 0);
+		return (1);
+	}
+	std::map<std::string, Channels>::iterator	it = Chans.find(parser.getArgs()[1]);
+	if (it == Chans.end())
+	{
 		return (1);
 	}
 	if (uit->second->getChannels().find(it->second.getName()) != uit->second->getChannels().end())
