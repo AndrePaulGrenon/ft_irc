@@ -12,7 +12,7 @@ SRCS		=	main.cpp Users.cpp Channels.cpp Servers.cpp  utility.cpp  Parser.cpp \
 				commands/Invite.cpp commands/Join.cpp commands/Kick.cpp commands/List.cpp \
 				commands/Mode.cpp commands/Names.cpp commands/Notice.cpp commands/Part.cpp \
 				commands/Ping.cpp commands/Pong.cpp commands/Privmsg.cpp commands/Quit.cpp \
-				commands/Topic.cpp Timer.cpp
+				commands/Topic.cpp Timer.cpp commands/Shutdown.cpp
 
 
 HEADER_CON	=	

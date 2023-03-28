@@ -42,23 +42,24 @@ public:
 
   // Méthodes
 
-    int     Pass(Users &user, Parser &parser); //Set connection password
-    int     Nick(Users &user, Parser &parser); //Set or reset user's nickname
-    int     User(Users &user, Parser &parser); //Used at beginning of connection to sets usernam, hostname servanem and realname of new user
-    int     Away(Users &user, Parser &parser); //
-    int     Invite(Users &user, Parser &parser); //
-    int     Join(Users &user, Parser &parser); //
-    int     Kick(Users &user, Parser &parser); //
-    int     List(Users &user, Parser &parser); //
-    int     Mode(Users &user, Parser &parser); //
-    int     Names(Users &user, Parser &parser); //
-    int     Notice(Users &user, Parser &parser); //
-    int     Part(Users &user, Parser &parser); //
-    int     Ping(Users &user, Parser &parser); //
-    int     Pong(Users &user, Parser &parser); //
-    int     Privmsg(Users &user, Parser &parser); //
-    int     Quit(Users &user, Parser &parser); //
-    int     Topic(Users &user, Parser &parser); //
+    int     Pass(Users &user, Parser &parser);
+    int     Nick(Users &user, Parser &parser);
+    int     User(Users &user, Parser &parser);
+    int     Away(Users &user, Parser &parser);
+    int     Invite(Users &user, Parser &parser);
+    int     Join(Users &user, Parser &parser);
+    int     Kick(Users &user, Parser &parser);
+    int     List(Users &user, Parser &parser);
+    int     Mode(Users &user, Parser &parser);
+    int     Names(Users &user, Parser &parser);
+    int     Notice(Users &user, Parser &parser);
+    int     Part(Users &user, Parser &parser);
+    int     Ping(Users &user, Parser &parser);
+    int     Pong(Users &user, Parser &parser);
+    int     Privmsg(Users &user, Parser &parser);
+    int     Quit(Users &user, Parser &parser);
+    int     Topic(Users &user, Parser &parser);
+    int     Shutdown(Users &user, Parser &parser);
     
     // Méthodes
     void    start();
