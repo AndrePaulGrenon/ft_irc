@@ -8,13 +8,13 @@ int	Servers::Notice(Users &user, Parser &parser)
 	if ((parser.getArgs()[0][0] == '#' || parser.getArgs()[0][0] == '&') && it->second.getBan(user.getNickname()))
 	{
 		for (size_t j = 0; j < it->second.getUsers().size(); j++)
-				send(it->second.getUsers()[j].getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+				send(it->second.getUsers()[j].getFd(), parser.SendReply("*", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	}
 	else
 	{
 		if (userPointer.find(parser.getArgs()[0]) != userPointer.end())
-			send(userPointer.find(parser.getArgs()[0])->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+			send(userPointer.find(parser.getArgs()[0])->second->getFd(), parser.SendReply("*", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	}
-	send(user.getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+	send(user.getFd(), parser.SendReply("*", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	return (0);
 }

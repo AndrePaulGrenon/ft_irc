@@ -36,6 +36,7 @@ void Servers::CommandInit()
     _command_map["PRIVMSG"] = &Servers::Privmsg;
     _command_map["QUIT"] = &Servers::Quit;
     _command_map["TOPIC"] = &Servers::Topic;
+    _command_map["SHUTDOWN"] = &Servers::Shutdown;
 }
 
 // [SERVER SOCKET CREATION] : Open server socket and preps it 
