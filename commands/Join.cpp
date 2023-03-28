@@ -15,28 +15,28 @@ int Servers::Join(Users &user, Parser &parser) {
         switch (it->second.addUser(user, null)) {
         case 1:
           send(user.getFd(),
-               parser.SendReply("475", parser.getArgs().at(0),
+               parser.SendReply("475", channels.at(i),
                                 "Cannot join channel (+k)"),
                parser.getReply().size(), 0);
           user.removeChannel(it->second.getName());
           break;
         case 2:
           send(user.getFd(),
-               parser.SendReply("471", parser.getArgs().at(0),
+               parser.SendReply("471", channels.at(i),
                                 "Cannot join channel (+l)"),
                parser.getReply().size(), 0);
                user.removeChannel(it->second.getName());
           break;
         case 3:
           send(user.getFd(),
-               parser.SendReply("474", parser.getArgs().at(0),
+               parser.SendReply("474", channels.at(i),
                                 "Cannot join channel (+b)"),
                parser.getReply().size(), 0);
                user.removeChannel(it->second.getName());
           break;
         case 4:
           send(user.getFd(),
-               parser.SendReply("473", parser.getArgs().at(0),
+               parser.SendReply("473", channels.at(i),
                                 "Cannot join channel (+i)"),
                parser.getReply().size(), 0);
                user.removeChannel(it->second.getName());
@@ -45,12 +45,12 @@ int Servers::Join(Users &user, Parser &parser) {
           it->second.setOp(user.getNickname(), false);
           if (!this->Chans.at(channels.at(i)).getTopic().empty())
             send(user.getFd(),
-                 parser.SendReply("332", parser.getArgs().at(0),
+                 parser.SendReply("332", channels.at(i),
                                   this->Chans.at(channels.at(i)).getTopic()),
                  parser.getReply().size(), 0);
           else
             send(user.getFd(),
-                 parser.SendReply("331", parser.getArgs().at(0),
+                 parser.SendReply("331", channels.at(i),
                                   "no topic is set"),
                  parser.getReply().size(), 0);
           break;
@@ -66,7 +66,7 @@ int Servers::Join(Users &user, Parser &parser) {
           this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
           user.addChannel(channels.at(i));
           send(user.getFd(),
-               parser.SendReply("331", parser.getArgs().at(0),
+               parser.SendReply("331", channels.at(i),
                                 "no topic is set"),
                parser.getReply().size(), 0);
         }
@@ -88,28 +88,28 @@ int Servers::Join(Users &user, Parser &parser) {
         switch (it->second.addUser(user, parser.getArgs().at(1))) {
         case 1:
           send(user.getFd(),
-               parser.SendReply("475", parser.getArgs().at(0),
+               parser.SendReply("475", channels.at(i),
                                 "Cannot join channel (+k)"),
                parser.getReply().size(), 0);
                user.removeChannel(it->second.getName());
           break;
         case 2:
           send(user.getFd(),
-               parser.SendReply("471", parser.getArgs().at(0),
+               parser.SendReply("471", channels.at(i),
                                 "Cannot join channel (+l)"),
                parser.getReply().size(), 0);
                user.removeChannel(it->second.getName());
           break;
         case 3:
           send(user.getFd(),
-               parser.SendReply("474", parser.getArgs().at(0),
+               parser.SendReply("474", channels.at(i),
                                 "Cannot join channel (+b)"),
                parser.getReply().size(), 0);
                user.removeChannel(it->second.getName());
           break;
         case 4:
           send(user.getFd(),
-               parser.SendReply("473", parser.getArgs().at(0),
+               parser.SendReply("473", channels.at(i),
                                 "Cannot join channel (+i)"),
                parser.getReply().size(), 0);
                user.removeChannel(it->second.getName());
@@ -118,12 +118,12 @@ int Servers::Join(Users &user, Parser &parser) {
           it->second.setOp(user.getNickname(), false);
           if (!this->Chans.at(channels.at(i)).getTopic().empty())
             send(user.getFd(),
-                 parser.SendReply("332", parser.getArgs().at(0),
+                 parser.SendReply("332", channels.at(i),
                                   this->Chans.at(channels.at(i)).getTopic()),
                  parser.getReply().size(), 0);
           else
             send(user.getFd(),
-                 parser.SendReply("331", parser.getArgs().at(0),
+                 parser.SendReply("331", channels.at(i),
                                   "no topic is set"),
                  parser.getReply().size(), 0);
           break;
@@ -139,7 +139,7 @@ int Servers::Join(Users &user, Parser &parser) {
           this->Chans.at(channels.at(i)).addUser(user, null);
           this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
           send(user.getFd(),
-               parser.SendReply("331", parser.getArgs().at(0),
+               parser.SendReply("331", channels.at(i),
                                 "no topic is set"),
                parser.getReply().size(), 0);
         }
