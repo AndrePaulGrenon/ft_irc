@@ -314,7 +314,7 @@ void    Servers::CloseAll()
         if (i == 0)
             close(_server_data.server_fd);
         else
-            CloseSocket(_server_data.poll_fd[i].fd);
+            close(_server_data.poll_fd[i].fd);
         i++;
     }
 }
