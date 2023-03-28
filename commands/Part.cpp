@@ -13,7 +13,7 @@ int	Servers::Part(Users &user, Parser &parser)
 		std::map<std::string, Channels>::iterator	it = Chans.find(clist[i]);
 		if (it == Chans.end())
 			send(user.getFd(), parser.SendReply("403", parser.getArgs()[i], "non-existant Channel"), parser.getReply().size(), 0);
-		else if (user.getChannels().find(it->second.getName()) != user.getChannels().end())
+		else if (user.getChannels().find(it->second.getName()) == user.getChannels().end())
 			send(user.getFd(), parser.SendReply("442", parser.getArgs()[i], "You can't part with a channel you are not in"), parser.getReply().size(), 0);
 		else
 		{
