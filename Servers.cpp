@@ -175,6 +175,7 @@ void    Servers::ReceiveData(Users &user)
     _close_connection = false;
     char buff[512];
     int result = 666;
+    user.setActive(true);
 
     memset(buff, 0, sizeof(buff));
     while (result > 0)
@@ -226,8 +227,6 @@ void    Servers::ManageUserBuffer(Users &user)
     if (user.getBuffer().size() > 0)
         std::cout << user.getNickname() << " buffer leftover :" << user.getBuffer() << std::endl;
 }
-
-
 
 // [EXECUTE COMMAND]
 void    Servers::ExecuteCmd(Users &user, std::string &cmd_line)
@@ -295,14 +294,14 @@ void    Servers::CheckClient(Users &user, int i)
 {
     if (user.getActive() && user.timer.Timing() > IDLE_TIME)
     {
-        std::cout << user.getNickname() << BLU "Has beeen set to inactive " CLEAR << std::endl;
+        std::cout << BBLU << user.getNickname() << BLU " Has beeen set to inactive " CLEAR << std::endl;
         Parser empty;
         (this->*(_command_map["PING"]))(user, empty);
         user.timer.Start();
     }
     else if (user.getActive() == false && user.timer.Timing() > KILL_TIME)
     {
-        std::cout << user.getNickname() << RED "Has been kickout due to inactivity " CLEAR << std::endl;
+        std::cout << BRED << user.getNickname() << RED " Has been kickout due to inactivity " CLEAR << std::endl;
         CloseSocket(i);
     }
 }

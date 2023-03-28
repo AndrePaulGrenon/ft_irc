@@ -44,6 +44,6 @@ void	Servers::ListDefine(Users &user, Parser &parser)
 					Chans[comaChannels[i]].getTopic()), parser.getReply().size(), 0);
 		}
 	}
-	send(user.getFd(), parser.SendReply("323", user.getNickname(),"End of list"), parser.getReply().size(), 0);
+	send(user.getFd(), parser.SendReply("323", "*","End of list"), parser.getReply().size(), 0);
 	return ;
 }
