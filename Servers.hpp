@@ -79,6 +79,7 @@ private:
     void    ExecuteCmd(Users &user, std::string &cmd_line);
     void    CloseSocket(int i);
     void    CheckClient(Users &user, int i);
+    void    CloseAll();
 
 
     //NAMES COMMAND

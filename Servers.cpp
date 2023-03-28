@@ -131,7 +131,6 @@ int Servers::TrackingFd()
         
         if (_close_connection == true) 
             CloseSocket(i);
-        
     }
     return 0;
 }
@@ -303,5 +302,15 @@ void    Servers::CheckClient(Users &user, int i)
     {
         std::cout << BRED << user.getNickname() << RED " Has been kickout due to inactivity " CLEAR << std::endl;
         CloseSocket(i);
+    }
+}
+
+void    Servers::CloseAll()
+{
+    int i = 0;
+    while (_server_data.poll_fd[i].fd > 0)
+    {
+        CloseSocket(_server_data.poll_fd[i].fd);
+        i++;
     }
 }
