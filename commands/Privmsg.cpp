@@ -10,7 +10,6 @@ bool	ft_is_empty_string(std::string msg)
 	return true;
 }
 
-// If sender is on the channel, make sure he doesn't get the message twice
 int	Servers::Privmsg(Users &user, Parser &parser)
 {
 	if (ft_is_empty_string(parser.getMessage()))

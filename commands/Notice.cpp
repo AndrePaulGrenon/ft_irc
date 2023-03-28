@@ -11,7 +11,10 @@ int	Servers::Notice(Users &user, Parser &parser)
 				send(it->second.getUsers()[j].getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	}
 	else
+	{
+		if (userPointer.find(parser.getArgs()[0]) != userPointer.end())
 			send(userPointer.find(parser.getArgs()[0])->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+	}
 	send(user.getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	return (0);
 }
