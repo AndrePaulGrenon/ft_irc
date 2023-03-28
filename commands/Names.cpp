@@ -27,12 +27,12 @@ int	Servers::Names(Users &user, Parser &parser)
 			{
 				if (message.size() > 510)
 				{
-					send(user.getFd(), parser.SendReply("353", it->second.getName(), message.substr(0, 510)), parser.getReply().size(), 0);
+					send(user.getFd(), parser.SendReply("353", user.getNickname() + " = " + it->second.getName(), message.substr(0, 510)), parser.getReply().size(), 0);
 					message = message.substr(0, 510);
 				}
 				else
 				{
-					send(user.getFd(), parser.SendReply("366", it->second.getName(), message), parser.getReply().size(), 0);
+					send(user.getFd(), parser.SendReply("353", user.getNickname() + " = " + it->second.getName(), message), parser.getReply().size(), 0);
 					break ; 
 				}
 			}
@@ -58,16 +58,17 @@ int	Servers::Names(Users &user, Parser &parser)
 			{
 				if (other_users.size() > 510)
 				{
-					send(user.getFd(), parser.SendReply("353", "*", other_users.substr(0, 510)), parser.getReply().size(), 0);
+					send(user.getFd(), parser.SendReply("353", user.getNickname() + " = " + "*", other_users.substr(0, 510)), parser.getReply().size(), 0);
 					other_users = other_users.substr(0, 510);
 				}
 				else
 				{
-					send(user.getFd(), parser.SendReply("366", "*", other_users), parser.getReply().size(), 0);
+					send(user.getFd(), parser.SendReply("353", user.getNickname() + " = " + "*", other_users), parser.getReply().size(), 0);
 					break ; 
 				}
 			}
 	}
+	send(user.getFd(), parser.SendReply("366", "*", "End of line"), parser.getReply().size(), 0);
 	return (0);
 }
 
@@ -78,11 +79,10 @@ int     Servers::NamesDefine(Users &user, Parser &parser)
 
 	for (size_t i = 0; i < comaChannels.size(); i++)
 	{
-		if ( UsersIsSubscribe(comaChannels[i], user) || (!Chans[comaChannels[i]].getFlag(P) && !Chans[comaChannels[i]].getFlag(S)))
+		if (UsersIsSubscribe(comaChannels[i], user) || (!Chans[comaChannels[i]].getFlag(P) && !Chans[comaChannels[i]].getFlag(S)))
 		{
 			SendChannelUsers(Chans[comaChannels[i]].getUsers(), user, parser, Chans[comaChannels[i]].getName());
 		}
-		
 	}
 	return (0);
 }
@@ -104,22 +104,21 @@ void	Servers::SendChannelUsers(std::vector<Users> list_users, Users &user, Parse
 	for (unsigned int i = 0; i < list_users.size(); i++)
 	{
 		if (i != 0)
-		{
 			message += " ";
-			message += list_users[i].getNickname();
-		}
-		while (message.size())
+		message += list_users[i].getNickname();
+	}
+	while (message.size())
+	{
+		if (message.size() > 510)
 		{
-			if (message.size() > 510)
-			{
-				send(user.getFd(), parser.SendReply("353", channel_name, message.substr(0, 510)), parser.getReply().size(), 0);
-				message = message.substr(0, 510);
-			}
-			else
-			{
-				send(user.getFd(), parser.SendReply("366", channel_name, message), parser.getReply().size(), 0);
-				break ; 
-			}
+			send(user.getFd(), parser.SendReply("353", user.getNickname() + " = " + channel_name, message.substr(0, 510)), parser.getReply().size(), 0);
+			message = message.substr(0, 510);
+		}
+		else
+		{
+			send(user.getFd(), parser.SendReply("353", user.getNickname() + " = " + channel_name, message), parser.getReply().size(), 0);
+			break ; 
 		}
 	}
+	send(user.getFd(), parser.SendReply("366", user.getNickname() + " = " + "*", "End of line"), parser.getReply().size(), 0);
 }
