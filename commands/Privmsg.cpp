@@ -25,8 +25,8 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 			std::map<std::string, Channels>::iterator	it = Chans.find(clist[i]);
 			if (it == Chans.end())
 				send(user.getFd(), parser.SendReply("403", parser.getArgs()[i], "Channel inexistant"), parser.getReply().size(), 0);
-			else if ((it->second.getFlag(N) == true && user.getChannels().find(it->second.getName()) == user.getChannels().end()) || it->second.getBan(user.getNickname()))
-				send(user.getFd(), parser.SendReply("404", parser.getArgs()[0], "You don't have access to the channel"), parser.getReply().size(), 0);
+			else if ((it->second.getFlag(N) == true && user.getChannels().find(it->second.getName()) == user.getChannels().end()) || it->second.getBan(user.getNickname()) || (it->second.getFlag(M) == true && !it->second.getMod(user.getNickname())))
+				send(user.getFd(), parser.SendReply("404", parser.getArgs()[0], "You don't have the right to send messages to the channel"), parser.getReply().size(), 0);
 			else
 			{
 				for (size_t j = 0; j < it->second.getUsers().size(); j++)
