@@ -98,7 +98,7 @@ void    Servers::start()
         std::cout << "Fds count: " YEL << _server_data.nfds << CLEAR " User count :" MAG << usersMap.size() << CLEAR << std::endl;
 
     }
-    close(_server_data.server_fd); //Close server file descriptor, need to close the others with a function probable.
+    CloseAll(); //Close server file descriptor, need to close the others with a function probable.
     
     return ;
 }
@@ -310,7 +310,10 @@ void    Servers::CloseAll()
     int i = 0;
     while (_server_data.poll_fd[i].fd > 0)
     {
-        CloseSocket(_server_data.poll_fd[i].fd);
+        if (i == 0)
+            close(_server_data.server_fd);
+        else
+            CloseSocket(_server_data.poll_fd[i].fd);
         i++;
     }
 }
