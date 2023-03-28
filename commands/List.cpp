@@ -24,7 +24,7 @@ int	Servers::List(Users &user, Parser &parser)
 					it->second.getTopic()), parser.getReply().size(), 0);
 		}
 	}
-	send(user.getFd(), parser.SendReply("323", user.getNickname() + " " + it->second.getName() + " " + std::to_string(it->second.getUsers().size())
+	send(user.getFd(), parser.SendReply("323", "*"
 							,"End of list"), parser.getReply().size(), 0);
 	return (0);
 }
