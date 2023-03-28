@@ -14,9 +14,11 @@ bool	ft_is_empty_string(std::string msg)
 int	Servers::Privmsg(Users &user, Parser &parser)
 {
 	if (ft_is_empty_string(parser.getMessage()))
-				send(user.getFd(), parser.SendReply("412", "", "No message to send!"), parser.getReply().size(), 0);
+				send(user.getFd(), parser.SendReply("412", "*", "No message to send!"), parser.getReply().size(), 0);
 	if (parser.getArgs().size() == 0)
-				send(user.getFd(), parser.SendReply("411", "", "No recipient has been given!"), parser.getReply().size(), 0);
+				send(user.getFd(), parser.SendReply("411", "*", "No recipient has been given!"), parser.getReply().size(), 0);
+	if (parser.getArgs().size() > 1)
+				send(user.getFd(), parser.SendReply("407", "*", "Too many arguments, seperate your recipients with ',', not with ' '."), parser.getReply().size(), 0);
 	if (parser.getArgs()[0][0] == '#' || parser.getArgs()[0][0] == '&')
 	{
 		std::vector<std::string> clist(parser.SplitComa(parser.getArgs()[0]));
@@ -34,7 +36,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 					if (it->second.getUsers()[j].getAway() == true)
 						send(user.getFd(), parser.SendReply("301", it->second.getUsers()[j].getNickname(), it->second.getUsers()[j].getAwayMsg()), parser.getReply().size(), 0);
 					else
-						send(it->second.getUsers()[j].getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+						send(it->second.getUsers()[j].getFd(), parser.SendReply("*", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 				}
 			}
 		}
@@ -53,9 +55,9 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 			else if (it->second->getAway() == true)
 				send(user.getFd(), parser.SendReply("301", it->second->getNickname(), it->second->getAwayMsg()), parser.getReply().size(), 0);
 			else
-				send(it->second->getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+				send(it->second->getFd(), parser.SendReply("*", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 		}
-		send(user.getFd(), parser.SendReply("", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
+		send(user.getFd(), parser.SendReply("*", user.getNickname(), parser.getMessage()), parser.getReply().size(), 0);
 	}
 	return (0);
 }
