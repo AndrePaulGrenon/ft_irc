@@ -60,10 +60,16 @@ bool Channels::getOp(const string &user) const {
   return this->_operators.at(user);
 }
 
-bool Channels::getBan(const string user) const {
+bool Channels::getBan(const string &user) const {
   if (this->_ban.find(user) == this->_ban.end())
     return (false);
   return this->_ban.at(user);
+}
+
+bool Channels::getMod(const string &user) const {
+  if (this->_mod.find(user) == this->_mod.end())
+    return (false);
+  return this->_mod.at(user);
 }
 
 std::vector<Users> &Channels::getUsers() { return _users; }
