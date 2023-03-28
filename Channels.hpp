@@ -42,7 +42,8 @@ public:
   const int &getLimit() const;
   bool getOp(const string &user) const;
   std::vector<Users>  &getUsers();
-  bool getBan(const string user) const;
+  bool getBan(const string &user) const;
+  bool getMod(const string &user) const;
 
   bool is_user(const std::string user);
   int addUser(const Users &user, const std::string &pass);
