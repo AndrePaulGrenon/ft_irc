@@ -88,9 +88,19 @@ const char    *Parser::SendReply(const std::string code,
                 const std::string args, const std::string message) 
 {
     _reply.clear();
-    _reply = ":" + _server_name + ".42.qc " + code + " " + args + " :" + message + "\r\n";
+    _reply = ":" + _server_name + ".42.qc" ;
+    // _reply = ":" + _server_name + ".42.qc" + code + " " + args + " :" + message + "\r\n\r\n";
+    if (code.size())
+        _reply += " " + code;
+    if (args.size())
+        _reply += " " + args;
+    if (message.size())
+        _reply += " :" + message;
+    _reply += "\r\n\n";
+
     if (_reply.size() > 512)
         return NULL;
+    std::cout << "Reply sent : " << _reply << std::endl;
     return (_reply.c_str());
 }
 
