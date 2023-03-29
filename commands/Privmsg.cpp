@@ -13,11 +13,15 @@ bool	ft_is_empty_string(std::string msg)
 int	Servers::Privmsg(Users &user, Parser &parser)
 {
 	if (ft_is_empty_string(parser.getMessage()))
-				send(user.getFd(), parser.SendReply("412", "*", "No message to send!"), parser.getReply().size(), 0);
+	{
+		send(user.getFd(), parser.SendReply("412", "*", "No message to send!"), parser.getReply().size(), 0);
+		return (1);
+	}
 	if (parser.getArgs().size() == 0)
-				send(user.getFd(), parser.SendReply("411", "*", "No recipient has been given!"), parser.getReply().size(), 0);
-	if (parser.getArgs().size() > 1)
-				send(user.getFd(), parser.SendReply("407", "*", "Too many arguments, seperate your recipients with ',', not with ' '."), parser.getReply().size(), 0);
+	{
+		send(user.getFd(), parser.SendReply("411", "*", "No recipient has been given!"), parser.getReply().size(), 0);
+		return (1);
+	}
 	if (parser.getArgs()[0][0] == '#' || parser.getArgs()[0][0] == '&')
 	{
 		std::vector<std::string> clist(parser.SplitComa(parser.getArgs()[0]));
@@ -25,9 +29,15 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 		{
 			std::map<std::string, Channels>::iterator	it = Chans.find(clist[i]);
 			if (it == Chans.end())
+			{
 				send(user.getFd(), parser.SendReply("403", parser.getArgs()[i], "Channel inexistant"), parser.getReply().size(), 0);
+				return (1);
+			}
 			else if ((it->second.getFlag(N) == true && user.getChannels().find(it->second.getName()) == user.getChannels().end()) || it->second.getBan(user.getNickname()) || (it->second.getFlag(M) == true && !it->second.getMod(user.getNickname())))
+			{
 				send(user.getFd(), parser.SendReply("404", parser.getArgs()[0], "You don't have the right to send messages to the channel"), parser.getReply().size(), 0);
+				return (1);
+			}
 			else
 			{
 				for (size_t j = 0; j < it->second.getUsers().size(); j++)
