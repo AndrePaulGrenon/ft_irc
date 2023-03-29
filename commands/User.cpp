@@ -4,7 +4,7 @@ int     Servers::User(Users &user, Parser &parser)
 {
     if (user.getNickname().size() == 0)
     {
-        send(user.getFd(), parser.SendReply("431", "", "Nickname must be validated before entering username"), parser.getReply().size(), 0);
+        send(user.getFd(), parser.SendReply("431", "*", "Nickname must be validated before entering username"), parser.getReply().size(), 0);
         _close_connection = true;
         return (1);
     }
