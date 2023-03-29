@@ -21,6 +21,8 @@ int	Servers::Part(Users &user, Parser &parser)
 			it->second.RemoveUser(user.getNickname());
 			if (it->second.getUsers().size() == 0)
 				Chans.erase(it);
+			std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " PART " + it->second.getName() + "\n";
+          	send(user.getFd(), msg.c_str(), msg.size(), 0);
 		}
 	}
 	return (0);

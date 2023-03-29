@@ -49,8 +49,9 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				{ 
 					if (it->second.getUsers().at(j).getNickname() == user.getNickname())
 						continue;
-					if (it->second.getUsers()[j].getAway() == true)
-						send(user.getFd(), parser.SendReply("301", it->second.getUsers()[j].getNickname(), it->second.getUsers()[j].getAwayMsg()), parser.getReply().size(), 0);
+					if (it->second.getUsers()[j].getAway() == true){
+						send(user.getFd(), parser.SendReply("301", user.getNickname() + " " + it->second.getUsers()[j].getNickname(), it->second.getUsers()[j].getAwayMsg()), parser.getReply().size(), 0);
+					}
 					else
 						send(it->second.getUsers()[j].getFd(), parser.SendReply("PRIVMSG", user.getNickname(), user.getNickname() + " " + parser.getMessage()), parser.getReply().size(), 0);
 				}
@@ -70,11 +71,10 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 			else if(it->second->getNickname() == user.getNickname())
 				continue;
 			else if (it->second->getAway() == true)
-				send(user.getFd(), parser.SendReply("301", it->second->getNickname(), it->second->getAwayMsg()), parser.getReply().size(), 0);
+				send(user.getFd(), parser.SendReply("301", user.getNickname() + " " + it->second->getNickname(), it->second->getAwayMsg()), parser.getReply().size(), 0);
 			else
 				send(it->second->getFd(), parser.SendReply("PRIVMSG", user.getNickname(), user.getNickname() + " " + parser.getMessage()), parser.getReply().size(), 0);
 		}
-		//send(user.getFd(), parser.SendReply("PRIVMSG", user.getNickname(), user.getNickname() + " : " + parser.getMessage()), parser.getReply().size(), 0);
 	}
 	return (0);
 }
