@@ -12,6 +12,8 @@
     v - give/take the ability to speak on a moderated channel;
     k - set a channel key (password). */
 
+std::string bool_to_string(const bool &flag) { return flag ? "true" : "false"; }
+
 int Servers::Mode(Users &user, Parser &parser) {
   if (parser.getArgs().size() > 0) {
     if (this->Chans.find(parser.getArgs().at(0)) != this->Chans.end()) {
@@ -39,8 +41,8 @@ int Servers::Mode(Users &user, Parser &parser) {
             if (pass.empty())
               pass = parser.getArgs().at(2);
             try {
-                std::cout << parser.getArgs().at(2);
-                limit = stoi(parser.getArgs().at(2));
+              std::cout << parser.getArgs().at(2);
+              limit = stoi(parser.getArgs().at(2));
             } catch (const std::exception &e) {
               limit = -1;
             }
@@ -66,7 +68,7 @@ int Servers::Mode(Users &user, Parser &parser) {
                        parser.SendReply("461", parser.getCommand(),
                                         "Not enough parameters"),
                        parser.getReply().size(), 0);
-              } else{
+              } else {
                 send(user.getFd(),
                      parser.SendReply("401", us, "No such nick/channel"),
                      parser.getReply().size(), 0);
@@ -74,38 +76,74 @@ int Servers::Mode(Users &user, Parser &parser) {
               break;
             case 'p':
               this->Chans.at(parser.getArgs().at(0)).setFlag(P, flag);
+              send(user.getFd(),
+                   parser.SendReply(
+                       "324", this->Chans.at(parser.getArgs().at(0)).getName(),
+                       "p mode has been set to " + bool_to_string(flag)),
+                   parser.getReply().size(), 0);
               break;
             case 's':
               this->Chans.at(parser.getArgs().at(0)).setFlag(S, flag);
+              send(user.getFd(),
+                   parser.SendReply(
+                       "324", this->Chans.at(parser.getArgs().at(0)).getName(),
+                       "s mode has been set to " + bool_to_string(flag)),
+                   parser.getReply().size(), 0);
               break;
             case 'i':
               this->Chans.at(parser.getArgs().at(0)).setFlag(I, flag);
+              send(user.getFd(),
+                   parser.SendReply(
+                       "324", this->Chans.at(parser.getArgs().at(0)).getName(),
+                       "i mode has been set to " + bool_to_string(flag)),
+                   parser.getReply().size(), 0);
               break;
             case 't':
               this->Chans.at(parser.getArgs().at(0)).setFlag(T, flag);
+              send(user.getFd(),
+                   parser.SendReply(
+                       "324", this->Chans.at(parser.getArgs().at(0)).getName(),
+                       "t mode has been set to " + bool_to_string(flag)),
+                   parser.getReply().size(), 0);
               break;
             case 'n':
               this->Chans.at(parser.getArgs().at(0)).setFlag(N, flag);
+              send(user.getFd(),
+                   parser.SendReply(
+                       "324", this->Chans.at(parser.getArgs().at(0)).getName(),
+                       "n mode has been set to " + bool_to_string(flag)),
+                   parser.getReply().size(), 0);
               break;
             case 'm':
               this->Chans.at(parser.getArgs().at(0)).setFlag(M, flag);
+              send(user.getFd(),
+                   parser.SendReply(
+                       "324", this->Chans.at(parser.getArgs().at(0)).getName(),
+                       "m mode has been set to " + bool_to_string(flag)),
+                   parser.getReply().size(), 0);
               break;
             case 'l':
               this->Chans.at(parser.getArgs().at(0)).setLimit(limit, flag);
+              send(user.getFd(),
+                   parser.SendReply(
+                       "324", this->Chans.at(parser.getArgs().at(0)).getName(),
+                       "l mode has been set to " + bool_to_string(flag)),
+                   parser.getReply().size(), 0);
               break;
             case 'b':
               if (us.empty())
                 this->Chans.at(parser.getArgs().at(0)).setFlag(B, flag);
               else if (this->Username_list.find(us) !=
                        this->Username_list.end()) {
-                if (!us.empty())
-                {
+                if (!us.empty()) {
                   this->Chans.at(parser.getArgs().at(0)).setBan(us, flag);
                   send(user.getFd(),
-                      parser.SendReply("367", this->Chans.at(parser.getArgs().at(0)).getName(), us),
-                      parser.getReply().size(), 0);
-                }
-                else
+                       parser.SendReply(
+                           "367",
+                           this->Chans.at(parser.getArgs().at(0)).getName(),
+                           us),
+                       parser.getReply().size(), 0);
+                } else
                   send(user.getFd(),
                        parser.SendReply("461", parser.getCommand(),
                                         "Not enough parameters"),
@@ -117,9 +155,15 @@ int Servers::Mode(Users &user, Parser &parser) {
               break;
             case 'v':
               if (this->userPointer.find(us) != this->userPointer.end()) {
-                if (!us.empty())
+                if (!us.empty()) {
                   this->Chans.at(parser.getArgs().at(0)).setMod(us, flag);
-                else
+                  send(user.getFd(),
+                       parser.SendReply(
+                           "324",
+                           this->Chans.at(parser.getArgs().at(0)).getName(),
+                           "v mode has been set to " + bool_to_string(flag)),
+                       parser.getReply().size(), 0);
+                } else
                   send(user.getFd(),
                        parser.SendReply("461", parser.getCommand(),
                                         "Not enough parameters"),
@@ -130,9 +174,15 @@ int Servers::Mode(Users &user, Parser &parser) {
                      parser.getReply().size(), 0);
               break;
             case 'k':
-              if (!pass.empty())
+              if (!pass.empty()) {
                 this->Chans.at(parser.getArgs().at(0)).setPass(pass);
-              else
+                send(user.getFd(),
+                     parser.SendReply(
+                         "324",
+                         this->Chans.at(parser.getArgs().at(0)).getName(),
+                         "k mode has been set to " + bool_to_string(flag)),
+                     parser.getReply().size(), 0);
+              } else
                 send(user.getFd(),
                      parser.SendReply("461", parser.getCommand(),
                                       "Not enough parameters"),
