@@ -20,6 +20,7 @@ class Users
         int                             getFd() const;
         const std::string               &getNickname() const;
         const std::string               &getUsername() const;
+        const std::string               &getHostname() const;
         const std::string               &getRealname() const;
         const std::set<std::string>     &getChannels() const;
         bool                            getPass() const;
@@ -33,6 +34,7 @@ class Users
         void    setFd(int fdesc);
         void    setNickname(const std::string &name);
         void    setUserName(const std::string &name);
+        void    setHostName(const std::string &name);
         void    setRealName(const std::string &name);
         void    setPass(bool passw);
         void    setRegistration(bool reg);
@@ -50,6 +52,7 @@ class Users
         int                             fd;
         std::string                     Nickname;
         std::string                     Username;
+        std::string                     Hostname;
         std::string                     Realname;
         std::string                     AwayMsg;
         bool                            Pass;

@@ -36,21 +36,23 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 			if (it == Chans.end())
 			{
 				send(user.getFd(), parser.SendReply("403", parser.getArgs()[i], "Channel inexistant"), parser.getReply().size(), 0);
-				return (1);
+				//return (1);
 			}
 			else if ((it->second.getFlag(N) == true && user.getChannels().find(it->second.getName()) == user.getChannels().end()) || it->second.getBan(user.getNickname()) || (it->second.getFlag(M) == true && !it->second.getMod(user.getNickname())))
 			{
 				send(user.getFd(), parser.SendReply("404", parser.getArgs()[0], "You don't have the right to send messages to the channel"), parser.getReply().size(), 0);
-				return (1);
+				//return (1);
 			}
 			else
 			{
 				for (size_t j = 0; j < it->second.getUsers().size(); j++)
-				{
+				{ 
+					if (it->second.getUsers().at(j).getNickname() == user.getNickname())
+						continue;
 					if (it->second.getUsers()[j].getAway() == true)
 						send(user.getFd(), parser.SendReply("301", it->second.getUsers()[j].getNickname(), it->second.getUsers()[j].getAwayMsg()), parser.getReply().size(), 0);
 					else
-						send(it->second.getUsers()[j].getFd(), parser.SendReply("PRIVMSG", user.getNickname(), user.getNickname() + " : " + parser.getMessage()), parser.getReply().size(), 0);
+						send(it->second.getUsers()[j].getFd(), parser.SendReply("PRIVMSG", user.getNickname(), user.getNickname() + " " + parser.getMessage()), parser.getReply().size(), 0);
 				}
 			}
 		}
@@ -70,9 +72,9 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 			else if (it->second->getAway() == true)
 				send(user.getFd(), parser.SendReply("301", it->second->getNickname(), it->second->getAwayMsg()), parser.getReply().size(), 0);
 			else
-				send(it->second->getFd(), parser.SendReply("PRIVMSG", user.getNickname(), user.getNickname() + " : " + parser.getMessage()), parser.getReply().size(), 0);
+				send(it->second->getFd(), parser.SendReply("PRIVMSG", user.getNickname(), user.getNickname() + " " + parser.getMessage()), parser.getReply().size(), 0);
 		}
-		send(user.getFd(), parser.SendReply("PRIVMSG", user.getNickname(), user.getNickname() + " : " + parser.getMessage()), parser.getReply().size(), 0);
+		//send(user.getFd(), parser.SendReply("PRIVMSG", user.getNickname(), user.getNickname() + " : " + parser.getMessage()), parser.getReply().size(), 0);
 	}
 	return (0);
 }

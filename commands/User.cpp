@@ -25,6 +25,8 @@ int     Servers::User(Users &user, Parser &parser)
     }
     std::cout << GRN "User Is accepted " CLEAR << std::endl;
     user.setUserName(parser.getArgs()[0]);
+    std::cout << parser.getArgs()[1] << std::endl;
+    user.setHostName(parser.getArgs()[1]);
     user.setRealName(parser.getArgs()[3]);
     send(user.getFd(), parser.SendReply("001", parser.getArgs()[0], "Username valid"), parser.getReply().size(), 0);
     user.setRegistration(true);
