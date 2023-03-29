@@ -82,7 +82,7 @@ bool Channels::is_user(const std::string user) {
   return false;
 }
 
-int Channels::addUser(const Users &user, const std::string &pass) {
+int Channels::addUser(const Users &user, const std::string &pass, const bool &invited) {
   std::vector<Users>::iterator it = this->_users.begin();
   while (it != this->_users.end()) {
     if (user.getNickname() == (*it).getNickname())
@@ -90,7 +90,7 @@ int Channels::addUser(const Users &user, const std::string &pass) {
     it++;
   }
   if (it == this->_users.end()) {
-    if (this->getFlag(I) == false)
+    if (this->getFlag(I) == false || invited == true)
       if (this->getBan(user.getNickname()) == false)
         if (this->getLimit() == -1 ||
             (const int) this->getUsers().size() < this->getLimit())

@@ -12,7 +12,7 @@ int Servers::Join(Users &user, Parser &parser) {
           this->Chans.find(channels.at(i));
       if (it != this->Chans.end()) {
         user.addChannel(it->second.getName());
-        switch (it->second.addUser(user, null)) {
+        switch (it->second.addUser(user, null, false)) {
         case 1:
           send(user.getFd(),
                parser.SendReply("475", channels.at(i),
@@ -59,7 +59,7 @@ int Servers::Join(Users &user, Parser &parser) {
           Channels hold(channels.at(i));
           this->Chans.insert(
               std::pair<std::string, Channels>(channels.at(i), hold));
-          this->Chans.at(channels.at(i)).addUser(user, null);
+          this->Chans.at(channels.at(i)).addUser(user, null, false);
           this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
           user.addChannel(channels.at(i));
           std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + channels.at(i) + "\n";
@@ -80,7 +80,7 @@ int Servers::Join(Users &user, Parser &parser) {
           this->Chans.find(channels.at(i));
       if (it != this->Chans.end()) {
         user.addChannel(it->second.getName());
-        switch (it->second.addUser(user, parser.getArgs().at(1))) {
+        switch (it->second.addUser(user, parser.getArgs().at(1), false)) {
         case 1:
           send(user.getFd(),
                parser.SendReply("475", channels.at(i),
@@ -128,7 +128,7 @@ int Servers::Join(Users &user, Parser &parser) {
           this->Chans.insert(
               std::pair<std::string, Channels>(channels.at(i), hold));
           user.addChannel(channels.at(i));
-          this->Chans.at(channels.at(i)).addUser(user, null);
+          this->Chans.at(channels.at(i)).addUser(user, null, false);
           this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
           std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + channels.at(i) + "\n";
           send(user.getFd(), msg.c_str(), msg.size(), 0);

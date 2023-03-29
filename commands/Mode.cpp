@@ -133,20 +133,14 @@ int Servers::Mode(Users &user, Parser &parser) {
             case 'b':
               if (us.empty())
                 this->Chans.at(parser.getArgs().at(0)).setFlag(B, flag);
-              else if (this->Username_list.find(us) !=
-                       this->Username_list.end()) {
-                if (!us.empty()) {
+              else if (this->userPointer.find(us) !=
+                       this->userPointer.end()) {
                   this->Chans.at(parser.getArgs().at(0)).setBan(us, flag);
                   send(user.getFd(),
                        parser.SendReply(
                            "367",
                            this->Chans.at(parser.getArgs().at(0)).getName(),
                            us),
-                       parser.getReply().size(), 0);
-                } else
-                  send(user.getFd(),
-                       parser.SendReply("461", parser.getCommand(),
-                                        "Not enough parameters"),
                        parser.getReply().size(), 0);
               } else
                 send(user.getFd(),

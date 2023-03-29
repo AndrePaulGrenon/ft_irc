@@ -46,7 +46,7 @@ public:
   bool getMod(const string &user) const;
 
   bool is_user(const std::string user);
-  int addUser(const Users &user, const std::string &pass);
+  int addUser(const Users &user, const std::string &pass, const bool &invited);
   void  RemoveUser(std::string nickname);
 
 private:
