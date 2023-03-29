@@ -102,7 +102,7 @@ int Servers::Mode(Users &user, Parser &parser) {
                 {
                   this->Chans.at(parser.getArgs().at(0)).setBan(us, flag);
                   send(user.getFd(),
-                      parser.SendReply("367", this->Chans.at(parser.getArgs().at(0)).getName(), ),
+                      parser.SendReply("367", this->Chans.at(parser.getArgs().at(0)).getName(), us),
                       parser.getReply().size(), 0);
                 }
                 else
