@@ -48,6 +48,11 @@ const std::string	&Users::getRealname() const
 	return Realname;
 }
 
+const std::string	&Users::getHostname() const
+{
+	return Hostname;
+}
+
 const std::set<std::string>     &Users::getChannels() const
 {
 	return Channels;
@@ -82,6 +87,10 @@ void	Users::setFd(int fdesc)
 void	Users::setNickname(const std::string &name)
 {
 	Nickname = name;
+}
+void	Users::setHostName(const std::string &name)
+{
+	Hostname = name;
 }
 void	Users::setUserName(const std::string &name)
 {

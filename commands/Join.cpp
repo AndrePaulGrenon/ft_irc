@@ -53,10 +53,8 @@ int Servers::Join(Users &user, Parser &parser) {
                  parser.SendReply("331", channels.at(i),
                                   "no topic is set"),
                  parser.getReply().size(), 0);
-          /* send(user.getFd(),
-              parser.SendReply("332", "JOIN",
-                               channels.at(i)),
-              parser.getReply().size(), 0); */
+            //std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + it->second.getName() + "\n";
+            //send(user.getFd(), msg.c_str(), msg.size(), 0);
           break;
         }
       } else {
@@ -73,10 +71,8 @@ int Servers::Join(Users &user, Parser &parser) {
                parser.SendReply("331", channels.at(i),
                                 "no topic is set"),
                parser.getReply().size(), 0);
-         /*  send(user.getFd(),
-              parser.SendReply("332", "JOIN",
-                               channels.at(i)),
-              parser.getReply().size(), 0); */
+          std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + channels.at(i) + "\n";
+          send(user.getFd(), msg.c_str(), msg.size(), 0);
         }
       }
     }
@@ -134,10 +130,8 @@ int Servers::Join(Users &user, Parser &parser) {
                  parser.SendReply("331", channels.at(i),
                                   "no topic is set"),
                  parser.getReply().size(), 0);
-          /* send(user.getFd(),
-              parser.SendReply("332", "JOIN",
-                               channels.at(i)),
-              parser.getReply().size(), 0); */
+          //std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + it->second.getName() + "\n";
+           //send(user.getFd(), msg.c_str(), msg.size(), 0);
           break;
         }
       } else {
@@ -154,10 +148,8 @@ int Servers::Join(Users &user, Parser &parser) {
                parser.SendReply("331", channels.at(i),
                                 "no topic is set"),
                parser.getReply().size(), 0);
-          /* send(user.getFd(),
-              parser.SendReply("332", "JOIN",
-                               channels.at(i)),
-              parser.getReply().size(), 0); */
+         // std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + channels.at(i) + "\n";
+          //send(user.getFd(), msg.c_str(), msg.size(), 0);
         }
       }
     }

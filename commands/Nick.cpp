@@ -31,13 +31,13 @@ int     Servers::Nick(Users &user, Parser &parser)
     if (parser.getArgs()[0].length() > 9 || !ft_isgoodchar(parser.getArgs()[0]))
     {
             send(user.getFd(), parser.SendReply("432", parser.getArgs()[0], "Nickname invalid, please enter valid Nickname"), parser.getReply().size(), 0);
-            _close_connection = true;
+            //_close_connection = true;
             return (1);
     }
     if (userPointer.find(parser.getArgs()[0]) != userPointer.end())
     {
             send(user.getFd(), parser.SendReply("433", parser.getArgs()[0], "Nickname already in use, please enter another valid Nickname"), parser.getReply().size(), 0);
-            _close_connection = true;
+           // _close_connection = true;
             return (1);
     }
     if (userPointer.find(user.getNickname()) != userPointer.end())
