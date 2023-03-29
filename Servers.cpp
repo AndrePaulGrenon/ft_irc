@@ -161,6 +161,7 @@ void    Servers::AcceptConnection()
         _server_data.poll_fd[_server_data.nfds].events = POLLIN;
         _server_data.nfds++;
         usersMap[new_sd];
+        usersMap[new_sd].setHostName(inet_ntoa(client.sin_addr));
         usersMap[new_sd].setFd(new_sd);
         usersMap[new_sd].timer.Start();
         usersMap[new_sd].setActive(true);

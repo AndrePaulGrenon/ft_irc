@@ -48,13 +48,8 @@ int Servers::Join(Users &user, Parser &parser) {
                  parser.SendReply("332", channels.at(i),
                                   this->Chans.at(channels.at(i)).getTopic()),
                  parser.getReply().size(), 0);
-          else
-            send(user.getFd(),
-                 parser.SendReply("331", channels.at(i),
-                                  "no topic is set"),
-                 parser.getReply().size(), 0);
-            //std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + it->second.getName() + "\n";
-            //send(user.getFd(), msg.c_str(), msg.size(), 0);
+            std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + it->second.getName() + "\n";
+            send(user.getFd(), msg.c_str(), msg.size(), 0);
           break;
         }
       } else {
@@ -67,10 +62,6 @@ int Servers::Join(Users &user, Parser &parser) {
           this->Chans.at(channels.at(i)).addUser(user, null);
           this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
           user.addChannel(channels.at(i));
-          send(user.getFd(),
-               parser.SendReply("331", channels.at(i),
-                                "no topic is set"),
-               parser.getReply().size(), 0);
           std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + channels.at(i) + "\n";
           send(user.getFd(), msg.c_str(), msg.size(), 0);
         }
@@ -125,13 +116,8 @@ int Servers::Join(Users &user, Parser &parser) {
                  parser.SendReply("332", channels.at(i),
                                   this->Chans.at(channels.at(i)).getTopic()),
                  parser.getReply().size(), 0);
-          else
-            send(user.getFd(),
-                 parser.SendReply("331", channels.at(i),
-                                  "no topic is set"),
-                 parser.getReply().size(), 0);
-          //std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + it->second.getName() + "\n";
-           //send(user.getFd(), msg.c_str(), msg.size(), 0);
+          std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + it->second.getName() + "\n";
+          send(user.getFd(), msg.c_str(), msg.size(), 0);
           break;
         }
       } else {
@@ -144,12 +130,8 @@ int Servers::Join(Users &user, Parser &parser) {
           user.addChannel(channels.at(i));
           this->Chans.at(channels.at(i)).addUser(user, null);
           this->Chans.at(channels.at(i)).setOp(user.getNickname(), true);
-          send(user.getFd(),
-               parser.SendReply("331", channels.at(i),
-                                "no topic is set"),
-               parser.getReply().size(), 0);
-         // std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + channels.at(i) + "\n";
-          //send(user.getFd(), msg.c_str(), msg.size(), 0);
+          std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " JOIN " + channels.at(i) + "\n";
+          send(user.getFd(), msg.c_str(), msg.size(), 0);
         }
       }
     }
