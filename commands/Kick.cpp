@@ -36,5 +36,7 @@ int	Servers::Kick(Users &user, Parser &parser)
 	it->second.RemoveUser(parser.getArgs()[1]);
 	if (it->second.getUsers().size() == 0)
 		Chans.erase(it);
+	std::string msg = ":" + user.getNickname() + "!" + user.getUsername() + "@" + user.getHostname() + " KICK " + it->second.getName() + " " + uit->second->getNickname() + "\n";
+    send(uit->second->getFd(), msg.c_str(), msg.size(), 0);
 	return (0);
 }
