@@ -10,12 +10,12 @@ int	Servers::Invite(Users &user, Parser &parser)
 	std::map<std::string, Users *>::iterator uit = userPointer.find(parser.getArgs()[0]);
 	if (uit == userPointer.end())
 	{
-		send(user.getFd(), parser.SendReply("401", "", "User is inexistant"), parser.getReply().size(), 0);
+		send(user.getFd(), parser.SendReply("401", "*", "User is inexistant"), parser.getReply().size(), 0);
 		return (1);
 	}
 	if (user.getChannels().find(parser.getArgs()[1]) == user.getChannels().end())
 	{
-		send(user.getFd(), parser.SendReply("442", "", "You can't invite somebody in a channel you are not in"), parser.getReply().size(), 0);
+		send(user.getFd(), parser.SendReply("442", "*", "You can't invite somebody in a channel you are not in"), parser.getReply().size(), 0);
 		return (1);
 	}
 	std::map<std::string, Channels>::iterator	it = Chans.find(parser.getArgs()[1]);
@@ -25,7 +25,7 @@ int	Servers::Invite(Users &user, Parser &parser)
 	}
 	if (uit->second->getChannels().find(it->second.getName()) != uit->second->getChannels().end())
 	{
-		send(user.getFd(), parser.SendReply("443", "", "User already on channel"), parser.getReply().size(), 0);
+		send(user.getFd(), parser.SendReply("443", "*", "User already on channel"), parser.getReply().size(), 0);
 		return (1);
 	}
 	if (!it->second.getOp(user.getNickname()) && it->second.getFlag(I))
@@ -35,8 +35,17 @@ int	Servers::Invite(Users &user, Parser &parser)
 	}
 	else
 	{
-		uit->second->addChannel(it->second.getName());
-		it->second.addUser(*uit->second, "");
+		if (uit->second->getAway() == true)
+		{
+			send(user.getFd(), parser.SendReply("301", parser.getArgs()[0], uit->second->getAwayMsg()), parser.getReply().size(), 0);
+			return (1);
+		}
+		else
+		{
+			send(user.getFd(), parser.SendReply("341", parser.getArgs()[0], parser.getArgs()[1]), parser.getReply().size(), 0);
+			uit->second->addChannel(it->second.getName());
+			it->second.addUser(*uit->second, it->second.getPass());
+		}
 	}
 	return (0);
 }
