@@ -99,7 +99,12 @@ int Servers::Mode(Users &user, Parser &parser) {
               else if (this->Username_list.find(us) !=
                        this->Username_list.end()) {
                 if (!us.empty())
+                {
                   this->Chans.at(parser.getArgs().at(0)).setBan(us, flag);
+                  send(user.getFd(),
+                      parser.SendReply("367", this->Chans.at(parser.getArgs().at(0)).getName(), ),
+                      parser.getReply().size(), 0);
+                }
                 else
                   send(user.getFd(),
                        parser.SendReply("461", parser.getCommand(),
@@ -143,7 +148,7 @@ int Servers::Mode(Users &user, Parser &parser) {
           }
         } else
           send(user.getFd(),
-               parser.SendReply("471", parser.getArgs().at(0),
+               parser.SendReply("482", parser.getArgs().at(0),
                                 "You're not channel operator"),
                parser.getReply().size(), 0);
       } else
