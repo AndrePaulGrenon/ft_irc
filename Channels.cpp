@@ -11,7 +11,7 @@ Channels::~Channels() {}
 
 void Channels::setTopic(const string &topic) { this->_topic = topic; }
 
-void Channels::setPass(const string &pass) { std::cout << pass << std::endl;this->_pass = pass; }
+void Channels::setPass(const string &pass) { this->_pass = pass; }
 
 void Channels::setName(const string &name) { this->_name = name; }
 
