@@ -53,6 +53,10 @@ int Servers::Join(Users &user, Parser &parser) {
                  parser.SendReply("331", channels.at(i),
                                   "no topic is set"),
                  parser.getReply().size(), 0);
+          /* send(user.getFd(),
+              parser.SendReply("332", "JOIN",
+                               channels.at(i)),
+              parser.getReply().size(), 0); */
           break;
         }
       } else {
@@ -69,6 +73,10 @@ int Servers::Join(Users &user, Parser &parser) {
                parser.SendReply("331", channels.at(i),
                                 "no topic is set"),
                parser.getReply().size(), 0);
+         /*  send(user.getFd(),
+              parser.SendReply("332", "JOIN",
+                               channels.at(i)),
+              parser.getReply().size(), 0); */
         }
       }
     }
@@ -126,6 +134,10 @@ int Servers::Join(Users &user, Parser &parser) {
                  parser.SendReply("331", channels.at(i),
                                   "no topic is set"),
                  parser.getReply().size(), 0);
+          /* send(user.getFd(),
+              parser.SendReply("332", "JOIN",
+                               channels.at(i)),
+              parser.getReply().size(), 0); */
           break;
         }
       } else {
@@ -142,6 +154,10 @@ int Servers::Join(Users &user, Parser &parser) {
                parser.SendReply("331", channels.at(i),
                                 "no topic is set"),
                parser.getReply().size(), 0);
+          /* send(user.getFd(),
+              parser.SendReply("332", "JOIN",
+                               channels.at(i)),
+              parser.getReply().size(), 0); */
         }
       }
     }
