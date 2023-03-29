@@ -49,6 +49,7 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 				}
 			}
 		}
+		return (0);
 	}
 	else
 	{
