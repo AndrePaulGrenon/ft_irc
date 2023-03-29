@@ -22,6 +22,11 @@ int	Servers::Privmsg(Users &user, Parser &parser)
 		send(user.getFd(), parser.SendReply("411", "*", "No recipient has been given!"), parser.getReply().size(), 0);
 		return (1);
 	}
+	if (parser.getArgs().size() > 1)
+	{
+		send(user.getFd(), parser.SendReply("407", "*", "Please, seperate your recipients with ',' not ' '"), parser.getReply().size(), 0);
+		return (1);
+	}
 	if (parser.getArgs()[0][0] == '#' || parser.getArgs()[0][0] == '&')
 	{
 		std::vector<std::string> clist(parser.SplitComa(parser.getArgs()[0]));
