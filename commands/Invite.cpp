@@ -42,9 +42,10 @@ int	Servers::Invite(Users &user, Parser &parser)
 		}
 		else
 		{
-			send(user.getFd(), parser.SendReply("341", parser.getArgs()[0], parser.getArgs()[1]), parser.getReply().size(), 0);
 			uit->second->addChannel(it->second.getName());
-			it->second.addUser(*uit->second, it->second.getPass());
+			it->second.addUser(*uit->second, it->second.getPass(), true);
+			std::string msg = ":" + uit->second->getNickname() + "!" + uit->second->getUsername() + "@" + uit->second->getHostname() + " INVITE " + it->second.getName();
+			send(user.getFd(), msg.c_str(), msg.size(), 0);
 		}
 	}
 	return (0);
