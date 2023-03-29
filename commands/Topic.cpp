@@ -28,6 +28,12 @@ int Servers::Topic(Users &user, Parser &parser) {
     break;
   default:
     if (this->Chans.find(parser.getArgs().at(0)) != this->Chans.end()) {
+      if (user.getChannels().find(this->Chans.at(parser.getArgs()[0]).getName()) == user.getChannels().end())
+      {
+        send(user.getFd(),
+            parser.SendReply("442", parser.getArgs().at(0), "You are not on channel, cannot change topic"),
+            parser.getReply().size(), 0);
+      }
       if ((this->Chans.at(parser.getArgs().at(0)).getFlag(T)) == 0) {
         string topic = parser.getArgs().at(1);
         for (size_t i = 2; i < parser.getArgs().size(); i++)
